@@ -1,0 +1,17 @@
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.deps.json
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\ref\PartyGameBL.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.pdb
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameDL.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameModels.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameDL.pdb
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameModels.pdb
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.csproj.AssemblyReference.cache
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.AssemblyInfoInputs.cache
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.AssemblyInfo.cs
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.csproj.CoreCompileInputs.cache
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.csproj.CopyComplete
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\ref\PartyGameBL.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.pdb

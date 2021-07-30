@@ -1,0 +1,12 @@
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\bin\Debug\net5.0\PartyGameModels.deps.json
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\bin\Debug\net5.0\PartyGameModels.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\bin\Debug\net5.0\ref\PartyGameModels.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\bin\Debug\net5.0\PartyGameModels.pdb
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\PartyGameModels.csproj.AssemblyReference.cache
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\PartyGameModels.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\PartyGameModels.AssemblyInfoInputs.cache
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\PartyGameModels.AssemblyInfo.cs
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\PartyGameModels.csproj.CoreCompileInputs.cache
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\PartyGameModels.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\ref\PartyGameModels.dll
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameModels\obj\Debug\net5.0\PartyGameModels.pdb
