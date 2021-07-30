@@ -1,0 +1,4 @@
+{
+    "appService.deploySubpath": "PartyGameWebAPI\\publish",
+    "appService.defaultWebAppToDeploy": ""
+}
