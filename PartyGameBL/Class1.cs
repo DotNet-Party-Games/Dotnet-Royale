@@ -4,7 +4,5 @@ namespace PartyGameBL
 {
     public class Class1
     {
-
-        
     }
 }
