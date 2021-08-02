@@ -1,27 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameBL\\PartyGameBL.csproj": {}
+    "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameBL\\PartyGameBL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameBL\\PartyGameBL.csproj": {
+    "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameBL\\PartyGameBL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameBL\\PartyGameBL.csproj",
+        "projectUniqueName": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameBL\\PartyGameBL.csproj",
         "projectName": "PartyGameBL",
-        "projectPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameBL\\PartyGameBL.csproj",
-        "packagesPath": "C:\\Users\\klaus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameBL\\obj\\",
+        "projectPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameBL\\PartyGameBL.csproj",
+        "packagesPath": "C:\\Users\\Shiv\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameBL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\klaus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Shiv\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -34,11 +33,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameDL\\PartyGameDL.csproj": {
-                "projectPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameDL\\PartyGameDL.csproj"
+              "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameDL\\PartyGameDL.csproj": {
+                "projectPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameDL\\PartyGameDL.csproj"
               },
-              "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\PartyGameModels.csproj": {
-                "projectPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\PartyGameModels.csproj"
+              "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\PartyGameModels.csproj": {
+                "projectPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\PartyGameModels.csproj"
               }
             }
           }
@@ -71,24 +70,23 @@
         }
       }
     },
-    "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameDL\\PartyGameDL.csproj": {
+    "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameDL\\PartyGameDL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameDL\\PartyGameDL.csproj",
+        "projectUniqueName": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameDL\\PartyGameDL.csproj",
         "projectName": "PartyGameDL",
-        "projectPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameDL\\PartyGameDL.csproj",
-        "packagesPath": "C:\\Users\\klaus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameDL\\obj\\",
+        "projectPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameDL\\PartyGameDL.csproj",
+        "packagesPath": "C:\\Users\\Shiv\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameDL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\klaus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Shiv\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -101,8 +99,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\PartyGameModels.csproj": {
-                "projectPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\PartyGameModels.csproj"
+              "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\PartyGameModels.csproj": {
+                "projectPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\PartyGameModels.csproj"
               }
             }
           }
@@ -117,6 +115,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.8, )"
@@ -157,24 +159,23 @@
         }
       }
     },
-    "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\PartyGameModels.csproj": {
+    "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\PartyGameModels.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\PartyGameModels.csproj",
+        "projectUniqueName": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\PartyGameModels.csproj",
         "projectName": "PartyGameModels",
-        "projectPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\PartyGameModels.csproj",
-        "packagesPath": "C:\\Users\\klaus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\klaus\\Source\\Repos\\P2-Dotnet-Party-Games\\PartyGameModels\\obj\\",
+        "projectPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\PartyGameModels.csproj",
+        "packagesPath": "C:\\Users\\Shiv\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Shiv\\Documents\\Team-Strongly-Typed\\dotnet-PartyGames\\dotnetPartyGames\\PartyGameModels\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\klaus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Shiv\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

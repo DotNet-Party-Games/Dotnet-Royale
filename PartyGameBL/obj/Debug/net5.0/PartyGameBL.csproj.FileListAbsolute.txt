@@ -1,4 +1,6 @@
 C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.deps.json
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.runtimeconfig.json
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.runtimeconfig.dev.json
 C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.dll
 C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\ref\PartyGameBL.dll
 C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\bin\Debug\net5.0\PartyGameBL.pdb
@@ -15,3 +17,4 @@ C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\P
 C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.dll
 C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\ref\PartyGameBL.dll
 C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.pdb
+C:\Users\Shiv\Documents\Team-Strongly-Typed\dotnet-PartyGames\dotnetPartyGames\PartyGameBL\obj\Debug\net5.0\PartyGameBL.genruntimeconfig.cache
