@@ -32,9 +32,9 @@ jobs:
         sonarProjectName: P2-Dotnet-Party-Games
         # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
         sonarOrganization: 210628-uta-net
-        dotnetBuildArguments: . 
+        dotnetBuildArguments: API/ 
         # Optional command arguments to 'dotnet test'
-        dotnetTestArguments: . --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        dotnetTestArguments: API/ --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         # Optional extra command arguments the the SonarScanner 'begin' command
         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" 
       # authenticating the connection to sonar cloud
