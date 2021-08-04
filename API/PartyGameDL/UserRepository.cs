@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PartyGameModels;
@@ -16,34 +17,37 @@ namespace PartyGameDL
             _context = p_context;
         }
         //adds a user
-        public User AddUser(User p_user)
+        public async Task<User> AddUserAsync(User p_user)
         {
             //adds a complete user object to the database
-            _context.Users.Add(p_user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(p_user);
+            await _context.SaveChangesAsync();
             return p_user;
         }
         //gets all users and returns it
-        public List<User> GetAllUsers()
+        public async Task <List<User>> GetAllUsersAsync()
         {
-            return _context.Users.Select(Use => Use).ToList();        
+            return await _context.Users.Select(Use => Use).ToListAsync();        
         }
-        public Blackjack GetBlackJackGameStatsByUserId(int UserId)
+        public async Task <Blackjack> GetBlackJackGameStatsByUserIdAsync(int UserId)
         {
-            return _context.Blackjacks.FirstOrDefault(user=>user.Id == UserId);
+            return await _context.Blackjacks.FirstOrDefaultAsync(blackjack=>blackjack.UserId == UserId);
         }
         //gets a completed list of all the games that the user participated in 
-        public List<ScoreHistory> GetScoreHistoryByUserId(int UserId)
+        public async Task< List<ScoreHistory>> GetScoreHistoryByUserIdAsync(int UserId)
         {
-            return (List<ScoreHistory>)(from q in _context.ScoreHistories
+
+            return await _context.ScoreHistories.Where
+                (score => score.UserId == UserId).ToListAsync();
+            /*return (List<ScoreHistory>)(from q in _context.ScoreHistories
                     where (q.UserId == UserId)
-                    select q).ToList();
+                    select q).ToList();*/
 
         }
 
-        public Snake GetSnakeGameStatsByUserId(int UserId)
+        public async Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId)
         {
-            return _context.Snakes.FirstOrDefault(user=>user.Id == UserId);
+            return await _context.Snakes.FirstOrDefaultAsync(user=>user.Id == UserId);
         }
 
     }
