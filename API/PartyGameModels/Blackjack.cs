@@ -9,6 +9,6 @@ namespace PartyGameModels
         public int Id { get; set; }
         public int UserId { get; set; }
         public int GamesId { get; set; }
-        public double WinLossRatio { get; set; }
+        public float WinLossRatio { get; set; }
     }
 }

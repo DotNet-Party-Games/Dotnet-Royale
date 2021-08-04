@@ -25,29 +25,6 @@ namespace PartyGameDL
             return (List<ScoreHistory>)(from q in _context.ScoreHistories
                     where (q.GameId == GameId)
                     select q).ToList();
-    //         can make LINQ for brevity
-    //         list of all score histories
-    //         List<ScoreHistory> AllScoreHistory = _context.ScoreHistories.Select(score => score).ToList();
-    //         list of score histories that will be populated per GameId
-    //         List<ScoreHistory> GameScoreHistory = new List<ScoreHistory>();
-    //         foreach (ScoreHistory score in AllScoreHistory)
-    //         {
-    //             If the GameId is found in the ScoreHistories table, add that ScoreHistory to our GameHistory list
-    //            if (score.GameId == GameId)
-    //            {
-    //                GameScoreHistory.Add(score);
-    //            }
-    //         }
-    //         if a score history was added to the cart return that list of relevant scores, else return null
-    //        if (GameScoreHistory.Count > 0)
-    //        {
-    //            return GameScoreHistory;
-    //        }
-    //        else
-    //        {
-    //            //can replace with some other meaningful return value
-    //            return null;
-    //        }
         }
         //returns list of top 10 scores via LINQ
         public List<ScoreHistory> Top10ScoresByGameId(int GameId)

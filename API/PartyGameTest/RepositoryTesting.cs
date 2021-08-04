@@ -11,10 +11,10 @@ using Xunit;
 
 namespace PartyGameTest
 {
-    public class UserRepositoryTesting
+    public class RepositoryTesting
     {
         private readonly DbContextOptions<PartyGamesDBContext> _options;
-        public UserRepositoryTesting()
+        public RepositoryTesting()
         {
             //is "Filename = Test.db" necessary and where is it pointing?
             _options = new DbContextOptionsBuilder<PartyGamesDBContext>().UseSqlite("Filename = Test.db").Options;
@@ -32,6 +32,87 @@ namespace PartyGameTest
                 Assert.Equal(2, numOfUsers);
             }
         }
+        [Fact]
+        public void GetAllGamesShouldGetAllGames()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IGameRepository repo = new GameRepository(context);
+                List <Games> allGames = repo.GetAllGames();
+                int numOfGames = allGames.Count;
+                Assert.Equal(2, numOfGames);
+            }
+        }
+        [Fact]
+        public void AddingUserShouldAddUser()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                User newUser = new User()
+                {
+                    Id = 0,
+                    UserName = "Test3",
+                    Password = "Pass3",
+                    IsAdmin = false,
+                };
+                repo.AddUser(newUser);
+                List<User> allUsers = repo.GetAllUsers();
+                int numOfUsers = allUsers.Count;
+                Assert.Equal(3, numOfUsers);
+            }
+        }
+        [Fact]
+        public void GetScoreHistoryByGameIdShouldGetGameScoreHistory()
+        {
+             using (var context = new PartyGamesDBContext(_options))
+            {
+                IGameRepository repo = new GameRepository(context);
+                List <ScoreHistory> snakeScoreHistory = repo.GetScoreHistoryByGameId(1);
+                List <ScoreHistory> blackJackScoreHistory = repo.GetScoreHistoryByGameId(2);
+                int numberOfBlackjackScores = blackJackScoreHistory.Count;
+                int numberOfSnakeScores = snakeScoreHistory.Count;
+                Assert.Equal(2, numberOfSnakeScores);
+                Assert.Equal(0, numberOfBlackjackScores);
+
+            }
+        }
+        [Fact]
+        public void GetScoreHistoryByUserIdShouldGetAUsersScoreHistory()
+        {
+             using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                List <ScoreHistory> UserScoreHistory = repo.GetScoreHistoryByUserId(1);
+                int numberOfUserScores = UserScoreHistory.Count;
+                Assert.Equal(1, numberOfUserScores);
+
+            }
+        }
+        [Fact]
+        public void GetBlackjackGameStatsByUserIdShouldGetAUsersBlackjackStats()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                Blackjack UserScoreHistory = repo.GetBlackJackGameStatsByUserId(1);
+                float UserWinLoss = UserScoreHistory.WinLossRatio;
+                Assert.Equal(0.80f, UserWinLoss);
+            }
+        }
+        [Fact]
+        public void GetSnakeGameStatsByUserIdShouldGetAUsersSnakeStats()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                Snake UserScoreHistory = repo.GetSnakeGameStatsByUserId(1);
+                double UserHighScore = UserScoreHistory.HighScore;
+                double UserAvgScore = UserScoreHistory.AvgScore;
+                Assert.Equal(20, UserHighScore);
+                Assert.Equal(15, UserAvgScore);
+            }
+        } 
         private void Seed()
         {
             using (var context = new PartyGamesDBContext(_options))
@@ -93,14 +174,14 @@ namespace PartyGameTest
                         Id = 1,
                         UserId = 1,
                         GamesId = 2,
-                        WinLossRatio = 0.80,
+                        WinLossRatio = 0.80f,
                     },
                     new Blackjack
                     {
                         Id = 2,
                         UserId = 2,
                         GamesId = 2,
-                        WinLossRatio = 1.55,
+                        WinLossRatio = 1.55f,
                     }
                 );
                 context.ScoreHistories.AddRange(
@@ -119,6 +200,7 @@ namespace PartyGameTest
                         Score = 1600,
                     }
                 );
+                context.SaveChanges();
             }
         }
     }
