@@ -22,29 +22,29 @@ namespace PartyGameTest
         }
 
         [Fact]
-        public void GetAllUsersShouldGetAllUsers()
+        public async void GetAllUsersShouldGetAllUsers()
         {
             using (var context = new PartyGamesDBContext(_options))
             {
                 IUserRepository repo = new UserRepository(context);
-                List <User> allUsers = repo.GetAllUsers();
+                List <User> allUsers = await repo .GetAllUsersAsync();
                 int numOfUsers = allUsers.Count;
                 Assert.Equal(2, numOfUsers);
             }
         }
         [Fact]
-        public void GetAllGamesShouldGetAllGames()
+        public async void GetAllGamesShouldGetAllGames()
         {
             using (var context = new PartyGamesDBContext(_options))
             {
                 IGameRepository repo = new GameRepository(context);
-                List <Games> allGames = repo.GetAllGames();
+                List <Games> allGames = await repo .GetAllGamesAsync();
                 int numOfGames = allGames.Count;
                 Assert.Equal(2, numOfGames);
             }
         }
         [Fact]
-        public void AddingUserShouldAddUser()
+        public async void AddingUserShouldAddUser()
         {
             using (var context = new PartyGamesDBContext(_options))
             {
@@ -56,20 +56,20 @@ namespace PartyGameTest
                     Password = "Pass3",
                     IsAdmin = false,
                 };
-                repo.AddUser(newUser);
-                List<User> allUsers = repo.GetAllUsers();
+                await repo.AddUserAsync(newUser);
+                List<User> allUsers = await repo.GetAllUsersAsync();
                 int numOfUsers = allUsers.Count;
                 Assert.Equal(3, numOfUsers);
             }
         }
         [Fact]
-        public void GetScoreHistoryByGameIdShouldGetGameScoreHistory()
+        public async void GetScoreHistoryByGameIdShouldGetGameScoreHistory()
         {
              using (var context = new PartyGamesDBContext(_options))
             {
                 IGameRepository repo = new GameRepository(context);
-                List <ScoreHistory> snakeScoreHistory = repo.GetScoreHistoryByGameId(1);
-                List <ScoreHistory> blackJackScoreHistory = repo.GetScoreHistoryByGameId(2);
+                List <ScoreHistory> snakeScoreHistory = await repo .GetScoreHistoryByGameIdAsync(1);
+                List <ScoreHistory> blackJackScoreHistory = await repo.GetScoreHistoryByGameIdAsync(2);
                 int numberOfBlackjackScores = blackJackScoreHistory.Count;
                 int numberOfSnakeScores = snakeScoreHistory.Count;
                 Assert.Equal(2, numberOfSnakeScores);
@@ -78,35 +78,35 @@ namespace PartyGameTest
             }
         }
         [Fact]
-        public void GetScoreHistoryByUserIdShouldGetAUsersScoreHistory()
+        public async void GetScoreHistoryByUserIdShouldGetAUsersScoreHistory()
         {
              using (var context = new PartyGamesDBContext(_options))
             {
                 IUserRepository repo = new UserRepository(context);
-                List <ScoreHistory> UserScoreHistory = repo.GetScoreHistoryByUserId(1);
+                List <ScoreHistory> UserScoreHistory = await repo.GetScoreHistoryByUserIdAsync(1);
                 int numberOfUserScores = UserScoreHistory.Count;
                 Assert.Equal(1, numberOfUserScores);
 
             }
         }
         [Fact]
-        public void GetBlackjackGameStatsByUserIdShouldGetAUsersBlackjackStats()
+        public async void GetBlackjackGameStatsByUserIdShouldGetAUsersBlackjackStats()
         {
             using (var context = new PartyGamesDBContext(_options))
             {
                 IUserRepository repo = new UserRepository(context);
-                Blackjack UserScoreHistory = repo.GetBlackJackGameStatsByUserId(1);
+                var UserScoreHistory = await repo.GetBlackJackGameStatsByUserIdAsync(1);
                 float UserWinLoss = UserScoreHistory.WinLossRatio;
                 Assert.Equal(0.80f, UserWinLoss);
             }
         }
         [Fact]
-        public void GetSnakeGameStatsByUserIdShouldGetAUsersSnakeStats()
+        public async void GetSnakeGameStatsByUserIdShouldGetAUsersSnakeStats()
         {
             using (var context = new PartyGamesDBContext(_options))
             {
                 IUserRepository repo = new UserRepository(context);
-                Snake UserScoreHistory = repo.GetSnakeGameStatsByUserId(1);
+                Snake UserScoreHistory = await repo .GetSnakeGameStatsByUserIdAsync(1);
                 double UserHighScore = UserScoreHistory.HighScore;
                 double UserAvgScore = UserScoreHistory.AvgScore;
                 Assert.Equal(20, UserHighScore);
@@ -188,14 +188,14 @@ namespace PartyGameTest
                     new ScoreHistory
                     {
                         Id = 1,
-                        GameId = 1,
+                        GamesId = 1,
                         UserId = 1,
                         Score = 1500,
                     },
                     new ScoreHistory
                     {
                         Id = 2,
-                        GameId = 1,
+                        GamesId = 1,
                         UserId = 2,
                         Score = 1600,
                     }

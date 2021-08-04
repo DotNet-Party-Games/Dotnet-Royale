@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PartyGameBL;
 using PartyGameDL;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace PartyGameWebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PartyGameWebAPI", Version = "v1" });
             });
+
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserBL, UserBL>();
+            services.AddScoped<IGameBL, GameBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

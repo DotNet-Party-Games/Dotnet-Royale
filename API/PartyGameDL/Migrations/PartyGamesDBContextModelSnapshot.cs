@@ -32,8 +32,8 @@ namespace PartyGameDL.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<double>("WinLossRatio")
-                        .HasColumnType("float");
+                    b.Property<float>("WinLossRatio")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -70,10 +70,7 @@ namespace PartyGameDL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GamesId")
+                    b.Property<int>("GamesId")
                         .HasColumnType("int");
 
                     b.Property<double>("Score")
@@ -163,7 +160,9 @@ namespace PartyGameDL.Migrations
                 {
                     b.HasOne("PartyGameModels.Games", null)
                         .WithMany("GameScoreHistories")
-                        .HasForeignKey("GamesId");
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PartyGameModels.User", null)
                         .WithMany("UserScoreHistories")
