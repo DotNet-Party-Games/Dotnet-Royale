@@ -19,7 +19,27 @@ namespace PartyGameTest
             _options = new DbContextOptionsBuilder<PartyGamesDBContext>().UseSqlite("Filename = PartyGameTest.db").Options;
             this.Seed();
         }
+        [Fact]
+        public void AddCustomerShouldAddCustomer()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                //arrange
+                IUserRepository repo = new UserRepository(context);
+                User newUser = new User()
+                {
+                    Id = 3,
+                    UserName = "UserName3",
+                    Password = "Password3",
+                    IsAdmin = false,
+                };
+                User FindUser = new User();
+                repo.AddUser(newUser);
+                //act (need to add "GetUser" functionality)
+                
 
+            }
+        }
         private void Seed()
         {
             using (var context = new PartyGamesDBContext(_options))
