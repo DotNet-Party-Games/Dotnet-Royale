@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PartyGameModels;
-
+using System.Threading.Tasks;
 namespace PartyGameDL
 {
     public class GameRepository : IGameRepository
@@ -15,24 +15,27 @@ namespace PartyGameDL
         {
             _context = p_context;
         }
-        public List<Games> GetAllGames()
+        public async Task<List<Games>> GetAllGamesAsync()
         {
-            return _context.Games.Select(gam =>gam).ToList();
+            return await _context.Games.Select(gam =>gam).ToListAsync();
         }
         //returns list of score histories for a given game
-        public List<ScoreHistory> GetScoreHistoryByGameId(int GameId)
+        public async Task<List<ScoreHistory>> GetScoreHistoryByGameIdAsync(int GameId)
         {
-            return (List<ScoreHistory>)(from q in _context.ScoreHistories
-                    where (q.GameId == GameId)
-                    select q).ToList();
+            return await _context.ScoreHistories.Where(score => score.GamesId == GameId).ToListAsync();
+            
         }
         //returns list of top 10 scores via LINQ
-        public List<ScoreHistory> Top10ScoresByGameId(int GameId)
+        public async Task<List<ScoreHistory>> Top10ScoresByGameIdAsync(int GameId)
         {
-            return (List<ScoreHistory>)(from q in _context.ScoreHistories
-                    where (q.GameId == GameId)
-                    orderby q.Score descending
-                    select q).Take(10);
+            return await _context.ScoreHistories.Where(score => score.GamesId == GameId)
+                .OrderByDescending(score => score.Score )
+                .Take(10)
+                .ToListAsync();
+            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
+                     where (q.GameId == GameId)
+                     orderby q.Score descending
+                     select q).Take(10);*/
         }
     }
 }

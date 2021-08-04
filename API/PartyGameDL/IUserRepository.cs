@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PartyGameModels;
 namespace PartyGameDL
 {
     public interface IUserRepository
     {
-        List<ScoreHistory> GetScoreHistoryByUserId(int UserId);
-        Snake GetSnakeGameStatsByUserId(int UserId);
-        Blackjack GetBlackJackGameStatsByUserId(int UserId);
+        Task<List<ScoreHistory>> GetScoreHistoryByUserIdAsync(int UserId);
+        Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId);
+        Task<Blackjack> GetBlackJackGameStatsByUserIdAsync(int UserId);
 
-        List<User> GetAllUsers();
-        User AddUser(User p_user);
+        Task<List<User>>GetAllUsersAsync();
+        Task<User> AddUserAsync(User p_user);
     }
 }

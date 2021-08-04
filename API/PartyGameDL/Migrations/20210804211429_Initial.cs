@@ -44,7 +44,7 @@ namespace PartyGameDL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     GamesId = table.Column<int>(type: "int", nullable: false),
-                    WinLossRatio = table.Column<double>(type: "float", nullable: false)
+                    WinLossRatio = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,11 +69,10 @@ namespace PartyGameDL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GameId = table.Column<int>(type: "int", nullable: false),
+                    GamesId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Score = table.Column<double>(type: "float", nullable: false),
-                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GamesId = table.Column<int>(type: "int", nullable: true)
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,7 +82,7 @@ namespace PartyGameDL.Migrations
                         column: x => x.GamesId,
                         principalTable: "Games",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ScoreHistories_Users_UserId",
                         column: x => x.UserId,
