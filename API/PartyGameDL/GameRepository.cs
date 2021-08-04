@@ -10,7 +10,7 @@ namespace PartyGameDL
 {
     public class GameRepository : IGameRepository
     {
-        private PartyGamesDBContext _context;
+        private readonly PartyGamesDBContext _context;
         public GameRepository(PartyGamesDBContext p_context)
         {
             _context = p_context;

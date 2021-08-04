@@ -10,7 +10,7 @@ namespace PartyGameDL
 {
     public class UserRepository : IUserRepository
     {
-        private PartyGamesDBContext _context;
+        private readonly PartyGamesDBContext _context;
         public UserRepository(PartyGamesDBContext p_context)
         {
             _context = p_context;
