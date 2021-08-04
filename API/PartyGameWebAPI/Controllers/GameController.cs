@@ -25,13 +25,13 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _gameBL.GetAllGamesAsync());
         }
 
-        [HttpGet("get/{p_gameId}")]
+        [HttpGet("getScoreHistoryByGameId/{p_gameId}")]
         public async Task<IActionResult> GetScoreHistoryByGameId(int p_gameId)
         {
             return Ok(await _gameBL.GetScoreHistoryByGameIdAsync(p_gameId));
         }
 
-        [HttpGet("get/{p_gameId}")]
+        [HttpGet("getTop10ScoresByGameId/{p_gameId}")]
         public async Task<IActionResult> GetTop10ScoresByGameId (int p_gameId)
         {
             return Ok(await _gameBL.Top10ScoresByGameIdAsync(p_gameId));
