@@ -32,64 +32,73 @@ namespace PartyGameDL
         //We may need to change this to List<Blackjack> (how it originally was). I am not sure if the Blackjacks table is a 1:1 or a 1:many relationship with users (Users:BlackJack)
         public Blackjack GetBlackJackGameStatsByUserId(int UserId)
         {
-            //list of all blackjack score histories (grouped by user?)
-            List<Blackjack> BlackJackScoreHistories = _context.Blackjacks.Select(BJ => BJ).ToList();
-            //loop thorugh the score histories and find the UserID
-            foreach (Blackjack user in BlackJackScoreHistories)
-            {
-                //If the UserID is found, return that Blackjack Entry for that User (houses score history (WinLossRatio))
-                if (UserId == user.UserId)
-                {
-                    return user;
-                }
-            }
-            //if the userId doesnt match, return null (no data present) 
-            //maybe return some other meaningful message?
-            return null;
+            return (Blackjack)(from q in _context.Blackjacks
+                    where (q.UserId == UserId)
+                    select q);
+            // //list of all blackjack score histories (grouped by user?)
+            // List<Blackjack> BlackJackScoreHistories = _context.Blackjacks.Select(BJ => BJ).ToList();
+            // //loop thorugh the score histories and find the UserID
+            // foreach (Blackjack user in BlackJackScoreHistories)
+            // {
+            //     //If the UserID is found, return that Blackjack Entry for that User (houses score history (WinLossRatio))
+            //     if (UserId == user.UserId)
+            //     {
+            //         return user;
+            //     }
+            // }
+            // //if the userId doesnt match, return null (no data present) 
+            // //maybe return some other meaningful message?
+            // return null;
         }
         //gets a completed list of all the games that the user participated in 
         public List<ScoreHistory> GetScoreHistoryByUserId(int UserId)
         {
-            //list of all rows in "ScoreHistories"
-            List<ScoreHistory> AllGamesScores = _context.ScoreHistories.Select(Score => Score).ToList();
-            //list of UserScores by UserId in param (will be returned)
-            List<ScoreHistory> UserScoreHistory = new List<ScoreHistory>();
-            foreach (ScoreHistory score in AllGamesScores)
-            {
-                //If user ID is found in database, add row to "UserScoreHistory"
-                if (score.UserId == UserId)
-                {
-                    UserScoreHistory.Add(score);
-                }
-            }
-            //If user had atleast one score, return, else return null
-            if (UserScoreHistory.Count > 0)
-            {
-                return UserScoreHistory;
-            }
-            else
-            {
-                //can return something else that is meaningful
-                return null;
-            }
+            return (List<ScoreHistory>)(from q in _context.ScoreHistories
+                    where (q.UserId == UserId)
+                    select q).ToList();
+            // //list of all rows in "ScoreHistories"
+            // List<ScoreHistory> AllGamesScores = _context.ScoreHistories.Select(Score => Score).ToList();
+            // //list of UserScores by UserId in param (will be returned)
+            // List<ScoreHistory> UserScoreHistory = new List<ScoreHistory>();
+            // foreach (ScoreHistory score in AllGamesScores)
+            // {
+            //     //If user ID is found in database, add row to "UserScoreHistory"
+            //     if (score.UserId == UserId)
+            //     {
+            //         UserScoreHistory.Add(score);
+            //     }
+            // }
+            // //If user had atleast one score, return, else return null
+            // if (UserScoreHistory.Count > 0)
+            // {
+            //     return UserScoreHistory;
+            // }
+            // else
+            // {
+            //     //can return something else that is meaningful
+            //     return null;
+            // }
         }
 
         public Snake GetSnakeGameStatsByUserId(int UserId)
         {
-             //list of all snake score histories (grouped by user?)
-            List<Snake> SnakeScoreHistories = _context.Snakes.Select(BJ => BJ).ToList();
-            //loop thorugh the score histories and find the UserID
-            foreach (Snake user in SnakeScoreHistories)
-            {
-                //If the UserID is found, return that Blackjack Entry for that User (houses score history (WinLossRatio))
-                if (UserId == user.UserId)
-                {
-                    return user;
-                }
-            }
-            //if the userId doesnt match, return null (no data present) 
-            //maybe return some other meaningful message?
-            return null; 
+            return (Snake)(from q in _context.Snakes
+                    where (q.UserId == UserId)
+                    select q);
+            //  //list of all snake score histories (grouped by user?)
+            // List<Snake> SnakeScoreHistories = _context.Snakes.Select(BJ => BJ).ToList();
+            // //loop thorugh the score histories and find the UserID
+            // foreach (Snake user in SnakeScoreHistories)
+            // {
+            //     //If the UserID is found, return that Blackjack Entry for that User (houses score history (WinLossRatio))
+            //     if (UserId == user.UserId)
+            //     {
+            //         return user;
+            //     }
+            // }
+            // //if the userId doesnt match, return null (no data present) 
+            // //maybe return some other meaningful message?
+            // return null; 
         }
     }
 }
