@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using PartyGameDL;
 using PartyGameModels;
@@ -15,29 +16,20 @@ namespace PartyGameTest
         private readonly DbContextOptions<PartyGamesDBContext> _options;
         public UserRepositoryTesting()
         {
-            //is "Filename = PartyGameTest.db" necessary and where is it pointing?
-            _options = new DbContextOptionsBuilder<PartyGamesDBContext>().UseSqlite("Filename = PartyGameTest.db").Options;
+            //is "Filename = Test.db" necessary and where is it pointing?
+            _options = new DbContextOptionsBuilder<PartyGamesDBContext>().UseSqlite("Filename = Test.db").Options;
             this.Seed();
         }
+
         [Fact]
-        public void AddCustomerShouldAddCustomer()
+        public void GetAllUsersShouldGetAllUsers()
         {
             using (var context = new PartyGamesDBContext(_options))
             {
-                //arrange
                 IUserRepository repo = new UserRepository(context);
-                User newUser = new User()
-                {
-                    Id = 3,
-                    UserName = "UserName3",
-                    Password = "Password3",
-                    IsAdmin = false,
-                };
-                User FindUser = new User();
-                repo.AddUser(newUser);
-                //act (need to add "GetUser" functionality)
-                
-
+                List <User> allUsers = repo.GetAllUsers();
+                int numOfUsers = allUsers.Count;
+                Assert.Equal(2, numOfUsers);
             }
         }
         private void Seed()
@@ -45,7 +37,7 @@ namespace PartyGameTest
             using (var context = new PartyGamesDBContext(_options))
             {
                 context.Database.EnsureDeleted();
-                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
                 
                 context.Games.AddRange(
                     new Games

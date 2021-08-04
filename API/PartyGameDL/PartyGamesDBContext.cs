@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using PartyGameModels;
 namespace PartyGameDL
 {
-    public class PartyGamesDBContext : Microsoft.EntityFrameworkCore.DbContext
+    public class PartyGamesDBContext : DbContext
     {
         public DbSet<Games> Games { get; set; }
         public DbSet<Blackjack> Blackjacks { get; set; }
