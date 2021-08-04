@@ -16,7 +16,7 @@ namespace PartyGameTest
         public UserRepositoryTesting()
         {
             //is "Filename = PartyGameTest.db" necessary and where is it pointing?
-            _options = new DbContextOptionsBuilder<PartyGamesDBContext>().UseSqllite("Filename = PartyGameTest.db").Options;
+            _options = new DbContextOptionsBuilder<PartyGamesDBContext>().UseSqlite("Filename = PartyGameTest.db").Options;
         }
     }
 }
