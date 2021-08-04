@@ -1,0 +1,17 @@
+<button class="btn btn-success" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+
+<div class="container" id="id01">
+  <form class="form-group" [formGroup]="userGroup">
+    <label>Username</label>
+    <input type="text" placeholder="Enter Username" class="form-control" formControlName="username" required>
+
+    <label>Password</label>
+    <input type="password" placeholder="Enter Password" class="form-control" formControlName="password" required>
+
+    <button type="submit" (click)="getUser(userGroup)">Login</button>
+  </form>
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" (click)="cancel()">Cancel</button>
+    <span class="psw">Forgot <a href="#">password?</a></span>
+  </div>
+</div>
