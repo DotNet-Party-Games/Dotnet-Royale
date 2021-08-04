@@ -89,7 +89,7 @@ namespace PartyGameDL
             }
             //if the userId doesnt match, return null (no data present) 
             //maybe return some other meaningful message?
-            return null;
+            return null; 
         }
     }
 }
