@@ -29,7 +29,7 @@ namespace PartyGameDL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,12 +55,6 @@ namespace PartyGameDL.Migrations
                         principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Blackjacks_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,12 +75,6 @@ namespace PartyGameDL.Migrations
                         name: "FK_ScoreHistories_Games_GamesId",
                         column: x => x.GamesId,
                         principalTable: "Games",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ScoreHistories_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -111,12 +99,6 @@ namespace PartyGameDL.Migrations
                         principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Snakes_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -125,31 +107,14 @@ namespace PartyGameDL.Migrations
                 column: "GamesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Blackjacks_UserId",
-                table: "Blackjacks",
-                column: "UserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ScoreHistories_GamesId",
                 table: "ScoreHistories",
                 column: "GamesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScoreHistories_UserId",
-                table: "ScoreHistories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Snakes_GamesId",
                 table: "Snakes",
                 column: "GamesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Snakes_UserId",
-                table: "Snakes",
-                column: "UserId",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -164,10 +129,10 @@ namespace PartyGameDL.Migrations
                 name: "Snakes");
 
             migrationBuilder.DropTable(
-                name: "Games");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Games");
         }
     }
 }

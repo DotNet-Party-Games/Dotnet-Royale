@@ -24,8 +24,7 @@ export class LoginComponent implements OnInit {
     let temp: IUser =
     {
       UserName: "",
-      Password: "",
-      IsAdmin: false
+      Password: ""
     }
     this.currentUser = temp;
   }
