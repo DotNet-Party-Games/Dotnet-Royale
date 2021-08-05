@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { PartygameService } from '../services/partygame.service';
 import { IUser } from '../services/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,21 +11,18 @@ import { IUser } from '../services/user';
 })
 export class LoginComponent implements OnInit {
 
-  // modal:any = document.getElementById('id01');
-
   currentUser: IUser;
 
-  userGroup = new FormGroup({
+  loginUserGroup = new FormGroup({
     UserName: new FormControl(),
     Password: new FormControl()
   });
 
-  constructor(private partyGameApi: PartygameService) { }
+  constructor(private partyGameApi: PartygameService,private router: Router) { }
 
   ngOnInit(): void {
     let temp: IUser =
     {
-      Id: 0,
       UserName: "",
       Password: "",
       IsAdmin: false
@@ -32,23 +30,22 @@ export class LoginComponent implements OnInit {
     this.currentUser = temp;
   }
 
-  getUser(userGroup: FormGroup)
-  {
-    if(userGroup.get("username").value && userGroup.get("password").value)
-    {
-      this.partyGameApi.getUserByUserNameAndPassword(userGroup.get("username").value, userGroup.get("password").value).subscribe(
-        (response) => {
-          this.currentUser.Id = response.Id;
-          this.currentUser.UserName = response.UserName;
-          this.currentUser.Password = response.Password;
-          this.currentUser.IsAdmin = response.IsAdmin;
-        }
-      )
+  
+  onSubmit(loginUserGroup:FormGroup) {
+    const loginObserver ={
+      next:x => console.log('user logged in'),
+      error: err => console.log(err)
     }
+    this.partyGameApi.login(loginUserGroup.value).subscribe(loginObserver);
+    this.redirect('layout');
   }
-
-  cancel()
+  //redirect to layout page after login
+  redirect(page:string) {
+    this.router.navigate([page]);
+  }
+  //cancel login
+  cancel(page:string)
   {
-    document.getElementById('id01').style.display='none'
+    window.location.href = page;
   }
 }
