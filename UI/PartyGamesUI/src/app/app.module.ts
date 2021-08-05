@@ -9,6 +9,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { LoginComponent } from './login/login.component';
 import { LivechatComponent } from './livechat/livechat.component';
+import { GamelistComponent } from './gamelist/gamelist.component';
+import { UserlistComponent } from './userlist/userlist.component';
 import { RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 
@@ -19,6 +21,8 @@ import { RegisterComponent } from './register/register.component';
     SidenavComponent,
     LoginComponent,
     LivechatComponent,
+    GamelistComponent,
+    UserlistComponent,
     RegisterComponent
   ],
   imports: [

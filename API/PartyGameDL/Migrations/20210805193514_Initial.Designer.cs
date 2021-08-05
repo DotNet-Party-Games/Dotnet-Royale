@@ -10,7 +10,7 @@ using PartyGameDL;
 namespace PartyGameDL.Migrations
 {
     [DbContext(typeof(PartyGamesDBContext))]
-    [Migration("20210804211429_Initial")]
+    [Migration("20210805193514_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,6 @@ namespace PartyGameDL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GamesId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Blackjacks");
                 });
@@ -88,8 +85,6 @@ namespace PartyGameDL.Migrations
 
                     b.HasIndex("GamesId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("ScoreHistories");
                 });
 
@@ -115,9 +110,6 @@ namespace PartyGameDL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GamesId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Snakes");
                 });
@@ -150,12 +142,6 @@ namespace PartyGameDL.Migrations
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PartyGameModels.User", null)
-                        .WithOne("BjStats")
-                        .HasForeignKey("PartyGameModels.Blackjack", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PartyGameModels.ScoreHistory", b =>
@@ -163,12 +149,6 @@ namespace PartyGameDL.Migrations
                     b.HasOne("PartyGameModels.Games", null)
                         .WithMany("GameScoreHistories")
                         .HasForeignKey("GamesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PartyGameModels.User", null)
-                        .WithMany("UserScoreHistories")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -180,12 +160,6 @@ namespace PartyGameDL.Migrations
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PartyGameModels.User", null)
-                        .WithOne("SnakeStats")
-                        .HasForeignKey("PartyGameModels.Snake", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PartyGameModels.Games", b =>
@@ -195,15 +169,6 @@ namespace PartyGameDL.Migrations
                     b.Navigation("GameScoreHistories");
 
                     b.Navigation("Snakes");
-                });
-
-            modelBuilder.Entity("PartyGameModels.User", b =>
-                {
-                    b.Navigation("BjStats");
-
-                    b.Navigation("SnakeStats");
-
-                    b.Navigation("UserScoreHistories");
                 });
 #pragma warning restore 612, 618
         }

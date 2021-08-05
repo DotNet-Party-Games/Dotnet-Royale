@@ -34,13 +34,24 @@ namespace PartyGameTest
         }
 
         [Fact]
-        public async void GetUserIdFromUserNameShouldGetUserId()
+        public async void GetUserIdFromUserNameAndPasswordShouldGetUserId()
         { 
             using (var context = new PartyGamesDBContext(_options))
             {
                 IUserRepository repo = new UserRepository(context);
-                int UserId = await repo.GetUserIdFromUserNameAsync("TestUserName2");
+                int UserId = await repo.GetUserIdFromUserNameAndPasswordAsync("TestUserName2", "TestPassword2");
                 Assert.Equal(2, UserId);
+            }
+        }
+
+        [Fact]
+        public async void GetUserFromUserNameAndPasswordShouldGetUser()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                User User1 = await repo.GetUserFromUserNameAndPasswordAsync("TestUserName2", "TestPassword2");
+                Assert.NotNull(User1);
             }
         }
 
@@ -66,7 +77,6 @@ namespace PartyGameTest
                     Id = 0,
                     UserName = "Test3",
                     Password = "Pass3",
-                    IsAdmin = false,
                 };
                 await repo.AddUserAsync(newUser);
                 List<User> allUsers = await repo.GetAllUsersAsync();
@@ -152,14 +162,12 @@ namespace PartyGameTest
                         Id = 1,
                         UserName = "TestUserName1",
                         Password = "TestPassword1",
-                        IsAdmin = true,
                     },
                     new User
                     {
                         Id = 2,
                         UserName = "TestUserName2",
                         Password = "TestPassword2",
-                        IsAdmin = false,
                     }
                 );
                 context.Snakes.AddRange(
