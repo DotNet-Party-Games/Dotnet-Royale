@@ -57,7 +57,8 @@ namespace PartyGameWebAPI.Controllers
         [HttpPost("getUserFromUserNameAndPassword")]
         public async Task<IActionResult> VerifyUserNameAndPassword([FromBody] User p_user)
         {
-            return Accepted(await _userBL.GetUserFromUserNameAndPasswordAsync(p_user.UserName, p_user.Password));
+            User verifiedUser= (await _userBL.GetUserFromUserNameAndPasswordAsync(p_user.UserName, p_user.Password));
+            return Created("api/User/getUserFromUserNameAndPassword", verifiedUser);
         }
 
         [HttpGet("getUserFromUserNameAndPassword")]
