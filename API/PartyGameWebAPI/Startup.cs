@@ -40,6 +40,18 @@ namespace PartyGameWebAPI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserBL, UserBL>();
             services.AddScoped<IGameBL, GameBL>();
+            //configuring Cors in our web api to accept the local address in our angular project
+            services.AddCors(
+                (builder) => {
+                    builder.AddDefaultPolicy((policy) =>
+                        {
+                            policy.WithOrigins("http://127.0.0.1:4200","http://127.0.0.1:5000", "https://p2partygames.azurewebsites.net/") //this is where you state the address that you want to trust
+                                .AllowAnyHeader() //allows any header
+                                .AllowAnyMethod(); //allows any http verb method
+                        }
+                    );
+                }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
