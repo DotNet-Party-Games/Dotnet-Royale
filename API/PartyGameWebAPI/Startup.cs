@@ -45,7 +45,7 @@ namespace PartyGameWebAPI
                 (builder) => {
                     builder.AddDefaultPolicy((policy) =>
                         {
-                            policy.WithOrigins("http://127.0.0.1:4200", "https://p2partygames.azurewebsites.net/") //this is where you state the address that you want to trust
+                            policy.WithOrigins("http://127.0.0.1:4200","http://127.0.0.1:5000", "https://p2partygames.azurewebsites.net/") //this is where you state the address that you want to trust
                                 .AllowAnyHeader() //allows any header
                                 .AllowAnyMethod(); //allows any http verb method
                         }
