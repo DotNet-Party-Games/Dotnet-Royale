@@ -63,5 +63,10 @@ namespace PartyGameDL
                                                                        user.Password == Password);
             
         }
+        public async Task<User> GetUserFromUserIdAsync(int userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(user => user.Id == userId);
+
+        }
     }
 }

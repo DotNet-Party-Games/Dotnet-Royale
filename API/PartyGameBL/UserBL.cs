@@ -48,5 +48,10 @@ namespace PartyGameBL
         {
             return await _repo.GetUserFromUserNameAndPasswordAsync(UserName, Password);
         }
+
+        public async Task<User> GetUserFromUserIdAsync(int UserId)
+        {
+            return await _repo.GetUserFromUserIdAsync(UserId);
+        }
     }
 }
