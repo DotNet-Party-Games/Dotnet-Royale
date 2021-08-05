@@ -11,6 +11,7 @@ namespace PartyGameDL
         Task<Blackjack> GetBlackJackGameStatsByUserIdAsync(int UserId);
         Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName,string Password);
         Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password);
+        Task<User> GetUserFromUserIdAsync(int userId);
         Task<List<User>>GetAllUsersAsync();
         Task<User> AddUserAsync(User p_user);
     }
