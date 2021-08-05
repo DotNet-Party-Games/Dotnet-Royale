@@ -13,5 +13,6 @@ namespace PartyGameBL
         Task<Blackjack>GetBlackJackGameStatsByUserIdAsync(int UserId);
         Task<User>AddUserAsync(User p_user);
         Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId);
+        Task<int> GetUserIdFromUserNameAsync(string UserName);
     }
 }
