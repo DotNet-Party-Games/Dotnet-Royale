@@ -22,7 +22,7 @@
     <br>
 
     <button  class="btn btn-primary col-5" [disabled]="loginUserGroup.invalid"
-      type="submit" (click)="onSubmit(loginUserGroup)">Login <i class="fas fa-sign-in-alt"></i></button>
+      type="button" (click)="onSubmit(loginUserGroup)">Login <i class="fas fa-sign-in-alt"></i></button>
     <button  class=" btn btn-danger col-5 float-right" type =" button" (click)="cancel('/index.html')" >Cancel <i class="fas fa-ban"></i></button>   
   </form>
   <a href="#">Forgot password?</a>
