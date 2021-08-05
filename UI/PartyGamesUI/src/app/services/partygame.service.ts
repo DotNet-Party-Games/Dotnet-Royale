@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { IUser } from './user';
-import {map} from 'rxjs/operators';
+import { IGame } from './game';
+import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
@@ -55,5 +56,13 @@ export class PartygameService {
     return this.http.get<IUser>(this.url +"login"+{name,password});
   }
 
-  
+  getUsers() : Observable<IUser[]>
+  {
+    return this.http.get<IUser[]>(this.url + "User")
+  }
+
+  getGames() : Observable<IGame[]>
+  {
+    return this.http.get<IGame[]>(this.url + "Game")
+  }
 }
