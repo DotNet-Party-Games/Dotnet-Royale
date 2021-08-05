@@ -11,7 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { LivechatComponent } from './livechat/livechat.component';
 import { GamelistComponent } from './gamelist/gamelist.component';
 import { UserlistComponent } from './userlist/userlist.component';
-
+import { RouterModule } from '@angular/router';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -21,15 +22,22 @@ import { UserlistComponent } from './userlist/userlist.component';
     LoginComponent,
     LivechatComponent,
     GamelistComponent,
-    UserlistComponent
+    UserlistComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot([
+      {path: "Login", component: LoginComponent},
+      {path: "Register", component: RegisterComponent},
+      { path: 'layout', component: LayoutComponent },
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

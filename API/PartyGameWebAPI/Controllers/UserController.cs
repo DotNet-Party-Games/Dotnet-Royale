@@ -43,6 +43,12 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _userBL.GetBlackJackGameStatsByUserIdAsync(p_userId));
         }
 
+        [HttpGet("getUserIdFromUserName/{p_userName}")]
+        public async Task<IActionResult> GetUserIdFromUserName(string p_userName)
+        {
+            return Ok(await _userBL.GetUserIdFromUserNameAsync(p_userName));
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> AddUser([FromBody] User p_user)
         {

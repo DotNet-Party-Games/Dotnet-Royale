@@ -1,17 +1,30 @@
-<button class="btn btn-success" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+<div class="row" id="id01">
+  <div class="col-md-5 offset-md-3 mt-4 " id="loginContainer" >
+    <h3>Login User</h3>
+  <form  class="form-group" [formGroup]="loginUserGroup">
 
-<div class="container" id="id01">
-  <form class="form-group" [formGroup]="userGroup">
-    <label>Username</label>
-    <input type="text" placeholder="Enter Username" class="form-control" formControlName="username" required>
+    <label for ="loginUsername">Username</label>
+    <input type="text"  
+      name="username"
+      required
+      class="form-control"
+      id="loginUsername"
+      formControlName = "UserName">
 
-    <label>Password</label>
-    <input type="password" placeholder="Enter Password" class="form-control" formControlName="password" required>
+    <label for="loginPassword">Password</label>
+    <input type="password" 
+      name="password"
+      required
+      class="form-control"
+      id="loginPassword"
+      formControlName = "Password">
 
-    <button type="submit" (click)="getUser(userGroup)">Login</button>
+    <br>
+
+    <button  class="btn btn-primary col-5" [disabled]="loginUserGroup.invalid"
+      type="submit" (click)="onSubmit(loginUserGroup)">Login <i class="fas fa-sign-in-alt"></i></button>
+    <button  class=" btn btn-danger col-5 float-right" type =" button" (click)="cancel('/index.html')" >Cancel <i class="fas fa-ban"></i></button>   
   </form>
-  <div class="container" style="background-color:#f1f1f1">
-    <button type="button" (click)="cancel()">Cancel</button>
-    <span class="psw">Forgot <a href="#">password?</a></span>
+  <a href="#">Forgot password?</a>
   </div>
 </div>

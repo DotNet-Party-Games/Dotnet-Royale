@@ -14,19 +14,16 @@ export class UserlistComponent implements OnInit {
   constructor(private partyGameApi: PartygameService) {
     this.users = [
       {
-        Id: 1,
         UserName: "User 1",
         Password: "",
         IsAdmin: false
       },
       {
-        Id: 2,
         UserName: "User 2",
         Password: "",
         IsAdmin: false
       },
       {
-        Id: 3,
         UserName: "User 3",
         Password: "",
         IsAdmin: false
