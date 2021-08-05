@@ -50,5 +50,10 @@ namespace PartyGameDL
             return await _context.Snakes.FirstOrDefaultAsync(user=>user.Id == UserId);
         }
 
+        public async Task<int> GetUserIdFromUserNameAsync(string UserName)
+        {
+            User userInput =  await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName);
+            return userInput.Id;
+        }
     }
 }

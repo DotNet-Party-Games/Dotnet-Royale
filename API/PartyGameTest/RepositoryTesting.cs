@@ -32,6 +32,18 @@ namespace PartyGameTest
                 Assert.Equal(2, numOfUsers);
             }
         }
+
+        [Fact]
+        public async void GetUserIdFromUserNameShouldGetUserId()
+        { 
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                int UserId = await repo.GetUserIdFromUserNameAsync("TestUserName2");
+                Assert.Equal(2, UserId);
+            }
+        }
+
         [Fact]
         public async void GetAllGamesShouldGetAllGames()
         {
