@@ -77,7 +77,6 @@ namespace PartyGameTest
                     Id = 0,
                     UserName = "Test3",
                     Password = "Pass3",
-                    IsAdmin = false,
                 };
                 await repo.AddUserAsync(newUser);
                 List<User> allUsers = await repo.GetAllUsersAsync();
@@ -163,14 +162,12 @@ namespace PartyGameTest
                         Id = 1,
                         UserName = "TestUserName1",
                         Password = "TestPassword1",
-                        IsAdmin = true,
                     },
                     new User
                     {
                         Id = 2,
                         UserName = "TestUserName2",
                         Password = "TestPassword2",
-                        IsAdmin = false,
                     }
                 );
                 context.Snakes.AddRange(
