@@ -40,6 +40,6 @@ jobs:
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: P2partygames
+        app-name: 'P2partygames'
         publish-profile: ${{ secrets.ANGULAR_SECRET }}
         package: ./UI/PartyGamesUI/dist/PartyGamesUI
