@@ -14,6 +14,6 @@ export class PartygameService {
 
   getUserByUserNameAndPassword(name: string, password: string) : Observable<IUser>
   {
-    return this.http.get<IUser>(this.url + name + '&' + password);
+    return this.http.get<IUser>(this.url +  name + '/' + password);
   }
 }
