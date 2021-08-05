@@ -38,5 +38,10 @@ namespace PartyGameBL
         {
             return await _repo.GetSnakeGameStatsByUserIdAsync(UserId);
         }
+
+        public async Task<int> GetUserIdFromUserNameAsync(string UserName)
+        {
+            return await _repo.GetUserIdFromUserNameAsync(UserName);
+        }
     }
 }
