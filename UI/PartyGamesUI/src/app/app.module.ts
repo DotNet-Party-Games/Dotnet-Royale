@@ -9,6 +9,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { LoginComponent } from './login/login.component';
 import { LivechatComponent } from './livechat/livechat.component';
+import { GamelistComponent } from './gamelist/gamelist.component';
+import { UserlistComponent } from './userlist/userlist.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { LivechatComponent } from './livechat/livechat.component';
     LayoutComponent,
     SidenavComponent,
     LoginComponent,
-    LivechatComponent
+    LivechatComponent,
+    GamelistComponent,
+    UserlistComponent
   ],
   imports: [
     BrowserModule,
