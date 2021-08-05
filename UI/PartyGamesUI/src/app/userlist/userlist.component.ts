@@ -16,17 +16,14 @@ export class UserlistComponent implements OnInit {
       {
         UserName: "User 1",
         Password: "",
-        IsAdmin: false
       },
       {
         UserName: "User 2",
         Password: "",
-        IsAdmin: false
       },
       {
         UserName: "User 3",
         Password: "",
-        IsAdmin: false
       }
     ]
   }
