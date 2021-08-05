@@ -43,10 +43,22 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _userBL.GetBlackJackGameStatsByUserIdAsync(p_userId));
         }
 
-        [HttpGet("getUserIdFromUserName/{p_userName}")]
-        public async Task<IActionResult> GetUserIdFromUserName(string p_userName)
+        [HttpGet("getUserIdFromUserNameAndPassword/{p_userName}/{p_password}")]
+        public async Task<IActionResult> GetUserIdFromUserNameAndPassword(string p_userName, string p_password)
         {
-            return Ok(await _userBL.GetUserIdFromUserNameAsync(p_userName));
+            return Ok(await _userBL.GetUserIdFromUserNameAndPasswordAsync(p_userName, p_password));
+        }
+
+        [HttpPost("getUserFromUserNameAndPassword/{p_userName}/{p_password}")]
+        public async Task<IActionResult> VerifyUserNameAndPassword(string p_userName, string p_password)
+        {
+            return Ok(await _userBL.GetUserFromUserNameAndPasswordAsync(p_userName, p_password));
+        }
+
+        [HttpGet("getUserFromUserNameAndPassword/{p_userName}/{p_password}")]
+        public async Task<IActionResult> GetUserFromUserNameAndPassword(string p_userName, string p_password)
+        {
+            return Ok(await _userBL.GetUserIdFromUserNameAndPasswordAsync(p_userName, p_password));
         }
 
         [HttpPost("add")]

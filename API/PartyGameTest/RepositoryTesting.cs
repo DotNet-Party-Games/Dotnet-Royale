@@ -34,13 +34,24 @@ namespace PartyGameTest
         }
 
         [Fact]
-        public async void GetUserIdFromUserNameShouldGetUserId()
+        public async void GetUserIdFromUserNameAndPasswordShouldGetUserId()
         { 
             using (var context = new PartyGamesDBContext(_options))
             {
                 IUserRepository repo = new UserRepository(context);
-                int UserId = await repo.GetUserIdFromUserNameAsync("TestUserName2");
+                int UserId = await repo.GetUserIdFromUserNameAndPasswordAsync("TestUserName2", "TestPassword2");
                 Assert.Equal(2, UserId);
+            }
+        }
+
+        [Fact]
+        public async void GetUserFromUserNameAndPasswordShouldGetUser()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                User User1 = await repo.GetUserFromUserNameAndPasswordAsync("TestUserName2", "TestPassword2");
+                Assert.NotNull(User1);
             }
         }
 
