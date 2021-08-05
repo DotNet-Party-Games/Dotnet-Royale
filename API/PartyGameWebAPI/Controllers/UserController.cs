@@ -25,19 +25,19 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _userBL.GetAllUsersAsync());
         }
 
-        [HttpGet("get/{p_userId}")]
+        [HttpGet("getScoreHistoryByUserId/{p_userId}")]
         public async Task<IActionResult> GetScoreHistoryByUserId(int p_userId)
         {
             return Ok(await _userBL.GetScoreHistoryByUserIdAsync(p_userId));
         }
-        // GET: UserController/GetSnakeGameStatsByUserId/{p_userId}
-        [HttpGet("get/{p_userId}")]
+        // GET: User/GetSnakeGameStatsByUserId/{p_userId}
+        [HttpGet("getSnakeGameStatsByUserId/{p_userId}")]
         public async Task<IActionResult> GetSnakeGameStatsByUserId(int p_userId)
         {
             return Ok(await _userBL.GetSnakeGameStatsByUserIdAsync(p_userId));
         }
 
-        [HttpGet("get/{p_userId}")]
+        [HttpGet("getBlackJackGameStatsByUserId/{p_userId}")]
         public async Task<IActionResult> GetBlackJackGameStatsByUserId(int p_userId)
         {
             return Ok(await _userBL.GetBlackJackGameStatsByUserIdAsync(p_userId));
