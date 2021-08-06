@@ -16,7 +16,6 @@ export class GamelistComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGameList();
-    console.log(this.games);
   }
 
   getGameList()
@@ -27,5 +26,6 @@ export class GamelistComponent implements OnInit {
   setGameId()
   {
     this.p_gameId = parseInt(document.getElementById("gameid").innerHTML);
+    sessionStorage.setItem('gameid', this.p_gameId.toString());
   }
 }

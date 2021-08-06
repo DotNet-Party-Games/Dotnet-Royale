@@ -1,8 +1,8 @@
 export interface IScore
 {
-  Id: number;
-  GameId: number;
-  UserId: number;
-  Score: number;
-  Time: string;
+  id: number;
+  gamesId: number;
+  userId: number;
+  score: number;
+  time: string;
 }

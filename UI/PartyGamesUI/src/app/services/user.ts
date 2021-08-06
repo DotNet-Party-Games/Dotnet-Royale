@@ -1,7 +1,8 @@
 export interface IUser
 {
-  UserName: string;
-  Password: string;
+  id:number;
+  username: string;
+  password: string;
 }
 export interface ILoggedUser{
   id:number;
