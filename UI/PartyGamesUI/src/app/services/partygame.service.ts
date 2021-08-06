@@ -25,7 +25,7 @@ export class PartygameService {
   constructor(private http: HttpClient) { }
   //login method
   login(model: FormGroup) {
-    var work = this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
+    var work = this.http.post(this.url +'user/getUserFromUserNameAndPassword', model).pipe(
       map((response: any)=>{
         this.currentUser.UserName = response.UserName;
         this.currentUser.Password =response.Password;
