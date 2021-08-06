@@ -15,7 +15,7 @@ import { RegisterComponent } from './register/register.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartygameService } from './services/partygame.service';
 import { AuthGuard } from './services/auth.guard';
-
+import { SnakeComponent } from './snake/snake.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +25,8 @@ import { AuthGuard } from './services/auth.guard';
     LivechatComponent,
     GamelistComponent,
     RegisterComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    SnakeComponent
   ],
   imports: [
     BrowserModule,

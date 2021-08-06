@@ -47,7 +47,7 @@ message:string;
           localStorage.setItem('userId',res.id.toString())
           localStorage.setItem('userName',res.password.toString())
           localStorage.setItem('userPassword',res.userName.toString())
-          this.redirect('layout');
+//          this.redirect('layout');
         }else{
           this.error="Username or password invalid"
         }
