@@ -24,7 +24,7 @@ export class PartygameService {
 
   //login method
   login(model: FormGroup):Observable<IUser> {
-    return this.http.post(this.url +'/user/getuserfromusernameandpassword/', model).pipe(
+    return this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
       map((response: any)=>{
         this.isLoggedIn = response.result.succeeded;
         this.currentUser.UserName = response.UserName;

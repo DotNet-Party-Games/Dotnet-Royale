@@ -15,5 +15,6 @@ namespace PartyGameBL
         Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId);
         Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName, string Password);
         Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password);
+        Task<User> GetUserFromUserIdAsync(int UserId);
     }
 }
