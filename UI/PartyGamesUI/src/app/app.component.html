@@ -13,14 +13,13 @@
       <div class="col-8 text-center">
         <img src="assets/images/title.png" alt="title" style="height:50px">
       </div>
-      <div class="dropdown">
-          <a class="nav-link btn btn-dark fas fa-user" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" asp-area="" asp-controller="Management" asp-action="">
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a class="dropdown-item" routerLink = "/Login" routerLinkActive="active">Login</a></li>
-            <li><a class="dropdown-item" routerLink = "/Register" routerLinkActive="active">Register</a></li>
-          </ul>
+      <div class="col-2">
+        <i class=" fas fa-sign-in-alt m-2" style="color: green;" *ngIf="!_partyGameService.loggedIn()" routerLink = "/Login" routerLinkActive="active"> </i>
+        <i class="fas fa-user-plus m-2" style="color: white;" *ngIf="!_partyGameService.loggedIn()"routerLink = "/Register" routerLinkActive="active"> </i>
+        <i class="btn fas fa-sign-out-alt " style="color: red;" *ngIf="_partyGameService.loggedIn()" (click)="onLogout()" > Logout</i>
       </div>
+      
+
     </div>
   </nav>
 </div>
