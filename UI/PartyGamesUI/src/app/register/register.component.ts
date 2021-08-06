@@ -14,7 +14,6 @@ export class RegisterComponent implements OnInit {
   registerUserGroup = new FormGroup({
     UserName: new FormControl(),
     Password: new FormControl(),
-    isAdmin: new FormControl(),
   });
 
   constructor(private partyGameApi: PartygameService,private router: Router) { }

@@ -1,43 +1,70 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { PartygameService } from '../services/partygame.service';
-import { IUser } from '../services/user';
+import { ILoggedUser, IUser } from '../services/user';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  currentUser: IUser;
+  currentUser: ILoggedUser;
+  error:string;
 
   loginUserGroup = new FormGroup({
     UserName: new FormControl(),
     Password: new FormControl()
   });
+message:string;
+  subscription: Subscription;
 
-  constructor(private partyGameApi: PartygameService,private router: Router) { }
+  constructor(private partyGameApi: PartygameService,private router: Router,private data: PartygameService) { }
 
   ngOnInit(): void {
-    let temp: IUser =
-    {
-      UserName: "",
-      Password: "",
-      IsAdmin: false
+    this.currentUser={
+      id:null,
+      userName: "",
+      password: ""
     }
-    this.currentUser = temp;
+  this.subscription = this.data.currentMessage.subscribe(message => this.message = message);
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   onSubmit(loginUserGroup:FormGroup) {
-    const loginObserver ={
-      next:x => console.log('user logged in'),
-      error: err => console.log(err)
-    }
-    this.partyGameApi.login(loginUserGroup.value).subscribe(loginObserver);
-    this.redirect('layout');
+
+
+    console.log(this.partyGameApi.login(loginUserGroup.value)
+    .subscribe(res=>{
+        console.log(res)
+        if(res){
+          localStorage.setItem('userId',res.id.toString())
+          localStorage.setItem('userName',res.password.toString())
+          localStorage.setItem('userPassword',res.userName.toString())
+          this.redirect('layout');
+        }else{
+          this.error="Username or password invalid"
+        }
+      }
+
+      ));
+
+//     this.partyGameApi.login(loginUserGroup.value);
+//     console.log("This should be the name from the service:" + this.message);
+//     if (this.message == "default message")
+//     {
+//       this.redirect('Login');
+//     }
+//     else{
+//       this.redirect('layout');
+//     }
+
   }
   //redirect to layout page after login
   redirect(page:string) {

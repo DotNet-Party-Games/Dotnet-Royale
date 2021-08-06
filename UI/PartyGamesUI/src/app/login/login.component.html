@@ -1,6 +1,7 @@
 <div class="row" id="id01">
   <div class="col-md-5 offset-md-3 mt-4 " id="loginContainer" >
     <h3>Login User</h3>
+    <span class="text-danger">{{error}}</span>
   <form  class="form-group" [formGroup]="loginUserGroup">
 
     <label for ="loginUsername">Username</label>
@@ -22,8 +23,8 @@
     <br>
 
     <button  class="btn btn-primary col-5" [disabled]="loginUserGroup.invalid"
-      type="submit" (click)="onSubmit(loginUserGroup)">Login <i class="fas fa-sign-in-alt"></i></button>
-    <button  class=" btn btn-danger col-5 float-right" type =" button" (click)="cancel('/index.html')" >Cancel <i class="fas fa-ban"></i></button>   
+      type="button" (click)="onSubmit(loginUserGroup)">Login <i class="fas fa-sign-in-alt"></i></button>
+    <button  class=" btn btn-danger col-5 float-right" type =" button" (click)="cancel('')" >Cancel <i class="fas fa-ban"></i></button>   
   </form>
   <a href="#">Forgot password?</a>
   </div>

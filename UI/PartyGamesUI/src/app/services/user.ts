@@ -2,5 +2,10 @@ export interface IUser
 {
   UserName: string;
   Password: string;
-  IsAdmin: boolean;
+}
+export interface ILoggedUser{
+  id:number;
+  userName: string;
+  password: string;
+
 }

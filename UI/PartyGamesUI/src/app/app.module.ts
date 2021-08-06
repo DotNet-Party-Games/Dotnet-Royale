@@ -13,6 +13,8 @@ import { GamelistComponent } from './gamelist/gamelist.component';
 import { RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { PartygameService } from './services/partygame.service';
+import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -33,10 +35,13 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
     RouterModule.forRoot([
       {path: "Login", component: LoginComponent},
       {path: "Register", component: RegisterComponent},
-      { path: 'layout', component: LayoutComponent },
+      { path: 'layout',
+        component: LayoutComponent,
+        canActivate: [AuthGuard]
+      },
     ]),
   ],
-  providers: [],
+  providers: [PartygameService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -50,10 +50,23 @@ namespace PartyGameDL
             return await _context.Snakes.FirstOrDefaultAsync(user=>user.Id == UserId);
         }
 
-        public async Task<int> GetUserIdFromUserNameAsync(string UserName)
+        public async Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName,string Password)
         {
-            User userInput =  await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName);
+            User userInput =  await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName && 
+                                                                        user.Password == Password);
             return userInput.Id;
+        }
+
+        public async Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password)
+        {
+            return await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName &&
+                                                                       user.Password == Password);
+            
+        }
+        public async Task<User> GetUserFromUserIdAsync(int userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(user => user.Id == userId);
+
         }
     }
 }
