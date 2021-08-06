@@ -26,7 +26,7 @@ export class PartygameService {
   username: string;
   currentUser:IUser = {
     id:null,
-    username:null,
+    userName:null,
     password:null
   };
   private messageSource = new BehaviorSubject("default message");
