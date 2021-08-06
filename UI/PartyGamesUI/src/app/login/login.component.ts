@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { PartygameService } from '../services/partygame.service';
-import { IUser } from '../services/user';
+import { ILoggedUser, IUser } from '../services/user';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,8 +11,9 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  currentUser: IUser;
-
+  currentUser: ILoggedUser;
+  error:string;
+  
   loginUserGroup = new FormGroup({
     UserName: new FormControl(),
     Password: new FormControl()
@@ -21,22 +22,33 @@ export class LoginComponent implements OnInit {
   constructor(private partyGameApi: PartygameService,private router: Router) { }
 
   ngOnInit(): void {
-    let temp: IUser =
+    this.currentUser=
     {
-      UserName: "",
-      Password: ""
+      id:null,
+      userName: "",
+      password: ""
     }
-    this.currentUser = temp;
   }
 
   
   onSubmit(loginUserGroup:FormGroup) {
-    const loginObserver ={
-      next:x => console.log('user logged in'),
-      error: err => console.log(err)
-    }
-    this.partyGameApi.login(loginUserGroup.value).subscribe(loginObserver);
-    this.redirect('layout');
+    
+    console.log(this.partyGameApi.login(loginUserGroup.value)
+    .subscribe(res=>{
+        console.log(res)
+        if(res){
+          localStorage.setItem('userId',res.id.toString())
+          localStorage.setItem('userName',res.password.toString())
+          localStorage.setItem('userPassword',res.userName.toString())
+          this.redirect('layout');
+        }else{
+          this.error="Username or password invalid"
+        }
+      }
+        
+      ));
+    
+    
   }
   //redirect to layout page after login
   redirect(page:string) {

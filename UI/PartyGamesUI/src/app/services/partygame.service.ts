@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
-import { IUser } from './user';
+import { ILoggedUser, IUser } from './user';
 import { IGame } from './game';
 import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
@@ -12,40 +12,37 @@ import { FormGroup } from '@angular/forms';
 export class PartygameService {
   // url referencing the WebAPI
   private url = "https://dotnetpartygames.azurewebsites.net/";
-  isLoggedIn:boolean;
-  userId:number;
-  currentUser:IUser = {
-    UserName:null,
-    Password:null
-  };
+ 
+  loggedUser:ILoggedUser = {
+    id:null,
+    userName:null,
+    password:null
+  }
 
   //service constructor
   constructor(private http: HttpClient) { }
 
   //login method
-  login(model: FormGroup):Observable<IUser> {
-    return this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
-      map((response: any)=>{
-        this.isLoggedIn = response.result.succeeded;
-        this.currentUser.UserName = response.UserName;
-        this.currentUser.Password =response.Password;
-        this.userId = response.Id;
-        return this.currentUser;
-      })
-    )
+  login(model: FormGroup):Observable<ILoggedUser> {
+    return this.http.post<ILoggedUser>(this.url +'user/getuserfromusernameandpassword/', model);
+  }
+  loggedIn(){
+    return !!(localStorage.getItem('userId') && localStorage.getItem('userName') && localStorage.getItem('userPassword'));
   }
 
   //Register method
   register(model: any) {
     return this.http.post(this.url+'user/add',model).pipe(
       map((response: any)=>{
-        this.isLoggedIn = response.result.succeeded;
-        this.currentUser.UserName = response.UserName;
-        this.currentUser.Password =response.Password;
-        this.userId = response.Id;
-        return this.currentUser;
+        this.loggedUser.userName = response.UserName;
+        this.loggedUser.password =response.Password;
+        this.loggedUser = response.Id;
+        return this.loggedUser;
       })
     )
+  }
+  register1(model: any) {
+    return this.http.post(this.url+'user/add',model);
   }
   // service method for login an user
   getUserByUserNameAndPassword(name: string, password: string) : Observable<IUser>
