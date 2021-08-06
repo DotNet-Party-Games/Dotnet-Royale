@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { PartygameService } from '../services/partygame.service';
 import { IUser } from '../services/user';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   currentUser: IUser;
 
@@ -18,9 +19,12 @@ export class LoginComponent implements OnInit {
     Password: new FormControl()
   });
 
-  constructor(private partyGameApi: PartygameService,private router: Router) { }
-
-  ngOnInit(): void {
+  constructor(private partyGameApi: PartygameService,private router: Router, private data: PartygameService) { }
+  message:string;
+  subscription: Subscription;
+  ngOnInit() {
+    this.subscription = this.data.currentMessage.subscribe(message => this.message = message)
+    
     let temp: IUser =
     {
       UserName: "",
@@ -28,15 +32,23 @@ export class LoginComponent implements OnInit {
     }
     this.currentUser = temp;
   }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
 
   
   onSubmit(loginUserGroup:FormGroup) {
-    const loginObserver ={
-      next:x => console.log('user logged in'),
-      error: err => console.log(err)
+    
+    this.partyGameApi.login(loginUserGroup.value);
+    console.log("This should be the name from the service:" + this.message);
+    if (this.message == "default message")
+    {
+      this.redirect('Login');
     }
-    this.partyGameApi.login(loginUserGroup.value).subscribe(loginObserver);
-    this.redirect('layout');
+    else{
+      this.redirect('layout');
+    }
   }
   //redirect to layout page after login
   redirect(page:string) {
