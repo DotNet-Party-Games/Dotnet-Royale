@@ -1,6 +1,8 @@
+
 import { Component } from '@angular/core';
 import { PartygameService } from './services/partygame.service';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
