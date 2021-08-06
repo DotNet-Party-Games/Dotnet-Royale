@@ -1,6 +1,4 @@
-import { AppModule } from '../app.module'
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import {Food, Snake, Map, Game, Tile } from './snake';
+import {Food, Snake, Map, Game, Tile } from './models';
 
 
 export const MapWidth = 20;
@@ -92,19 +90,19 @@ export function randomFood(game: Game, findNew = true): Food {
 
 
 
-platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
-    // Ensure Angular destroys itself on hot reloads.
-    if (window['ngRef']) {
-      window['ngRef'].destroy();
-    }
-    window['ngRef'] = ref;
+// platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
+//     // Ensure Angular destroys itself on hot reloads.
+//     if (window['ngRef']) {
+//       window['ngRef'].destroy();
+//     }
+//     window['ngRef'] = ref;
   
-    // custom stuff...
-    const meta = document.createElement('meta');
-    meta.setAttribute('content', "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
-    meta.setAttribute('name', 'viewport');
-    const head = document.head;
-    head.appendChild(meta);
+//     // custom stuff...
+//     const meta = document.createElement('meta');
+//     meta.setAttribute('content', "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
+//     meta.setAttribute('name', 'viewport');
+//     const head = document.head;
+//     head.appendChild(meta);
   
-    // Otherwise, log the boot error
-  }).catch(err => console.error(err));
+//     // Otherwise, log the boot error
+//   }).catch(err => console.error(err));

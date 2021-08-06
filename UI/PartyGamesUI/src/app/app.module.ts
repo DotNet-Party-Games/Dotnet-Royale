@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { DoBootstrap, NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import {createCustomElement} from '@angular/elements';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -26,7 +27,7 @@ import { SnakeComponent } from './snake/snake.component';
     GamelistComponent,
     RegisterComponent,
     LeaderboardComponent,
-    SnakeComponent
+    SnakeComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +44,17 @@ import { SnakeComponent } from './snake/snake.component';
     ]),
   ],
   providers: [PartygameService,AuthGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent,SnakeComponent]
 })
-export class AppModule { }
+
+export class AppModule{}
+// export class AppModule implements DoBootstrap { 
+
+//   constructor(injector: Injector) {
+//     const snakeComponent = createCustomElement(SnakeComponent, { injector });
+//     customElements.define('ng-snake', snakeComponent);
+//   }
+
+//   ngDoBootstrap(){}
+// }
 

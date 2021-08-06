@@ -12,23 +12,23 @@
 
     function UpKeyPressed(keyCode: number)
     {
-        return keyCode == WKey || keyCode == UpArrKey;
+        return keyCode === WKey || keyCode === UpArrKey;
     }
     function RightKeyPressed(keyCode: number)
     {
-        return keyCode == DKey || keyCode == RightArrKey;
+        return keyCode === DKey || keyCode === RightArrKey;
     }
     function DownKeyPressed(keyCode: number)
     {
-        return keyCode == SKey || keyCode == DownArrKey;
+        return keyCode === SKey || keyCode === DownArrKey;
     }
     function LeftKeyPressed(keyCode: number)
     {
-        return keyCode == AKey || keyCode == LeftArrKey;
+        return keyCode === AKey || keyCode === LeftArrKey;
     }
     function SpaceKeyPressed(keyCode: number)
     {
-        return keyCode == SpaceKey;
+        return keyCode === SpaceKey;
     }
     export enum InputKey
     {
