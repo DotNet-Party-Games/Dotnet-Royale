@@ -1,49 +1,7 @@
   import { InputKey, getInputKey } from './input';
   import { defaultMap, randomFood, updateMap, InBounds } from './map';
+  import { Direction,Food, Snake, SnakeSegment, Game, GameState } from './models';
   
-  
-  export interface SnakeSegment {
-    i: number;
-    j: number;
-  }
-  
-  export interface Snake {
-    head: SnakeSegment;
-    segments: SnakeSegment[];
-    direction: Direction;
-    length:number;
-    foodEaten: boolean;
-  }
-  export enum Direction{
-    None = -1,
-    North = 0,
-    East = 1,
-    South = 2,
-    West = 3,
-  }
-  export interface Food {
-    i: number;
-    j: number;
-  }
-  export interface Map {
-    grid: Tile[][];
-  }
-  export interface Tile {
-    isFood: boolean;
-    isSnake: boolean;
-    isSnakeHead: boolean;
-  }
-  export interface Game {
-    snake: Snake;
-    map: Map;
-    food: Food;
-    gameOver: boolean;
-  }
-  export interface GameState {
-    game: Game;
-    directions: Direction[];
-    shouldRender: boolean;
-  }
 
   export function defaultGameState(): GameState {
     return {
@@ -154,5 +112,101 @@
     };
   }
 
+  function GameOver(game: Game): boolean{
+    const { snake, snake: {head}} = game;
+    //Game is over if not InBounds(outside of the game window or snake hits another part of snake).
+    return !InBounds(game.map,head.i,head.j) || snake.segments.some(segment => segment !== head && segment.i === head.i && segment.j === head.j);
+  }
+
+  function tick(game: Game, direction: Direction): Game 
+  {
+    game = { ...game, snake: MovementDirection(game.snake, direction)};
+    game = { ...game, snake: FoodConsumed(game.snake, game.food)};
+    game = { ...game, food: randomFood(game,game.snake.foodEaten)};
+    game = { ...game, gameOver: GameOver(game)};
+    
+    //If game isn't over will continue to update the game map
+    if(!game.gameOver)
+    {
+      game = { ...game, map: updateMap(game.map,game.snake,game.food)};
+    }
+    return game;
+  }
+
+  export function tickReducer(state:GameState): GameState{
+    const[currentDirection, nextDirection, ...rest] = state.directions;
+    let direction = currentDirection;
+    if(nextDirection != undefined)
+    {
+      direction=nextDirection;
+    }
+    const directions = state.directions.length == 1 ? state.directions : [nextDirection, ...rest];
+    
+    const game = tick(state.game, direction);
+    return {
+      ...state, 
+      game, 
+      directions,
+      shouldRender: true,
+    };
+  }
+
+  function DirectionOnInput(inputKey: InputKey): Direction{
+    let res: Direction = Direction.None;
+    switch(inputKey)
+    {
+      case InputKey.Left:
+        res = Direction.West;
+        break;
+      case InputKey.Right:
+        res = Direction.East;
+        break;
+      case InputKey.Down:
+        res = Direction.South;
+        break;
+      case InputKey.Up:
+        res = Direction.North;
+        break;
+    }
+    return res;
+  }
+
+  function getDirection(event: KeyboardEvent): Direction {
+    const inputKey = getInputKey(event.keyCode);
+    const newDirection = DirectionOnInput(inputKey);
+    return newDirection;
+  }
+  
+  export function directionReducer(state: GameState, event: KeyboardEvent): GameState
+  {
+    let result = state;
+    const newDirection = getDirection(event);
+    if(newDirection !== Direction.None)
+    {
+      result = { 
+        ...state, 
+        directions: [...state.directions, newDirection],
+        shouldRender:false,
+      };
+    }
+    return result;
+  }
+
+  export function renderGameMapOnConsole(state: GameState){
+    if(state.shouldRender)
+    {
+      const map = state.game.map;
+      const strGrid = map.grid
+        .map((row) =>
+          row 
+            .map((item) =>
+              item.isSnakeHead ? '@' : item.isSnake ? 'x' : item.isFood ? '*' : '.',
+            )
+            .join(' '),
+        )
+        .join('\n');
+      console.log(strGrid + '\n');
+    }
+  }
 
 

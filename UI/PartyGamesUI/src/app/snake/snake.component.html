@@ -1,8 +1,26 @@
-<html>
-<head>
-<title>Snake Game</title>
-</head>
-<body>
-<canvas id="gameCanvas"width="540"height="500" style="background-color: black"></canvas>
-</body>
-</html>
+<div class = "game-header-container">
+    <h1 class="game-title">Snake</h1>
+    <span class="game-score">Score: {{state.game.snake.length -3 }}</span>
+    <div class="game-info-container">
+        <button (click)="handleStartClick()" *ngIf="!isRunning">Start Game</button>
+        <button (click)="handlePauseClick()" *ngIf="isRunning">Pause Game</button>
+    </div>
+</div>
+
+<div class="snake-grid-container">
+    <div class="snake-grid" *ngIf="state">
+        <ng-container
+        *ngFor="let row of grid; index as rowIndex; trackBy: trackByIndex">
+        <div class="tile" [class.food]="tile.isFood" [class.snake] = "tile.isSnake"
+        [class.head]="tile.isSnakeHead" [ngStyle]="{'grid-row': rowIndex + 1}"
+        *ngFor="let tile of row; trackBy: trackByIndex">
+    </div>
+    </ng-container>
+    </div>
+
+    <div class="game-over" *ngIf="state.game.gameOver">
+        <span>Game Over</span>
+        <span>Score: {{state.game.snake.length -3}}</span>
+        <button class="snake-reset" (click)="handleResetClick()">Reset</button>
+    </div>
+</div>

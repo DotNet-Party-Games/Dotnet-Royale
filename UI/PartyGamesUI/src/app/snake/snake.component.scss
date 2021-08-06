@@ -1,72 +1,68 @@
-/* :host {
-    &.game-container { 
-        
+:host {
+    &.game-container {
+      display: block;
+      width: max-content;
+      font-family: sans-serif;
     }
-} */
-
-.game-container{
-    display: block;
-    width: max-content;
-    font-family: sans-serif;
-}
-button {
-    font-family :inherit;
-}
-
-.game-header-container{
+  }
+  
+  button {
+    font-family: inherit;
+  }
+  
+  .game-header-container {
     display: flex;
-}
-
-.game-title {
+  }
+  
+  .game-title {
     margin: 0;
     flex: 1;
-}  
-
-.game-score{
+  }
+  
+  .game-score {
     display: flex;
     align-items: center;
-}
-
-.game-info-container{
-    flex: 1; 
+  }
+  
+  .game-info-container {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-}
-
-.snake-grid-container{
+  }
+  
+  .snake-grid-container {
     position: relative;
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.snake-grid{
-    display:grid;
+  }
+  
+  .snake-grid {
+    display: grid;
     background: #dedede;
     grid-gap: 1px 1px;
     border: solid 1px #dedede;
-    border-radius: 5px;
-}
-
-.tile{
+   
+  }
+  
+  .tile {
     width: 20px;
-    height: 20px; 
-    border-radius: 5px;
+    height: 20px;
+    
     background: white;
-}
-
-.snaketile{
-    background:green;
-}
-.foodtile{
-    background:red;
-}
-.snakeheadtile{
-    background:purple;
-}
-
-.game-over{
+    &.snake {
+      background: grey;
+    }
+    &.food {
+      background: red;
+    }
+    &.head {
+      background: purple;
+    }
+  }
+  
+  .game-over {
     position: absolute;
     padding: 20px;
     box-shadow: 0 0 10px 2px #dedede;
@@ -82,8 +78,8 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.snake-reset{
+  }
+  
+  .snake-reset {
     margin-top: 10px;
-}
+  }
