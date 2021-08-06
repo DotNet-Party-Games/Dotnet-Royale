@@ -5,6 +5,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { IGame } from './game';
 import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
+import { IScore } from './score';
+import { Leader } from './leader';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class PartygameService {
   // url referencing the WebAPI
   private url = "https://dotnetpartygames.azurewebsites.net/";
 
- 
+
   loggedUser:ILoggedUser = {
     id:null,
     userName:null,
@@ -23,8 +25,9 @@ export class PartygameService {
   userId:number;
   username: string;
   currentUser:IUser = {
-    UserName:null,
-    Password:null
+    id:null,
+    username:null,
+    password:null
   };
   private messageSource = new BehaviorSubject("default message");
   currentMessage = this.messageSource.asObservable();
@@ -60,7 +63,7 @@ export class PartygameService {
 //     this.messageSource.next(message);
 
   }
-  
+
 
   //Register method
   register(model: any) {
@@ -82,13 +85,19 @@ export class PartygameService {
     return this.http.get<IUser>(this.url +  name + '/' + password);
   }
 
-  getUsers() : Observable<IUser[]>
-  {
-    return this.http.get<IUser[]>(this.url + "User")
-  }
-
   getGames() : Observable<IGame[]>
   {
-    return this.http.get<IGame[]>(this.url + "Game")
+    return this.http.get<IGame[]>(this.url + "Game");
   }
+
+  getTop10ScoresByGameId(gameId: number) : Observable<IScore[]>
+  {
+    return this.http.get<IScore[]>(this.url + "Game/getTop10ScoresByGameId/" + gameId);
+  }
+
+  getUserFromUserId(userId: number) : Observable<IUser>
+  {
+    return this.http.get<IUser>(this.url + "User/getUserFromUserId/" + userId);
+  }
+
 }

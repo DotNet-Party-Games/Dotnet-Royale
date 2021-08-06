@@ -1,0 +1,15 @@
+<div class="card bg-dark">
+  <div class="card-header text-center">
+    <h4>Leaderboard</h4>
+  </div>
+  <table class="table table-sm">
+    <tr *ngFor = "let leader of leaders" class="text-white bg-dark">
+      <td>
+        <i class="fas fa-user-circle mr-2"></i>{{leader.username}}
+      </td>
+      <td>
+        {{leader.score}}
+      </td>
+    </tr>
+  </table>
+</div>

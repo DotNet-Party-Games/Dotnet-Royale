@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   currentUser: ILoggedUser;
   error:string;
-  
+
   loginUserGroup = new FormGroup({
     UserName: new FormControl(),
     Password: new FormControl()
@@ -32,15 +32,13 @@ message:string;
     }
   this.subscription = this.data.currentMessage.subscribe(message => this.message = message);
   }
-  
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-
-  
   onSubmit(loginUserGroup:FormGroup) {
-    
+
 
     console.log(this.partyGameApi.login(loginUserGroup.value)
     .subscribe(res=>{
@@ -54,9 +52,9 @@ message:string;
           this.error="Username or password invalid"
         }
       }
-        
+
       ));
-    
+
 //     this.partyGameApi.login(loginUserGroup.value);
 //     console.log("This should be the name from the service:" + this.message);
 //     if (this.message == "default message")
