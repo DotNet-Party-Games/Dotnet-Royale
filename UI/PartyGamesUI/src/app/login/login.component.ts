@@ -47,9 +47,7 @@ export class LoginComponent implements OnInit {
       }
         
       ));
-    
-    
-  }
+    }
   //redirect to layout page after login
   redirect(page:string) {
     this.router.navigate([page]);
