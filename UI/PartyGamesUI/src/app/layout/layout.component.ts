@@ -10,6 +10,8 @@ export class LayoutComponent implements OnInit {
   @Input()
   mode: number = 0;
 
+  p_gameid: number = 0;
+
   constructor() { }
 
   ngOnInit(): void {

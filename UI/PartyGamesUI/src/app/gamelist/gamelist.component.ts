@@ -10,26 +10,9 @@ import { PartygameService } from '../services/partygame.service';
 export class GamelistComponent implements OnInit {
 
   games: IGame[];
+  p_gameId: number;
 
-    constructor(private partyGameApi: PartygameService ) {
-      this.games = [
-        {
-          id:  1,
-          name: "Game 1",
-          description: "Description 1"
-        },
-        {
-          id:  2,
-          name: "Game 2",
-          description: "Description 2"
-        },
-        {
-          id:  3,
-          name: "Game 3",
-          description: "Description 3"
-        }
-      ]
-     }
+  constructor(private partyGameApi: PartygameService ) {}
 
   ngOnInit(): void {
     this.getGameList();
@@ -39,5 +22,10 @@ export class GamelistComponent implements OnInit {
   getGameList()
   {
     this.partyGameApi.getGames().subscribe((response: IGame[]) => { this.games = response });
+  }
+
+  setGameId()
+  {
+    this.p_gameId = parseInt(document.getElementById("gameid").innerHTML);
   }
 }

@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     this.currentUser = temp;
   }
 
-  
+
   onSubmit(loginUserGroup:FormGroup) {
     const loginObserver ={
       next:x => console.log('user logged in'),

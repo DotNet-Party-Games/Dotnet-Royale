@@ -5,6 +5,7 @@ import { IUser } from './user';
 import { IGame } from './game';
 import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
+import { IScore } from './score';
 
 @Injectable({
   providedIn: 'root'
@@ -56,13 +57,18 @@ export class PartygameService {
     return this.http.get<IUser>(this.url +"login"+{name,password});
   }
 
-  getUsers() : Observable<IUser[]>
-  {
-    return this.http.get<IUser[]>(this.url + "User")
-  }
-
   getGames() : Observable<IGame[]>
   {
-    return this.http.get<IGame[]>(this.url + "Game")
+    return this.http.get<IGame[]>(this.url + "Game");
+  }
+
+  getTop10ScoresByGameId(gameId: number) : Observable<IScore[]>
+  {
+    return this.http.get<IScore[]>(this.url + "Game/getTop10ScoresByGameId/" + gameId);
+  }
+
+  getUserByUserId(userId: number) : Observable<IUser>
+  {
+    return this.http.get<IUser>(this.url + "User/getUserByUserId/" + userId);
   }
 }
