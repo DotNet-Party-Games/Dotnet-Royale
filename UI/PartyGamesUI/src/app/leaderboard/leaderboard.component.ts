@@ -3,6 +3,7 @@ import { PartygameService } from '../services/partygame.service';
 import { Leader } from '../services/leader';
 import { IScore } from '../services/score';
 import { IUser } from '../services/user';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-leaderboard',
@@ -11,31 +12,18 @@ import { IUser } from '../services/user';
 })
 export class LeaderboardComponent implements OnInit {
 
-  gameId: number;
+  currentGameId: number;
   leaders: Leader[] = [];
   scores: IScore[];
 
-  constructor(private partyGameApi: PartygameService )
-  {
-  }
+  constructor(private partyGameApi: PartygameService, private data: DataService )  { }
 
   ngOnInit(): void {
-    this. gameId = parseInt(sessionStorage.getItem('gameid'));
+    this.data.currentGameId.subscribe(p_gameId => this.currentGameId = p_gameId);
     this.getLeaderBoardByGameId(1);
   }
 
-  //getLeaderBoardByGameId(p_gameId: number)
-  //{
-  //   this.partyGameApi.getTop10ScoresByGameId(p_gameId).subscribe((scores: IScore[]) => {
-  //         scores.forEach(s =>{
-  //           this.leaders.push({username: s.userId.toString(), score:s.score});
-
-  //         });
-  //   });
-  // }
-
-
-  getLeaderBoardByGameId(p_gameId: number)
+    getLeaderBoardByGameId(p_gameId: number)
   {
     this.partyGameApi.getTop10ScoresByGameId(p_gameId).subscribe((response: IScore[]) => {
       this.scores = response;
