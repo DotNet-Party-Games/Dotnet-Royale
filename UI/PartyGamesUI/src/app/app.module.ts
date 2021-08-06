@@ -10,9 +10,11 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { LoginComponent } from './login/login.component';
 import { LivechatComponent } from './livechat/livechat.component';
 import { GamelistComponent } from './gamelist/gamelist.component';
-import { UserlistComponent } from './userlist/userlist.component';
 import { RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { PartygameService } from './services/partygame.service';
+import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -22,8 +24,8 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     LivechatComponent,
     GamelistComponent,
-    UserlistComponent,
-    RegisterComponent
+    RegisterComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,
@@ -33,10 +35,13 @@ import { RegisterComponent } from './register/register.component';
     RouterModule.forRoot([
       {path: "Login", component: LoginComponent},
       {path: "Register", component: RegisterComponent},
-      { path: 'layout', component: LayoutComponent },
+      { path: 'layout',
+        component: LayoutComponent,
+        canActivate: [AuthGuard]
+      },
     ]),
   ],
-  providers: [],
+  providers: [PartygameService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

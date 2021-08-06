@@ -2,8 +2,7 @@
   <div class="col-3">
     <div class="bg-dark text-white" style="height: 400px">
       <!-- left components -->
-      <app-userlist *ngIf="mode==0"></app-userlist>
-      <app-gamelist *ngIf="mode==1"></app-gamelist>
+      <app-gamelist></app-gamelist>
     </div>
   </div>
   <div class="col">
@@ -14,6 +13,7 @@
   <div class="col-3">
     <div class="bg-dark text-white" style="height: 400px">
       <!-- right components -->
+      <app-leaderboard></app-leaderboard>
     </div>
   </div>
 </div>
