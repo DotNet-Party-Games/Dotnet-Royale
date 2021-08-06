@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { IUser } from './user';
 import { IGame } from './game';
 import { map } from 'rxjs/operators';
@@ -14,26 +14,37 @@ export class PartygameService {
   private url = "https://dotnetpartygames.azurewebsites.net/";
   isLoggedIn:boolean;
   userId:number;
+  username: string;
   currentUser:IUser = {
     UserName:null,
     Password:null
   };
-
+  private messageSource = new BehaviorSubject("default message");
+  currentMessage = this.messageSource.asObservable();
   //service constructor
   constructor(private http: HttpClient) { }
-
   //login method
-  login(model: FormGroup):Observable<IUser> {
-    return this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
+  login(model: FormGroup) {
+    var work = this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
       map((response: any)=>{
-        this.isLoggedIn = response.result.succeeded;
         this.currentUser.UserName = response.UserName;
         this.currentUser.Password =response.Password;
         this.userId = response.Id;
-        return this.currentUser;
+        this.username = response.UserName;
       })
     )
+    console.log ("current user: " + this.currentUser.UserName + " " + this.username);
+    //this shoud work given that the login mapping above works however, it binds to null
+    this.changeMessage(this.username);
+    return this.currentUser;
   }
+  //sends current user to parent event (who subscribes)
+  changeMessage(message: string)
+  {
+    console.log("This was successful");
+    this.messageSource.next(message);
+  }
+  
 
   //Register method
   register(model: any) {
