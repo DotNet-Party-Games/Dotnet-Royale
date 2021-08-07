@@ -1,9 +1,9 @@
 import { DoBootstrap, NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {createCustomElement} from '@angular/elements';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GameBoardComponent } from './game-board/game-board.component';
 
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -16,7 +16,6 @@ import { RegisterComponent } from './register/register.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartygameService } from './services/partygame.service';
 import { AuthGuard } from './services/auth.guard';
-import { SnakeComponent } from './snake/snake.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +26,8 @@ import { SnakeComponent } from './snake/snake.component';
     GamelistComponent,
     RegisterComponent,
     LeaderboardComponent,
-    SnakeComponent,
+    GameBoardComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -44,7 +44,7 @@ import { SnakeComponent } from './snake/snake.component';
     ]),
   ],
   providers: [PartygameService,AuthGuard],
-  bootstrap: [AppComponent,SnakeComponent]
+  bootstrap: [AppComponent]
 })
 
 export class AppModule{}
