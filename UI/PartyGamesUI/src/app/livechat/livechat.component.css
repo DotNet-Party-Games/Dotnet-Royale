@@ -1,7 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
 body {
-    background: #443636;
+    background: #dbd4d4;
+}
+.container-fluid{
+    padding: 2% 2%;
+    overflow: hidden;
+}
+
+.game-list-card{
+    background-color: rgb(80, 79, 77);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: 160px;
+    padding: 3%;
+}
+.game-card{
+    display: flex;
+    padding: 10%;
+    cursor: pointer;
+    
+}
+.game-card:active{
+    background-color: teal;
+}
+
+.game-card:not(:last-child){
+    border-bottom: 1px solid rgb(121, 126, 114);
+}
+.chat-container{
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: 170px;
+    position: relative;
+    overflow: hidden;
+    overflow: hidden;
+}
+.chat-header{
+    height: 30px;
+    background-color: rgba(209, 50, 50, 0.05);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.chat-body{
+    background-image: url('/assets/images/bg-image.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    height: 150px;
+    padding: 10px;
+    overflow-y: auto;
+    
+    
+}
+.message-container{
+    background-color: rgb(193, 219, 200);
+    padding: 2px;
+    border-radius:5px ;
+    width: fit-content;
+    max-width: 90%;
+    margin-bottom: 5px;
+    color: rgb(20, 17, 20);
+}
+.same-user{
+    display: flex;
+    justify-content: flex-end ;
+}
+.chat-footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: silver;
+    padding: 5px,10px;
+}
+.form-control{
+    background-color: white;
+    border: 1px solid rgb(20, 17, 20);
+    box-sizing: border-box;
+    border-radius: 20px;
+    font-size: 1rem;
+    color: black;
+    
+}
+
+
+
+
+
+
+
+
+/* 
+body {
+    background: #dbd4d4;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -47,4 +140,4 @@ body {
 .form-control::placeholder {
     font-size: 8px;
     color: #271f1f
-}
+} */
