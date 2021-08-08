@@ -44,16 +44,17 @@ message:string;
     .subscribe(res=>{
         console.log(res)
         if(res){
-          localStorage.setItem('userId',res.id.toString())
-          localStorage.setItem('userName',res.password.toString())
-          localStorage.setItem('userPassword',res.userName.toString())
-          this.redirect('layout');
+          sessionStorage.setItem('userId',res.id.toString())
+          sessionStorage.setItem('userName',res.password.toString())
+          sessionStorage.setItem('userPassword',res.userName.toString())
+          this.redirect('/layout');
         }else{
           this.error="Username or password invalid"
         }
       }
 
       ));
+
 
 //     this.partyGameApi.login(loginUserGroup.value);
 //     console.log("This should be the name from the service:" + this.message);
@@ -66,6 +67,7 @@ message:string;
 //     }
 
   }
+
   //redirect to layout page after login
   redirect(page:string) {
     this.router.navigate([page]);
