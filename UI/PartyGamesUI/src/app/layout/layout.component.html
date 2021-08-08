@@ -7,7 +7,18 @@
   </div>
   <div class="col">
     <div class="bg-dark text-white" style="height: 400px">
-      <app-board></app-board>
+      <!-- This is TicTac Toe Game -->
+        <app-board></app-board> 
+      <!-- End of TicTacToe Game-->
+      <!--- This is Snake Game-->
+<ng-container *ngIf="game$ | async as game">
+  <h2>Points: {{game.snakePos.length - 1}}</h2>
+  <h2 *ngIf="game.lost">YOU LOST! <button (click)="newGame()">Retry?</button></h2>
+  <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
+    <app-snake [pos]="game.snakePos"></app-snake>
+  </app-game-field>
+</ng-container>
+      <!-- End of Snake Game-->
       <!-- main components -->
     
     </div>

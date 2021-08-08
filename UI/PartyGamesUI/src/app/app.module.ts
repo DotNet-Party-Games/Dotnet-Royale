@@ -18,12 +18,12 @@ import { LivechatComponent } from './livechat/livechat.component';
 import { GamelistComponent } from './gamelist/gamelist.component';
 import { RegisterComponent } from './register/register.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-// import { SnakeComponent } from './snake/snake.component';
-
 import { PartygameService } from './services/partygame.service';
 import { AuthGuard } from './services/auth.guard';
 import { SquareComponent } from './tictactoe/square/square.component';
 import { BoardComponent } from './tictactoe/board/board.component';
+import { SnakeComponent } from './snake/snake.component';
+import { GameFieldComponent } from './snake/game-field/game-field.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,9 @@ import { BoardComponent } from './tictactoe/board/board.component';
     LeaderboardComponent,
     SquareComponent,
     BoardComponent,
-    GameBoardComponent
+    GameBoardComponent,
+    SnakeComponent,
+    GameFieldComponent
   ],
   imports: [
     BrowserModule,
