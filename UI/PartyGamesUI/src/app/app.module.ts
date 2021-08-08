@@ -17,6 +17,8 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartygameService } from './services/partygame.service';
 import { AuthGuard } from './services/auth.guard';
 import { SnakeComponent } from './snake/snake.component';
+import { SquareComponent } from './tictactoe/square/square.component';
+import { BoardComponent } from './tictactoe/board/board.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +30,8 @@ import { SnakeComponent } from './snake/snake.component';
     RegisterComponent,
     LeaderboardComponent,
     SnakeComponent,
+    SquareComponent,
+    BoardComponent,
   ],
   imports: [
     BrowserModule,
