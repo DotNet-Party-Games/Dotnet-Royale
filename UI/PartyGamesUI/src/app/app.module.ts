@@ -18,7 +18,7 @@ import { LivechatComponent } from './livechat/livechat.component';
 import { GamelistComponent } from './gamelist/gamelist.component';
 import { RegisterComponent } from './register/register.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { SnakeComponent } from './snake/snake.component';
+// import { SnakeComponent } from './snake/snake.component';
 
 import { PartygameService } from './services/partygame.service';
 import { AuthGuard } from './services/auth.guard';
