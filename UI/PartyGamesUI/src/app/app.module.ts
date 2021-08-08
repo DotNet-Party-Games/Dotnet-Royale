@@ -37,8 +37,7 @@ import { BoardComponent } from './tictactoe/board/board.component';
     LeaderboardComponent,
     SquareComponent,
     BoardComponent,
-    GameBoardComponent,
-
+    GameBoardComponent
   ],
   imports: [
     BrowserModule,
