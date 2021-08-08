@@ -7,8 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 
-import { GameBoardComponent } from './game-board/game-board.component';
-
 
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -37,7 +35,6 @@ import { GameFieldComponent } from './snake/game-field/game-field.component';
     LeaderboardComponent,
     SquareComponent,
     BoardComponent,
-    GameBoardComponent,
     SnakeComponent,
     GameFieldComponent
   ],
