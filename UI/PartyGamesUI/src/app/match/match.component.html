@@ -1,1 +1,31 @@
-<p>match works!</p>
+<div class="card bg-dark">
+
+  <div class="card-header text-center">
+    <h4>Match Making</h4>
+  </div>
+
+  <div class="main">
+    <ngx-wheel #wheel
+    width='400'
+    height='300'
+    spinDuration='8'
+    [disableSpinOnClick]='true'
+    [items]='items'
+    [innerRadius]='20'
+    [spinAmount]='10'
+    [textOrientation]='textOrientation'
+    [textAlignment]='textAlignment'
+    pointerStrokeColor='black'
+    pointerFillColor='gold'
+    [idToLandOn]='idToLandOn'
+    (onSpinStart)='before()'
+    (onSpinComplete)='after()'
+  >
+  </ngx-wheel>
+  <br/>
+  </div>
+  <div class="main">
+    <button (click) = "[reset(), spin()]" class="btn btn-warning">START</button>
+  </div>
+
+</div>

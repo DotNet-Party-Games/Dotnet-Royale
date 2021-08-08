@@ -57,7 +57,8 @@ import { MatchComponent } from './match/match.component';
         canActivate: [AuthGuard]
       },
     ]),
-    NgbModule
+    NgbModule,
+    NgxWheelModule
   ],
   providers: [PartygameService,AuthGuard],
   bootstrap: [AppComponent]
