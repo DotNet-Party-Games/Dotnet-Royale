@@ -13,7 +13,7 @@ export class GamelistComponent implements OnInit {
   games: IGame[];
   currentGameId: number;
 
-  constructor(private partyGameApi: PartygameService, private data: DataService) {}
+  constructor(private partyGameApi: PartygameService, private data: DataService ) {}
 
   ngOnInit(): void {
     this.getGameList();
@@ -24,8 +24,8 @@ export class GamelistComponent implements OnInit {
     this.partyGameApi.getGames().subscribe((response: IGame[]) => { this.games = response });
   }
 
-  setGameId()
+  setGameId(p_gameId: number)
   {
-    this.data.changeGameId(parseInt(document.getElementById("gameid").innerHTML));
+    this.data.changeGameId(p_gameId);
   }
 }

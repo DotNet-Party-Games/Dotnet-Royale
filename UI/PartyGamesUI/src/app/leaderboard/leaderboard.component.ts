@@ -13,25 +13,27 @@ import { DataService } from '../services/data.service';
 export class LeaderboardComponent implements OnInit {
 
   currentGameId: number;
-  leaders: Leader[] = [];
+  leaders: Leader[];
   scores: IScore[];
 
-  constructor(private partyGameApi: PartygameService, private data: DataService )  { }
+  constructor(private partyGameApi: PartygameService, private data: DataService) { }
 
   ngOnInit(): void {
-    this.data.currentGameId.subscribe(p_gameId => this.currentGameId = p_gameId);
-    this.getLeaderBoardByGameId(1);
+    this.data.currentGameId.subscribe(p_gameId => {
+        this.currentGameId = p_gameId;
+        this.getLeaderBoardByGameId(this.currentGameId);
+      });
   }
 
-    getLeaderBoardByGameId(p_gameId: number)
+  getLeaderBoardByGameId(p_gameId: number)
   {
+    this.leaders = [];
     this.partyGameApi.getTop10ScoresByGameId(p_gameId).subscribe((response: IScore[]) => {
       this.scores = response;
       this.scores.forEach(s => {
         this.partyGameApi.getUserFromUserId(s.userId).subscribe((u: IUser) => {
-          console.log(s.userId)
-          console.log(u.userName)
           this.leaders.push({username: u.userName, score:s.score});
+          this.leaders.sort((a, b) => b.score - a.score)
           });
       })
     });

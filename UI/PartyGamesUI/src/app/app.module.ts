@@ -25,6 +25,10 @@ import { AuthGuard } from './services/auth.guard';
 import { SquareComponent } from './tictactoe/square/square.component';
 import { BoardComponent } from './tictactoe/board/board.component';
 
+import { NgxWheelModule } from 'ngx-wheel';
+import { MatchComponent } from './match/match.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +41,8 @@ import { BoardComponent } from './tictactoe/board/board.component';
     LeaderboardComponent,
     SquareComponent,
     BoardComponent,
-    GameBoardComponent
+    GameBoardComponent,
+    MatchComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +64,7 @@ import { BoardComponent } from './tictactoe/board/board.component';
 })
 
 export class AppModule{}
-// export class AppModule implements DoBootstrap { 
+// export class AppModule implements DoBootstrap {
 
 //   constructor(injector: Injector) {
 //     const snakeComponent = createCustomElement(SnakeComponent, { injector });
