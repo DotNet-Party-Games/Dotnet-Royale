@@ -7,8 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 
-import { GameBoardComponent } from './game-board/game-board.component';
-
 
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -18,12 +16,12 @@ import { LivechatComponent } from './livechat/livechat.component';
 import { GamelistComponent } from './gamelist/gamelist.component';
 import { RegisterComponent } from './register/register.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-// import { SnakeComponent } from './snake/snake.component';
-
 import { PartygameService } from './services/partygame.service';
 import { AuthGuard } from './services/auth.guard';
 import { SquareComponent } from './tictactoe/square/square.component';
 import { BoardComponent } from './tictactoe/board/board.component';
+import { SnakeComponent } from './snake/snake.component';
+import { GameFieldComponent } from './snake/game-field/game-field.component';
 
 import { NgxWheelModule } from 'ngx-wheel';
 import { MatchComponent } from './match/match.component';
@@ -41,8 +39,9 @@ import { MatchComponent } from './match/match.component';
     LeaderboardComponent,
     SquareComponent,
     BoardComponent,
-    GameBoardComponent,
-    MatchComponent
+    MatchComponent,
+    SnakeComponent,
+    GameFieldComponent
   ],
   imports: [
     BrowserModule,
