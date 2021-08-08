@@ -16,9 +16,9 @@ export class AppComponent {
   constructor(public _partyGameService:PartygameService, private router: Router){}
 
   onLogout(){
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userPassword");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("userPassword");
     this.router.navigate(['/Login']);
   }
 

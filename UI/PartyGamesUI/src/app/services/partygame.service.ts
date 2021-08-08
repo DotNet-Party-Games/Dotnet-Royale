@@ -40,7 +40,7 @@ export class PartygameService {
     return this.http.post<ILoggedUser>(this.url +'user/getuserfromusernameandpassword/', model);
   }
   loggedIn(){
-    return !!(localStorage.getItem('userId') && localStorage.getItem('userName') && localStorage.getItem('userPassword'));
+    return !!(sessionStorage.getItem('userId') && sessionStorage.getItem('userName') && sessionStorage.getItem('userPassword'));
 
 //   login(model: FormGroup) {
 //     var work = this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
