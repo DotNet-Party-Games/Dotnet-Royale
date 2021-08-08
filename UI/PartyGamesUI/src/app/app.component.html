@@ -6,9 +6,9 @@
         <app-sidenav></app-sidenav>
       </div>
       <div class="col-1">
-        <i class="fas fa-users" (click)="setToMatchMakingMode()" style="font-size: 1rem;"></i>
+        <i class="fas fa-users" style="font-size: 1rem;"></i>
         <span class="mr-2"></span>
-        <i class="fas fa-gamepad" (click)="setToGameMode()" style="font-size: 1rem;"></i>
+        <i class="fas fa-gamepad" style="font-size: 1rem;"></i>
       </div>
       <div class="col-8 text-center">
         <img src="assets/images/title.png" alt="title" style="height:50px">
@@ -18,7 +18,7 @@
         <i class="fas fa-user-plus m-2" style="color: white;" *ngIf="!_partyGameService.loggedIn()"routerLink = "/Register" routerLinkActive="active"> </i>
         <i class="btn fas fa-sign-out-alt " style="color: red;" *ngIf="_partyGameService.loggedIn()" (click)="onLogout()" > Logout</i>
       </div>
-      
+
 
     </div>
   </nav>
@@ -26,7 +26,5 @@
 
 <!-- Contents Layout-->
 <div class="container">
-  <!--<app-layout [mode]="mode"></app-layout>-->
   <router-outlet></router-outlet>
-  <!-- <app-layout></app-layout> -->
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -7,8 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
-  @Input()
-  mode: number = 0;
+  p_gameid: number = 0;
 
   constructor() { }
 
