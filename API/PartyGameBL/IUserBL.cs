@@ -16,5 +16,7 @@ namespace PartyGameBL
         Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName, string Password);
         Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password);
         Task<User> GetUserFromUserIdAsync(int UserId);
+        Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory);
+        Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score);
     }
 }
