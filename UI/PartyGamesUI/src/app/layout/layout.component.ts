@@ -7,6 +7,7 @@ import {
   Subject
 } from "rxjs";
 import { distinctUntilChanged, map, takeUntil, tap } from "rxjs/operators";
+import { IGame } from '../services/game';
 interface GameState {
   width: number;
   height: number;
@@ -14,6 +15,8 @@ interface GameState {
   food: { x: number; y: number };
   lost: boolean;
 }
+import { PartygameService } from '../services/partygame.service';
+import { DataService } from '../services/data.service';
 
 enum Direction {
   UP,
@@ -35,7 +38,9 @@ enum FieldType {
 })
 export class LayoutComponent implements OnInit {
 
-  p_gameid: number = 0;
+  games: IGame[];
+  currentGameId: number;
+  mainScreen: string;
 
   game$: BehaviorSubject<GameState>;
 
@@ -44,9 +49,13 @@ export class LayoutComponent implements OnInit {
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
 
-  constructor() { }
+  constructor(private partyGameApi: PartygameService, private data: DataService) { }
 
   ngOnInit(): void {
+    this.getGameList();
+    this.data.currentGameId.subscribe(p_gameId => {
+      this.currentGameId = p_gameId;
+    });
     this.keyDown$ = fromEvent<KeyboardEvent>(document, "keydown").pipe(
       tap(event => event.stopPropagation()),
       map(event => event.key),
@@ -200,7 +209,18 @@ export class LayoutComponent implements OnInit {
     this.direction$.next(Direction.DOWN)
   }
 
+  getGameList()
+  {
+    this.partyGameApi.getGames().subscribe((response: IGame[]) => { this.games = response });
+  }
 
+  showGame() {
+    console.log(this.currentGameId);
+    let p_game = this.games.find(g => g.id == this.currentGameId).name;
+    console.log(p_game);
+    this.mainScreen = p_game;
+    console.log(this.mainScreen);
+  }
 
 }
 

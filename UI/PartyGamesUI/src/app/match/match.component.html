@@ -7,7 +7,7 @@
   <div class="main">
     <ngx-wheel #wheel
     width='400'
-    height='300'
+    height='290'
     spinDuration='8'
     [disableSpinOnClick]='true'
     [items]='items'
@@ -20,12 +20,12 @@
     [idToLandOn]='idToLandOn'
     (onSpinStart)='before()'
     (onSpinComplete)='after()'
-  >
-  </ngx-wheel>
-  <br/>
+    >
+    </ngx-wheel>
+    <br/>
   </div>
   <div class="main">
-    <button (click) = "[reset(), spin()]" class="btn btn-warning">START</button>
+    <button (click) = "[reset(), spin()]" class="btn btn-warning">SPIN</button>
   </div>
 
 </div>
