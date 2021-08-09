@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IGame } from '../services/game';
 import { PartygameService } from '../services/partygame.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-gamelist',
@@ -10,9 +11,9 @@ import { PartygameService } from '../services/partygame.service';
 export class GamelistComponent implements OnInit {
 
   games: IGame[];
-  p_gameId: number;
+  currentGameId: number;
 
-  constructor(private partyGameApi: PartygameService ) {}
+  constructor(private partyGameApi: PartygameService, private data: DataService ) {}
 
   ngOnInit(): void {
     this.getGameList();
@@ -23,9 +24,8 @@ export class GamelistComponent implements OnInit {
     this.partyGameApi.getGames().subscribe((response: IGame[]) => { this.games = response });
   }
 
-  setGameId()
+  setGameId(p_gameId: number)
   {
-    this.p_gameId = parseInt(document.getElementById("gameid").innerHTML);
-    sessionStorage.setItem('gameid', this.p_gameId.toString());
+    this.data.changeGameId(p_gameId);
   }
 }

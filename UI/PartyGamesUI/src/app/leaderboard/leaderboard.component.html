@@ -5,7 +5,7 @@
   <table class="table table-sm">
     <tr *ngFor = "let leader of leaders" class="text-white bg-dark">
       <td>
-        <i class="fas fa-user-circle mr-2"></i>{{leader.username}}
+        <i class="fas fa-user-circle mr-2"></i>{{leader.username | uppercase}}
       </td>
       <td>
         {{leader.score}}

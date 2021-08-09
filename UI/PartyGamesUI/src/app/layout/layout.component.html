@@ -1,30 +1,39 @@
 <div class="row mt-2">
   <div class="col-3">
-    <div class="bg-dark text-white" style="height: 400px">
+    <div class="bg-dark text-white overflow-auto" style="height: 400px">
       <!-- left components -->
       <app-gamelist></app-gamelist>
     </div>
   </div>
   <div class="col">
-    <div class="bg-dark text-white" style="height: 400px">
-      <!-- This is TicTac Toe Game 
-        <app-board></app-board> -->
-      <!-- End of TicTacToe Game-->
-      <!--- This is Snake Game-->
-<ng-container *ngIf="game$ | async as game">
-  <h2>Points: {{game.snakePos.length - 1}}</h2>
-  <h2 *ngIf="game.lost">YOU LOST! <button (click)="newGame()">Retry?</button></h2>
-  <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
-    <app-snake [pos]="game.snakePos"></app-snake>
-  </app-game-field>
-</ng-container>
-      <!-- End of Snake Game-->
+    <div class="bg-dark text-white" style="height: 400px" [ngSwitch]="mainScreen" >
       <!-- main components -->
-    
+      <ng-container *ngSwitchCase="'Snake'" >
+        <!--- This is Snake Game-->
+        <ng-container *ngIf="game$ | async as game">
+          <h2>Points: {{game.snakePos.length - 1}}</h2>
+          <h2 *ngIf="game.lost">YOU LOST! <button (click)="newGame()">Retry?</button></h2>
+          <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
+            <app-snake [pos]="game.snakePos"></app-snake>
+          </app-game-field>
+        </ng-container>
+        <!-- End of Snake Game-->
+      </ng-container>
+      <div *ngSwitchCase="'Tic-Tac-Toe'">
+        <!-- This is TicTac Toe Game -->
+        <app-board></app-board>
+        <!-- End of TicTacToe Game-->
+      </div>
+      <div class="main" *ngSwitchDefault>
+        <!-- This is Spin for match making -->
+        <app-match></app-match>
+        <button (click)="showGame()" class="btn btn-danger">START GAME</button>
+      </div>
+      <!-- <app-board></app-board> -->
     </div>
   </div>
   <div class="col-3">
-    <div class="bg-dark text-white" style="height: 400px">
+    <div class="bg-dark text-white overflow-auto" style="height: 400px">
       <!-- right components -->
       <app-leaderboard></app-leaderboard>
     </div>

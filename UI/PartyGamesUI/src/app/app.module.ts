@@ -23,6 +23,10 @@ import { BoardComponent } from './tictactoe/board/board.component';
 import { SnakeComponent } from './snake/snake.component';
 import { GameFieldComponent } from './snake/game-field/game-field.component';
 
+import { NgxWheelModule } from 'ngx-wheel';
+import { MatchComponent } from './match/match.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +39,7 @@ import { GameFieldComponent } from './snake/game-field/game-field.component';
     LeaderboardComponent,
     SquareComponent,
     BoardComponent,
+    MatchComponent,
     SnakeComponent,
     GameFieldComponent
   ],
@@ -51,14 +56,15 @@ import { GameFieldComponent } from './snake/game-field/game-field.component';
         canActivate: [AuthGuard]
       },
     ]),
-    NgbModule
+    NgbModule,
+    NgxWheelModule
   ],
   providers: [PartygameService,AuthGuard],
   bootstrap: [AppComponent]
 })
 
 export class AppModule{}
-// export class AppModule implements DoBootstrap { 
+// export class AppModule implements DoBootstrap {
 
 //   constructor(injector: Injector) {
 //     const snakeComponent = createCustomElement(SnakeComponent, { injector });
