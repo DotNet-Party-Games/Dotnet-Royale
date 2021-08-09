@@ -215,11 +215,12 @@ export class LayoutComponent implements OnInit {
   }
 
   showGame() {
-    console.log(this.currentGameId);
     let p_game = this.games.find(g => g.id == this.currentGameId).name;
-    console.log(p_game);
     this.mainScreen = p_game;
-    console.log(this.mainScreen);
+  }
+
+  resetScreen() {
+    this.mainScreen = "default";
   }
 
 }
