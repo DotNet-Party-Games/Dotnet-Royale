@@ -70,7 +70,6 @@ export class LayoutComponent implements OnInit {
         switch (key) {
           case "ArrowUp":
           case "w":
-            console.log(this.snakeDirection);
             if (this.snakeDirection == 1) {
               return Direction.DOWN;
              }
@@ -79,7 +78,7 @@ export class LayoutComponent implements OnInit {
             }
           case "ArrowDown":
           case "s":
-            if (this.snakeDirection == 0) { 
+            if (this.snakeDirection == 0) {
               return Direction.UP;
             }
             else {
@@ -202,16 +201,13 @@ export class LayoutComponent implements OnInit {
             case FieldType.FOOD:
               game.snakePos = [...game.snakePos, nextField];
               game.food = this.getRandomField(game.width, game.height);
-              console.log("generate food");
               let loop = true;
               while (loop){
                 for (let x = 0; x < game.snakePos.length; x++)
                 {
                   if (game.snakePos[x].x === game.food.x && game.snakePos[x].y === game.food.y)
                   {
-                    console.log("found similar");
                     game.food = this.getRandomField(game.width, game.height);
-                    console.log("regenerate food");
                   }
                   else
                   {
@@ -230,7 +226,6 @@ export class LayoutComponent implements OnInit {
       )
       .subscribe(game => {
         this.game$.next(game);
-        console.log(game.snakePos);
         if (game.lost) {
           this.lost$.next();
         }
