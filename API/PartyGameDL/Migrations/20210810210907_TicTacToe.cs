@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PartyGameDL.Migrations
 {
-    public partial class Initial : Migration
+    public partial class TicTacToe : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,14 +22,28 @@ namespace PartyGameDL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TicTacToes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    GamesId = table.Column<int>(type: "int", nullable: false),
+                    WinLossRatio = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicTacToes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: true)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,6 +141,9 @@ namespace PartyGameDL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Snakes");
+
+            migrationBuilder.DropTable(
+                name: "TicTacToes");
 
             migrationBuilder.DropTable(
                 name: "Users");

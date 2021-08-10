@@ -14,6 +14,7 @@ namespace PartyGameDL
         public DbSet<Snake> Snakes { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ScoreHistory> ScoreHistories{get;set;}
+        public DbSet<TicTacToe> TicTacToes {get; set; }
 
 
         public PartyGamesDBContext() : base()
@@ -45,6 +46,9 @@ namespace PartyGameDL
 
             p_modelBuilder.Entity<Blackjack>()
                 .Property(Blackjack => Blackjack.Id)
+                .ValueGeneratedOnAdd();
+            p_modelBuilder.Entity<TicTacToe>()
+                .Property(TicTacToe => TicTacToe.Id)
                 .ValueGeneratedOnAdd();
             //add Entity modelbuilders here.
         }
