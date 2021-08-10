@@ -8,7 +8,7 @@ import { io, Socket } from 'socket.io-client';
 export class LivechatService {
 
   private socket: Socket;
-  private url=''; // your server local path
+  private url='https://arcane-woodland-27869.herokuapp.com/'; // your server local path
 
   constructor() { 
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
