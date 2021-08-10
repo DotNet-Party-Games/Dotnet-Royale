@@ -1,30 +1,55 @@
 <div class="row mt-2">
   <div class="col-3">
-    <div class="bg-dark text-white" style="height: 400px">
+    <div class="bg-dark text-white overflow-auto" style="height: 450px">
       <!-- left components -->
       <app-gamelist></app-gamelist>
     </div>
   </div>
   <div class="col">
-    <div class="bg-dark text-white" style="height: 400px">
-      <!-- This is TicTac Toe Game 
-        <app-board></app-board> -->
-      <!-- End of TicTacToe Game-->
-      <!--- This is Snake Game-->
-<ng-container *ngIf="game$ | async as game">
-  <h2>Points: {{game.snakePos.length - 1}}</h2>
-  <h2 *ngIf="game.lost">YOU LOST! <button (click)="newGame()">Retry?</button></h2>
-  <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
-    <app-snake [pos]="game.snakePos"></app-snake>
-  </app-game-field>
-</ng-container>
-      <!-- End of Snake Game-->
+    <div class="bg-dark text-white overflow-auto" style="height: 450px" [ngSwitch]="mainScreen" >
       <!-- main components -->
-    
+      <div *ngSwitchCase="'Snake'" style="height: 400px">
+        <!--- This is Snake Game-->
+        <ng-container *ngIf="game$ | async as game">
+          <div class = "btn-toolbar">
+          <h5>Points: {{game.snakePos.length - 1}}</h5>
+          <h5 *ngIf="game.lost" >Game Over! <button (click)="newGame()">Try Again?</button></h5>
+        </div>
+          <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
+            <app-snake [pos]="game.snakePos"></app-snake>
+          </app-game-field>
+        </ng-container>
+        <!-- End of Snake Game-->
+        <div class="card text-center bg-dark" style="height: 50px">
+          <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
+            GO BACK TO MAIN SCREEN
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'Tic-Tac-Toe'">
+        <!-- This is TicTac Toe Game -->
+        <app-board></app-board>
+        <!-- End of TicTacToe Game-->
+        <div class="card text-center bg-dark" style="height: 50px">
+          <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
+            GO BACK TO MAIN SCREEN
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchDefault>
+        <!-- This is Spin for match making -->
+        <app-match></app-match>
+        <div class="card text-center bg-dark" style="height: 50px">
+          <div (click) = "showGame()" class="btn btn-primary card-footer bg-primary">
+            START GAME
+          </div>
+        </div>
+      </div>
+      <!-- <app-board></app-board> -->
     </div>
   </div>
   <div class="col-3">
-    <div class="bg-dark text-white" style="height: 400px">
+    <div class="bg-dark text-white overflow-auto" style="height: 450px">
       <!-- right components -->
       <app-leaderboard></app-leaderboard>
     </div>

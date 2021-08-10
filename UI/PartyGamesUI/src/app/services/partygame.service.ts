@@ -6,7 +6,6 @@ import { IGame } from './game';
 import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 import { IScore } from './score';
-import { Leader } from './leader';
 
 @Injectable({
   providedIn: 'root'
