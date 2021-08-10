@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IScore } from 'src/app/services/score';
+import { PartygameService } from '../../services/partygame.service';
 
 @Component({
   selector: 'app-board',
@@ -7,11 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoardComponent implements OnInit {
 
+  finalScore : IScore = {
+    gamesId: null,
+    userId: null,
+    score: null,
+  }
   squares: any[];
   xIsNext: boolean;
   winner: string;
 
-  constructor() { }
+  constructor(private partyGameApi: PartygameService) { }
 
   ngOnInit(): void {
     this.newGame();
@@ -55,6 +62,10 @@ export class BoardComponent implements OnInit {
         this.squares[a] === this.squares[b] &&
         this.squares[a] === this.squares[c]
       ) {
+        this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
+        this.finalScore.gamesId = 3;
+        this.finalScore.score = 1;
+        this.partyGameApi.addscore(this.finalScore).subscribe();
         return this.squares[a];
       }
     }
