@@ -11,8 +11,10 @@
       <div *ngSwitchCase="'Snake'" style="height: 400px">
         <!--- This is Snake Game-->
         <ng-container *ngIf="game$ | async as game">
-          <h2>Points: {{game.snakePos.length - 1}}</h2>
-          <h2 *ngIf="game.lost">YOU LOST! <button (click)="newGame()">Retry?</button></h2>
+          <div class = "btn-toolbar">
+          <h5>Points: {{game.snakePos.length - 1}}</h5>
+          <h5 *ngIf="game.lost" >Game Over! <button (click)="newGame()">Try Again?</button></h5>
+        </div>
           <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
             <app-snake [pos]="game.snakePos"></app-snake>
           </app-game-field>
