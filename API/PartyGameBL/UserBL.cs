@@ -62,5 +62,10 @@ namespace PartyGameBL
         {
             return await _repo.AddScoreHistory(UserId, gameId, score);
         }
+
+        public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
+        {
+            return await _repo.GetTicTacToeGameStatsByUserIdAsync(UserId);
+        }
     }
 }

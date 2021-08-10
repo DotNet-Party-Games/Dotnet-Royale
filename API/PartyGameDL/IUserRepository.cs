@@ -9,10 +9,11 @@ namespace PartyGameDL
         Task<List<ScoreHistory>> GetScoreHistoryByUserIdAsync(int UserId);
         Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId);
         Task<Blackjack> GetBlackJackGameStatsByUserIdAsync(int UserId);
+        Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId);
         Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName,string Password);
         Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password);
         Task<User> GetUserFromUserIdAsync(int userId);
-        Task<List<User>>GetAllUsersAsync();
+        Task<List<User>> GetAllUsersAsync();
         Task<User> AddUserAsync(User p_user);
         Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory);
         Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score);

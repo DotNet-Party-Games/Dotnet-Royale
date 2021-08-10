@@ -49,6 +49,10 @@ namespace PartyGameDL
         {
             return await _context.Snakes.FirstOrDefaultAsync(user=>user.Id == UserId);
         }
+        public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
+        {
+            return await _context.TicTacToes.FirstOrDefaultAsync(User=>User.Id == UserId);
+        }
 
         public async Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName,string Password)
         {

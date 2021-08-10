@@ -10,8 +10,8 @@ using PartyGameDL;
 namespace PartyGameDL.Migrations
 {
     [DbContext(typeof(PartyGamesDBContext))]
-    [Migration("20210805193514_Initial")]
-    partial class Initial
+    [Migration("20210810210907_TicTacToe")]
+    partial class TicTacToe
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,15 +114,33 @@ namespace PartyGameDL.Migrations
                     b.ToTable("Snakes");
                 });
 
-            modelBuilder.Entity("PartyGameModels.User", b =>
+            modelBuilder.Entity("PartyGameModels.TicTacToe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
+                    b.Property<int>("GamesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("WinLossRatio")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicTacToes");
+                });
+
+            modelBuilder.Entity("PartyGameModels.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
