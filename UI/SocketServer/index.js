@@ -26,6 +26,8 @@ io.on('connection',(socket)=>{
        // socket.broadcast.in(data.room).emit('new message',{user : data.user, message : data.message});
         io.in(data.room).emit('new message',{user : data.user, message : data.message});
     });
+
+
 });
  
 
