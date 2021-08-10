@@ -68,5 +68,24 @@ namespace PartyGameDL
             return await _context.Users.FirstOrDefaultAsync(user => user.Id == userId);
 
         }
+
+        public async Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            await _context.ScoreHistories.AddAsync(p_scoreHistory);
+            await _context.SaveChangesAsync();
+            return p_scoreHistory;
+        }
+
+        //In case we cant pass scorehistory object can possibly do this instead.
+        public async Task<ScoreHistory> AddScoreHistory(int UserId, int GameId, float score)
+        {
+            ScoreHistory scoreHistory = new ScoreHistory();
+            scoreHistory.UserId = UserId;
+            scoreHistory.GamesId = GameId;
+            scoreHistory.Score = score;
+            await _context.ScoreHistories.AddAsync(scoreHistory);
+            await _context.SaveChangesAsync();
+            return scoreHistory;
+        }
     }
 }

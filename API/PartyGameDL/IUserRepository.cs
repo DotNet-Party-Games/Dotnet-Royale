@@ -14,5 +14,8 @@ namespace PartyGameDL
         Task<User> GetUserFromUserIdAsync(int userId);
         Task<List<User>>GetAllUsersAsync();
         Task<User> AddUserAsync(User p_user);
+        Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory);
+        Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score);
+
     }
 }

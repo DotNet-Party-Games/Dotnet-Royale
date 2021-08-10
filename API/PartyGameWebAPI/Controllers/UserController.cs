@@ -67,6 +67,12 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _userBL.GetUserIdFromUserNameAndPasswordAsync(p_user.UserName, p_user.Password));
         }
 
+        [HttpPost("addScore")]
+        public async Task<IActionResult> AddScoreHistory([FromBody] ScoreHistory p_scoreHistory)
+        {
+            return Created("api/User/addScore", await _userBL.AddScoreHistory(p_scoreHistory));
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> AddUser([FromBody] User p_user)
         {

@@ -28,6 +28,13 @@ export class PartygameService {
     userName:null,
     password:null
   };
+  currentScore: IScore = {
+    id:null,
+    gamesId:null,
+    userId:null,
+    score:null,
+    time:null
+  };
   private messageSource = new BehaviorSubject("default message");
   currentMessage = this.messageSource.asObservable();
 
@@ -63,6 +70,15 @@ export class PartygameService {
 
   }
 
+  //AddScore Methoid
+  addscore(model: any){
+    return this.http.post(this.url+'user/addScore',model).pipe(
+      map((response: any)=>{
+        this.currentScore
+      })
+
+    )
+  }
 
   //Register method
   register(model: any) {
