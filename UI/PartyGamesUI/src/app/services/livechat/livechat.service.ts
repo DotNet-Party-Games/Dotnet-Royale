@@ -8,7 +8,7 @@ import { io, Socket } from 'socket.io-client';
 export class LivechatService {
 
   private socket: Socket;
-  private url='http://localhost:3001'; // your server local path
+  private url=''; // your server local path
 
   constructor() { 
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
