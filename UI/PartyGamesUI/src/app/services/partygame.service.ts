@@ -29,11 +29,9 @@ export class PartygameService {
     password:null
   };
   currentScore: IScore = {
-    id:null,
     gamesId:null,
     userId:null,
     score:null,
-    time:null
   };
   private messageSource = new BehaviorSubject("default message");
   currentMessage = this.messageSource.asObservable();
@@ -47,37 +45,11 @@ export class PartygameService {
   }
   loggedIn(){
     return !!(sessionStorage.getItem('userId') && sessionStorage.getItem('userName') && sessionStorage.getItem('userPassword'));
-
-//   login(model: FormGroup) {
-//     var work = this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
-//       map((response: any)=>{
-//         this.currentUser.UserName = response.UserName;
-//         this.currentUser.Password =response.Password;
-//         this.userId = response.Id;
-//         this.username = response.UserName;
-//       })
-//     )
-//     console.log ("current user: " + this.currentUser.UserName + " " + this.username);
-//     //this shoud work given that the login mapping above works however, it binds to null
-//     this.changeMessage(this.username);
-//     return this.currentUser;
-//   }
-//   //sends current user to parent event (who subscribes)
-//   changeMessage(message: string)
-//   {
-//     console.log("This was successful");
-//     this.messageSource.next(message);
-
   }
 
   //AddScore Methoid
-  addscore(model: any){
-    return this.http.post(this.url+'user/addScore',model).pipe(
-      map((response: any)=>{
-        this.currentScore
-      })
-
-    )
+  addscore(model: any): Observable<IScore>{
+    return this.http.post<IScore>(this.url+'user/addScore', model);
   }
 
   //Register method
