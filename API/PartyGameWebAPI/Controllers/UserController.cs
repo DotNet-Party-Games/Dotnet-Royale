@@ -70,7 +70,14 @@ namespace PartyGameWebAPI.Controllers
         [HttpPost("addScore")]
         public async Task<IActionResult> AddScoreHistory([FromBody] ScoreHistory p_scoreHistory)
         {
+
             return Created("api/User/addScore", await _userBL.AddScoreHistory(p_scoreHistory));
+        }
+
+        [HttpPost("updateSnakeStats")]
+        public async Task<IActionResult> UpdateSnakeStats([FromBody] ScoreHistory p_scoreHistory)
+        {
+            return Created("api/User/updateSnakeStats",await _userBL.UpdateSnakeGameStatsByScoreHistory(p_scoreHistory));
         }
 
         [HttpPost("add")]
