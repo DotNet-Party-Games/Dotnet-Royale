@@ -37,6 +37,10 @@ io.on('connection',(socket)=>{
        // socket.broadcast.in(data.room).emit('new message',{user : data.user, message : data.message});
         io.in(data.room).emit('new message',{user : data.user, message : data.message});
     });
+    socket.on('gamestate', (data) =>{
+        console.log("gamestate data: " + JSON.stringify(data));
+        io.in(data.room).emit('new gamestate', {GameState: data.GameState});
+    });
     
     socket.on('leave', (data) => {
         // add joined user to the userlist
