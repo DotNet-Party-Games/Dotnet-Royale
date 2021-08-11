@@ -240,6 +240,7 @@ export class LayoutComponent implements OnInit {
           this.finalScore.score = (game.snakePos.length * 100) -100;
           this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
           this.partyGameApi.addscore(this.finalScore).subscribe();
+          this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
           this.lost$.next();
         }
       });
