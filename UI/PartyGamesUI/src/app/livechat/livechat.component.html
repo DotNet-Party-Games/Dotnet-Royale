@@ -18,7 +18,11 @@
   </form>
 </div>
  -->
-
+ <div class="card bg-dark">
+  <div class="card-header text-center" style="background-color: #111;">
+    <h4>Live Chat</h4>
+  </div>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2">
@@ -31,7 +35,7 @@
                 <i class="fas fa-comments" > {{game.name}}</i>
 
                 </div>
-            </div>        
+            </div>
         </div>
         <div class="col-md-9 scroller">
             <div class="chat-container">
@@ -39,7 +43,7 @@
 
                     <!-- chat header -->
                     <div class="chat-header">
-                        <i class="fas fa-comments" > {{selectedGame.name}}</i> 
+                        <i class="fas fa-comments" > {{selectedGame.name}}</i>
                     </div>
 
                     <!-- chat body -->
@@ -48,7 +52,7 @@
                         [ngClass]= "item?.user === currentUser?.userName && 'same-user'"
                         >
                         <p class="message-container">{{item?.message}}</p>
-                    </div>                    
+                    </div>
                 </div>
                 <!-- chat footer -->
                 <div class="chat-footer">

@@ -1,15 +1,17 @@
-<div class="card bg-dark">
-  <div class="card-header text-center">
+<div class="card bg-dark" style="height: 50%;">
+  <div class="card-header text-center" style="background-color: #111;">
     <h4>Leaderboard</h4>
   </div>
-  <table class="table table-sm">
-    <tr *ngFor = "let leader of leaders" class="text-white bg-dark">
-      <td>
-        <i class="fas fa-user-circle mr-2"></i>{{leader.username | uppercase}}
-      </td>
-      <td>
-        {{leader.score}}
-      </td>
-    </tr>
-  </table>
+  <div class="m-2">
+    <table class="table table-sm">
+      <tr *ngFor = "let leader of leaders" class="text-white bg-dark">
+        <td>
+          <i class="fas fa-user-circle mr-2"></i>{{leader.username | uppercase}}
+        </td>
+        <td>
+          {{leader.score}}
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
