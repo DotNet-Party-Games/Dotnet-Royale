@@ -22,19 +22,24 @@ export class RegisterComponent implements OnInit {
   
   // this method call the service register method to add a user
   // parm: registerUserGroup 
-  onSubmit(registerUserGroup:FormGroup) {
-    const registerObserver ={
-      next:x => alert('user created'),
-      error: err => console.log(err)
-    }    
-    this.partyGameApi.register(registerUserGroup.value).subscribe(registerObserver);
-    // calling the redirect method to redirect to home page 
-    this.redirect("layout");
+  onSubmit(registerUserGroup:FormGroup) {  
+    this.partyGameApi.register(registerUserGroup.value).subscribe(res=>{
+      console.log(res)
+      if(res){
+        sessionStorage.setItem('userId',res.id.toString())
+        sessionStorage.setItem('userName',res.password.toString())
+        sessionStorage.setItem('userPassword',res.userName.toString())
+        // calling the redirect method to redirect to home page 
+        this.redirect('/layout');
+      }
+    });    
   }
+
   //redirection method
   redirect(page:string) {
     this.router.navigate([page]);
   }
+
   //cancel registration
   cancel(page:string)
   {

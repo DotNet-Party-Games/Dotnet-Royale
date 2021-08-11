@@ -41,13 +41,14 @@ export class LivechatComponent implements OnInit {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = localStorage.getItem('userPassword');
+    this.selectGameRoomHandler();
     
   }
 
-  selectGameRoomHandler(gameName:string):void
+  selectGameRoomHandler():void
   {
-    this.selectedGame = this.gameList.find(game=>game.name === gameName);
-    this.roomId = this.selectedGame.id.toString();
+    // this.selectedGame = this.gameList.find(game=>game.name === gameName);
+    this.roomId = '1';//this.selectedGame.id.toString();
     if(this.roomId){
     // this.storageArray = this.livechatService.getStorage();
     // const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
@@ -68,7 +69,7 @@ export class LivechatComponent implements OnInit {
     //   this.messageArray = this.storageArray[storeIndex].chats;
     // }
 
-    this.join(this.selectedGame.name,this.roomId);
+    this.join(this.currentUser.userName,this.roomId);
   }
 
   join(username:string, roomId:string):void
