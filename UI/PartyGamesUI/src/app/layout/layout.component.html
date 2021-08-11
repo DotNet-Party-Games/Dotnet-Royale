@@ -1,12 +1,13 @@
-<div class="row mt-2">
+<div class="row mt-2" >
   <div class="col-3">
-    <div class="bg-dark text-white overflow-auto" style="height: 450px">
+    <div class="h-100 text-white">
       <!-- left components -->
       <app-gamelist></app-gamelist>
+      <app-leaderboard></app-leaderboard>
     </div>
   </div>
   <div class="col">
-    <div class="bg-dark text-white overflow-auto" style="height: 450px" [ngSwitch]="mainScreen" >
+    <div class="bg-dark text-white overflow-auto" style="height: 700px" [ngSwitch]="mainScreen" >
       <!-- main components -->
       <div *ngSwitchCase="'Snake'" style="height: 450px">
         <!--- This is Snake Game-->
@@ -32,7 +33,7 @@
         <!-- This is TicTac Toe Game -->
         <app-board></app-board>
         <!-- End of TicTacToe Game-->
-        <div class="card text-center bg-dark" style="height: 50px">
+        <div class="card text-center bg-dark">
           <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
             GO BACK TO MAIN SCREEN
           </div>
@@ -41,27 +42,19 @@
       <div *ngSwitchDefault>
         <!-- This is Spin for match making -->
         <app-match></app-match>
-        <div class="card text-center bg-dark" style="height: 50px">
-          <div (click) = "showGame()" class="btn btn-primary card-footer bg-primary">
+        <div class="align-items-end text-center">
+          <button (click) = "showGame()" class="btn btn-primary">
             START GAME
-          </div>
+          </button>
         </div>
       </div>
       <!-- <app-board></app-board> -->
     </div>
   </div>
   <div class="col-3">
-    <div class="bg-dark text-white overflow-auto" style="height: 450px">
+    <div class="h-100 bg-dark text-white overflow-auto">
       <!-- right components -->
-      <app-leaderboard></app-leaderboard>
-    </div>
-  </div>
-</div>
-<div class="row mt-2">
-  <div class="col">
-    <div class="bg-dark text-white" style="height: 200px;">
       <app-livechat></app-livechat>
     </div>
   </div>
 </div>
-
