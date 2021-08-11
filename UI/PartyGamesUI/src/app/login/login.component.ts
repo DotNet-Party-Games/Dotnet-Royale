@@ -54,18 +54,6 @@ message:string;
       }
 
       ));
-
-
-//     this.partyGameApi.login(loginUserGroup.value);
-//     console.log("This should be the name from the service:" + this.message);
-//     if (this.message == "default message")
-//     {
-//       this.redirect('Login');
-//     }
-//     else{
-//       this.redirect('layout');
-//     }
-
   }
 
   //redirect to layout page after login

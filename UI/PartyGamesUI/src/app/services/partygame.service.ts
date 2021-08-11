@@ -14,20 +14,7 @@ export class PartygameService {
   // url referencing the WebAPI
   private url = "https://dotnetpartygames.azurewebsites.net/";
 
-
-  loggedUser:ILoggedUser = {
-    id:null,
-    userName:null,
-    password:null
-  }
  isLoggedIn:boolean;
-  userId:number;
-  username: string;
-  currentUser:IUser = {
-    id:null,
-    userName:null,
-    password:null
-  };
   currentScore: IScore = {
     id:null,
     gamesId:null,
@@ -40,34 +27,13 @@ export class PartygameService {
 
   //service constructor
   constructor(private http: HttpClient) { }
-  //login method
 
+  //login method
   login(model: FormGroup):Observable<ILoggedUser> {
     return this.http.post<ILoggedUser>(this.url +'user/getuserfromusernameandpassword/', model);
   }
   loggedIn(){
     return !!(sessionStorage.getItem('userId') && sessionStorage.getItem('userName') && sessionStorage.getItem('userPassword'));
-
-//   login(model: FormGroup) {
-//     var work = this.http.post(this.url +'user/getuserfromusernameandpassword/', model).pipe(
-//       map((response: any)=>{
-//         this.currentUser.UserName = response.UserName;
-//         this.currentUser.Password =response.Password;
-//         this.userId = response.Id;
-//         this.username = response.UserName;
-//       })
-//     )
-//     console.log ("current user: " + this.currentUser.UserName + " " + this.username);
-//     //this shoud work given that the login mapping above works however, it binds to null
-//     this.changeMessage(this.username);
-//     return this.currentUser;
-//   }
-//   //sends current user to parent event (who subscribes)
-//   changeMessage(message: string)
-//   {
-//     console.log("This was successful");
-//     this.messageSource.next(message);
-
   }
 
   //AddScore Methoid
@@ -81,18 +47,8 @@ export class PartygameService {
   }
 
   //Register method
-  register(model: any) {
-    return this.http.post(this.url+'user/add',model).pipe(
-      map((response: any)=>{
-        this.loggedUser.userName = response.UserName;
-        this.loggedUser.password =response.Password;
-        this.loggedUser = response.Id;
-        return this.loggedUser;
-      })
-    )
-  }
-  register1(model: any) {
-    return this.http.post(this.url+'user/add',model);
+  register(model: any):Observable<ILoggedUser> {
+    return this.http.post<ILoggedUser>(this.url+'user/add',model);
   }
   // service method for login an user
   getUserByUserNameAndPassword(name: string, password: string) : Observable<IUser>

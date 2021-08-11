@@ -45,29 +45,30 @@
                     <!-- chat body -->
                     <div class="chat-body scrollspy-example" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0"  tabindex="0">
                         <div *ngFor="let item of messageArray"
-                        [ngClass]= "item?.user === currentUser?.userName && 'same-user'"
-                        >
-                        <p class="message-container">{{item?.message}}</p>
-                    </div>                    
-                </div>
-                <!-- chat footer -->
-                <div class="chat-footer">
-                    <div class="row">
-                        <div class="col-md-10">
-                            <div class="form-group mb-0">
-                                <input type="text"
-                                        placeholder="type a message"
-                                        class="form-control"
-                                        [(ngModel)]="messageText"
-                                        (keyup)="$event.keyCode === 13 && sendMessage()"
-                                />
+                            [ngClass]= "item?.user === currentUser?.userName && 'same-user'"
+                            >
+                            <p class="message-container">{{item?.user}}</p>
+                            <p class="message-container">{{item?.message}}</p>
+                        </div>                    
+                    </div>
+                    <!-- chat footer -->
+                    <div class="chat-footer">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="form-group mb-0">
+                                    <input type="text"
+                                            placeholder="type a message"
+                                            class="form-control"
+                                            [(ngModel)]="messageText"
+                                            (keyup)="$event.keyCode === 13 && sendMessage()"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center align-self-center">
+                                <button class="btn btn-success fas fa-paper-plane" (click)="sendMessage()"> Send</button>
                             </div>
                         </div>
-                        <div class="col-md-2 text-center align-self-center">
-                            <button class="btn btn-success fas fa-paper-plane" (click)="sendMessage()"> Send</button>
-                        </div>
                     </div>
-                </div>
                 </ng-container>
             </div>
         </div>
