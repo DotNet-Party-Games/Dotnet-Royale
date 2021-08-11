@@ -31,7 +31,7 @@ body {
 .chat-container{
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    height: 170px;
+    height: 700px;
     position: relative;
     overflow: hidden;
     overflow: hidden;
@@ -48,27 +48,29 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    height: 150px;
+    height: 80%;
     padding: 10px;
     overflow-y: auto;
     
     
+    
 }
 .message-container{
-    background-color: rgb(193, 219, 200);
+    background-color: rgb(54, 54, 54);
     padding: 2px;
     border-radius:5px ;
     width: fit-content;
     max-width: 90%;
+    margin: 2px;    
     margin-bottom: 5px;
-    color: rgb(20, 17, 20);
+    color: rgb(224, 235, 238);
 }
 .same-user{
     display: flex;
     justify-content: flex-end ;
 }
 .chat-footer{
-    position: absolute;
+    position: relative;
     bottom: 0;
     left: 0;
     right: 0;

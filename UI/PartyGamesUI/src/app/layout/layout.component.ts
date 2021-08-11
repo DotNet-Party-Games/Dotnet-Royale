@@ -86,7 +86,7 @@ export class LayoutComponent implements OnInit {
             }
           case "ArrowDown":
           case "s":
-            if (this.snakeDirection == 0) { 
+            if (this.snakeDirection == 0) {
               return Direction.UP;
             }
             else {

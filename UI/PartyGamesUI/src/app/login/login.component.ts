@@ -43,26 +43,14 @@ message:string;
         console.log(res)
         if(res){
           sessionStorage.setItem('userId',res.id.toString())
-          sessionStorage.setItem('userName',res.password.toString())
-          sessionStorage.setItem('userPassword',res.userName.toString())
+          sessionStorage.setItem('userName',res.userName.toString())
+          sessionStorage.setItem('userPassword',res.password.toString())
           this.redirect('/layout');
         }else{
           this.error="Username or password invalid"
         }
       }
       ));
-
-
-//     this.partyGameApi.login(loginUserGroup.value);
-//     console.log("This should be the name from the service:" + this.message);
-//     if (this.message == "default message")
-//     {
-//       this.redirect('Login');
-//     }
-//     else{
-//       this.redirect('layout');
-//     }
-
   }
 
   //redirect to layout page after login

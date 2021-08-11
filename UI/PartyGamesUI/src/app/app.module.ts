@@ -25,6 +25,7 @@ import { GameFieldComponent } from './snake/game-field/game-field.component';
 
 import { NgxWheelModule } from 'ngx-wheel';
 import { MatchComponent } from './match/match.component';
+import { BlackjackComponent } from './blackjack/blackjack.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { MatchComponent } from './match/match.component';
     BoardComponent,
     MatchComponent,
     SnakeComponent,
-    GameFieldComponent
+    GameFieldComponent,
+    BlackjackComponent
   ],
   imports: [
     BrowserModule,

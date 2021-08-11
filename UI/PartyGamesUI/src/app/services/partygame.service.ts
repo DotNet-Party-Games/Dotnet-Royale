@@ -14,20 +14,7 @@ export class PartygameService {
   // url referencing the WebAPI
   private url = "https://dotnetpartygames.azurewebsites.net/";
 
-
-  loggedUser:ILoggedUser = {
-    id:null,
-    userName:null,
-    password:null
-  }
  isLoggedIn:boolean;
-  userId:number;
-  username: string;
-  currentUser:IUser = {
-    id:null,
-    userName:null,
-    password:null
-  };
   currentScore: IScore = {
     gamesId:null,
     userId:null,
@@ -38,8 +25,8 @@ export class PartygameService {
 
   //service constructor
   constructor(private http: HttpClient) { }
-  //login method
 
+  //login method
   login(model: FormGroup):Observable<ILoggedUser> {
     return this.http.post<ILoggedUser>(this.url +'user/getuserfromusernameandpassword/', model);
   }
@@ -53,18 +40,8 @@ export class PartygameService {
   }
 
   //Register method
-  register(model: any) {
-    return this.http.post(this.url+'user/add',model).pipe(
-      map((response: any)=>{
-        this.loggedUser.userName = response.UserName;
-        this.loggedUser.password =response.Password;
-        this.loggedUser = response.Id;
-        return this.loggedUser;
-      })
-    )
-  }
-  register1(model: any) {
-    return this.http.post(this.url+'user/add',model);
+  register(model: any):Observable<ILoggedUser> {
+    return this.http.post<ILoggedUser>(this.url+'user/add',model);
   }
   // service method for login an user
   getUserByUserNameAndPassword(name: string, password: string) : Observable<IUser>
