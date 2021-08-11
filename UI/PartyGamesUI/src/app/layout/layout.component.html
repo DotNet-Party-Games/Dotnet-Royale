@@ -7,9 +7,9 @@
     </div>
   </div>
   <div class="col">
-    <div class="bg-dark text-white overflow-auto" style="height: 700px" [ngSwitch]="mainScreen" >
+    <div class="h-100 bg-dark text-white overflow-auto" [ngSwitch]="mainScreen" >
       <!-- main components -->
-      <div *ngSwitchCase="'Snake'" style="height: 450px">
+      <div *ngSwitchCase="'Snake'" class="h-100">
         <!--- This is Snake Game-->
         <ng-container *ngIf="game$ | async as game">
           <div style= "float:left;">
@@ -52,7 +52,7 @@
     </div>
   </div>
   <div class="col-3">
-    <div class="h-100 bg-dark text-white overflow-auto">
+    <div class="h-100 bg-dark text-white">
       <!-- right components -->
       <app-livechat></app-livechat>
     </div>
