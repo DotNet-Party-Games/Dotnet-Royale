@@ -19,7 +19,7 @@ body {
     display: flex;
     padding: 10%;
     cursor: pointer;
-    
+
 }
 .game-card:active{
     background-color: teal;
@@ -51,9 +51,9 @@ body {
     height: 80%;
     padding: 10px;
     overflow-y: auto;
-    
-    
-    
+
+
+
 }
 .message-container{
     background-color: rgb(54, 54, 54);
@@ -61,7 +61,7 @@ body {
     border-radius:5px ;
     width: fit-content;
     max-width: 90%;
-    margin: 2px;    
+    margin: 2px;
     margin-bottom: 5px;
     color: rgb(224, 235, 238);
 }
@@ -84,7 +84,7 @@ body {
     border-radius: 20px;
     font-size: 1rem;
     color: black;
-    
+
 }
 
 
@@ -94,7 +94,7 @@ body {
 
 
 
-/* 
+/*
 body {
     background: #dbd4d4;
     font-family: 'Roboto', sans-serif;
