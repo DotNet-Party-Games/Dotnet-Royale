@@ -9,25 +9,27 @@
   <div class="col">
     <div class="bg-dark text-white overflow-auto" style="height: 700px" [ngSwitch]="mainScreen" >
       <!-- main components -->
-      <div *ngSwitchCase="'Snake'">
+      <div *ngSwitchCase="'Snake'" style="height: 450px">
         <!--- This is Snake Game-->
         <ng-container *ngIf="game$ | async as game">
-          <div class = "btn-toolbar">
-          <h5>Points: {{game.snakePos.length - 1}}</h5>
-          <h5 *ngIf="game.lost" >Game Over! <button (click)="newGame()">Try Again?</button></h5>
-        </div>
+          <div style= "float:left;">
+          <h5>Points: {{(game.snakePos.length * 100) - 100}}</h5>
+          </div>
+          <div style="float:right;">
+          <h5 *ngIf="game.lost">Game Over! <button (click)="newGame()">Rematch?</button><button (click) = "resetScreen()">Quit</button></h5>
+          </div>
           <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
             <app-snake [pos]="game.snakePos"></app-snake>
           </app-game-field>
         </ng-container>
         <!-- End of Snake Game-->
-        <div class="card text-center bg-dark">
+        <!-- <div class="card text-center bg-dark" style="height: 50px">
           <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
             GO BACK TO MAIN SCREEN
           </div>
-        </div>
+        </div> -->
       </div>
-      <div *ngSwitchCase="'Tic-Tac-Toe'">
+      <div *ngSwitchCase="'TicTacToe'">
         <!-- This is TicTac Toe Game -->
         <app-board></app-board>
         <!-- End of TicTacToe Game-->

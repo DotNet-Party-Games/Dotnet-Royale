@@ -38,8 +38,6 @@ message:string;
   }
 
   onSubmit(loginUserGroup:FormGroup) {
-
-
     console.log(this.partyGameApi.login(loginUserGroup.value)
     .subscribe(res=>{
         console.log(res)
@@ -52,7 +50,6 @@ message:string;
           this.error="Username or password invalid"
         }
       }
-
       ));
 
 

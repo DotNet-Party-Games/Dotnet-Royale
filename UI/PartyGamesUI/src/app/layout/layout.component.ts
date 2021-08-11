@@ -17,6 +17,7 @@ interface GameState {
 }
 import { PartygameService } from '../services/partygame.service';
 import { DataService } from '../services/data.service';
+import { IScore } from '../services/score';
 
 enum Direction {
   UP,
@@ -37,7 +38,11 @@ enum FieldType {
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-
+  finalScore: IScore = {
+    gamesId:null,
+    userId:null,
+    score:null
+  }
   games: IGame[];
   currentGameId: number;
   mainScreen: string;
@@ -62,7 +67,7 @@ export class LayoutComponent implements OnInit {
       map(event => event.key),
       distinctUntilChanged()
     );
-    this.tick$ = interval(200);
+    this.tick$ = interval(125);
     this.direction$.subscribe((currentDirection) =>
     this.snakeDirection = currentDirection);
     const direction = this.keyDown$.pipe(
@@ -70,9 +75,12 @@ export class LayoutComponent implements OnInit {
         switch (key) {
           case "ArrowUp":
           case "w":
+            //if the snake is already going down
             if (this.snakeDirection == 1) {
+              //go down
               return Direction.DOWN;
              }
+             //if the snake isnt going down, it is allowed to go directly up
             else {
             return Direction.UP;
             }
@@ -218,6 +226,7 @@ export class LayoutComponent implements OnInit {
               break;
             case FieldType.SNAKE:
               game.lost = true;
+              break;
           }
 
           return game;
@@ -227,6 +236,10 @@ export class LayoutComponent implements OnInit {
       .subscribe(game => {
         this.game$.next(game);
         if (game.lost) {
+          this.finalScore.gamesId = 1;
+          this.finalScore.score = (game.snakePos.length * 100) -100;
+          this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
+          this.partyGameApi.addscore(this.finalScore).subscribe();
           this.lost$.next();
         }
       });
