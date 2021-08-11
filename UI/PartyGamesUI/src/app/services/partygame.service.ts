@@ -16,11 +16,9 @@ export class PartygameService {
 
  isLoggedIn:boolean;
   currentScore: IScore = {
-    id:null,
     gamesId:null,
     userId:null,
     score:null,
-    time:null
   };
   private messageSource = new BehaviorSubject("default message");
   currentMessage = this.messageSource.asObservable();
@@ -37,13 +35,8 @@ export class PartygameService {
   }
 
   //AddScore Methoid
-  addscore(model: any){
-    return this.http.post(this.url+'user/addScore',model).pipe(
-      map((response: any)=>{
-        this.currentScore
-      })
-
-    )
+  addscore(model: any): Observable<IScore>{
+    return this.http.post<IScore>(this.url+'user/addScore', model);
   }
 
   //Register method

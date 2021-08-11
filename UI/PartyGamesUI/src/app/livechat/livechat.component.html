@@ -1,54 +1,26 @@
-<!-- <div class="card bg-dark"> -->
-  <!--<div class="d-flex flex-row justify-content-between p-3 adiv text-white">
-    <i class="fas fa-chevron-left"></i> <span class="pb-3">Live chat</span> <i class="fas fa-times"></i>
-  </div>-->
-  <!-- <div class="d-flex flex-row p-3"> <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30" height="30">
-      <div class="chat ml-2 p-3">Hello and thankyou for visiting birdlymind. Please click the video above</div>
+<div class="card bg-dark">
+  <div class="card-header text-center" style="background-color: #111;">
+    <h4 class="fas fa-comments"> Live Chat</h4>
   </div>
-  <div class="d-flex flex-row p-3">
-      <div class="bg-white mr-2 p-3"><span class="text-muted">Hello and thankyou for visiting birdlynind.</span></div> <img src="https://img.icons8.com/color/48/000000/circled-user-male-skin-type-7.png" width="30" height="30">
-  </div>
-  <form action="">
-      <div class="form-group px-3 row">
-          <div class="col-10">
-              <textarea class="form-control" rows="2" placeholder="Type your message"></textarea>
-          </div>
-          <div class="col-2"><button class="btn btn-success fas fa-paper-plane"></button></div>
-      </div>
-  </form>
 </div>
- -->
-
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="game-list-card">
-                <div class="game-card"
-                    [ngClass]="game?.id ===selectedGame?.id && 'active'"
-                    *ngFor = "let game of gameList"
-                    (click)="selectGameRoomHandler(game?.name)">
-
-                <i class="fas fa-comments" > {{game.name}}</i>
-
-                </div>
-            </div>        
-        </div>
-        <div class="col-md-9 scroller">
+        <div class="row-md-9 scroller">
             <div class="chat-container">
-                <ng-container *ngIf="selectedGame">
+                <ng-container >
 
                     <!-- chat header -->
                     <div class="chat-header">
-                        <i class="fas fa-comments" > {{selectedGame.name}}</i> 
+                        <i class="fas fa-comments" > Global</i>
                     </div>
 
                     <!-- chat body -->
-                    <div class="chat-body scrollspy-example" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0"  tabindex="0">
+                    <div class="chat-body scroller"  data-bs-offset="0"  tabindex="0">
                         <div *ngFor="let item of messageArray"
                             [ngClass]= "item?.user === currentUser?.userName && 'same-user'"
                             >
-                            <p class="message-container">{{item?.user}}</p>
-                            <p class="message-container">{{item?.message}}</p>
+                            <p class="message-container">{{item?.message}}<br><span style="float: right; color: rgb(194, 145, 194);">{{item?.user}}</span></p>
+                            <p style="color: black;"></p>
+                            
                         </div>                    
                     </div>
                     <!-- chat footer -->
@@ -64,13 +36,13 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-md-2 text-center align-self-center">
-                                <button class="btn btn-success fas fa-paper-plane" (click)="sendMessage()"> Send</button>
+                            <div class="col-md-1 text-center align-self-center">
+                                <button class="btn btn-success fas fa-paper-plane" (click)="sendMessage()"></button>
                             </div>
                         </div>
                     </div>
                 </ng-container>
             </div>
         </div>
-    </div>
+    
 </div>

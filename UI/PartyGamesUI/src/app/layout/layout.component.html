@@ -1,36 +1,39 @@
-<div class="row mt-2">
+<div class="row mt-2" >
   <div class="col-3">
-    <div class="bg-dark text-white overflow-auto" style="height: 450px">
+    <div class="h-100 text-white">
       <!-- left components -->
       <app-gamelist></app-gamelist>
+      <app-leaderboard></app-leaderboard>
     </div>
   </div>
   <div class="col">
-    <div class="bg-dark text-white overflow-auto" style="height: 450px" [ngSwitch]="mainScreen" >
+    <div class="h-100 bg-dark text-white overflow-auto" [ngSwitch]="mainScreen" >
       <!-- main components -->
-      <div *ngSwitchCase="'Snake'" style="height: 400px">
+      <div *ngSwitchCase="'Snake'" class="h-100">
         <!--- This is Snake Game-->
         <ng-container *ngIf="game$ | async as game">
-          <div class = "btn-toolbar">
-          <h5>Points: {{game.snakePos.length - 1}}</h5>
-          <h5 *ngIf="game.lost" >Game Over! <button (click)="newGame()">Try Again?</button></h5>
-        </div>
+          <div style= "float:left;">
+          <h5>Points: {{(game.snakePos.length * 100) - 100}}</h5>
+          </div>
+          <div style="float:right;">
+          <h5 *ngIf="game.lost">Game Over! <button (click)="newGame()">Rematch?</button><button (click) = "resetScreen()">Quit</button></h5>
+          </div>
           <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
             <app-snake [pos]="game.snakePos"></app-snake>
           </app-game-field>
         </ng-container>
         <!-- End of Snake Game-->
-        <div class="card text-center bg-dark" style="height: 50px">
+        <!-- <div class="card text-center bg-dark" style="height: 50px">
           <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
             GO BACK TO MAIN SCREEN
           </div>
-        </div>
+        </div> -->
       </div>
-      <div *ngSwitchCase="'Tic-Tac-Toe'">
+      <div *ngSwitchCase="'TicTacToe'">
         <!-- This is TicTac Toe Game -->
         <app-board></app-board>
         <!-- End of TicTacToe Game-->
-        <div class="card text-center bg-dark" style="height: 50px">
+        <div class="card text-center bg-dark">
           <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
             GO BACK TO MAIN SCREEN
           </div>
@@ -39,27 +42,19 @@
       <div *ngSwitchDefault>
         <!-- This is Spin for match making -->
         <app-match></app-match>
-        <div class="card text-center bg-dark" style="height: 50px">
-          <div (click) = "showGame()" class="btn btn-primary card-footer bg-primary">
+        <div class="align-items-end text-center">
+          <button (click) = "showGame()" class="btn btn-primary">
             START GAME
-          </div>
+          </button>
         </div>
       </div>
       <!-- <app-board></app-board> -->
     </div>
   </div>
   <div class="col-3">
-    <div class="bg-dark text-white overflow-auto" style="height: 450px">
+    <div class="h-100 bg-dark text-white">
       <!-- right components -->
-      <app-leaderboard></app-leaderboard>
-    </div>
-  </div>
-</div>
-<div class="row mt-2">
-  <div class="col">
-    <div class="bg-dark text-white" style="height: 200px;">
       <app-livechat></app-livechat>
     </div>
   </div>
 </div>
-

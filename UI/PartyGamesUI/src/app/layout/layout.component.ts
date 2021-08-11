@@ -17,6 +17,7 @@ interface GameState {
 }
 import { PartygameService } from '../services/partygame.service';
 import { DataService } from '../services/data.service';
+import { IScore } from '../services/score';
 
 enum Direction {
   UP,
@@ -37,7 +38,11 @@ enum FieldType {
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-
+  finalScore: IScore = {
+    gamesId:null,
+    userId:null,
+    score:null
+  }
   games: IGame[];
   currentGameId: number;
   mainScreen: string;
@@ -62,7 +67,7 @@ export class LayoutComponent implements OnInit {
       map(event => event.key),
       distinctUntilChanged()
     );
-    this.tick$ = interval(200);
+    this.tick$ = interval(125);
     this.direction$.subscribe((currentDirection) =>
     this.snakeDirection = currentDirection);
     const direction = this.keyDown$.pipe(
@@ -70,16 +75,18 @@ export class LayoutComponent implements OnInit {
         switch (key) {
           case "ArrowUp":
           case "w":
-            console.log(this.snakeDirection);
+            //if the snake is already going down
             if (this.snakeDirection == 1) {
+              //go down
               return Direction.DOWN;
              }
+             //if the snake isnt going down, it is allowed to go directly up
             else {
             return Direction.UP;
             }
           case "ArrowDown":
           case "s":
-            if (this.snakeDirection == 0) { 
+            if (this.snakeDirection == 0) {
               return Direction.UP;
             }
             else {
@@ -202,16 +209,13 @@ export class LayoutComponent implements OnInit {
             case FieldType.FOOD:
               game.snakePos = [...game.snakePos, nextField];
               game.food = this.getRandomField(game.width, game.height);
-              console.log("generate food");
               let loop = true;
               while (loop){
                 for (let x = 0; x < game.snakePos.length; x++)
                 {
                   if (game.snakePos[x].x === game.food.x && game.snakePos[x].y === game.food.y)
                   {
-                    console.log("found similar");
                     game.food = this.getRandomField(game.width, game.height);
-                    console.log("regenerate food");
                   }
                   else
                   {
@@ -222,6 +226,7 @@ export class LayoutComponent implements OnInit {
               break;
             case FieldType.SNAKE:
               game.lost = true;
+              break;
           }
 
           return game;
@@ -230,8 +235,11 @@ export class LayoutComponent implements OnInit {
       )
       .subscribe(game => {
         this.game$.next(game);
-        console.log(game.snakePos);
         if (game.lost) {
+          this.finalScore.gamesId = 1;
+          this.finalScore.score = (game.snakePos.length * 100) -100;
+          this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
+          this.partyGameApi.addscore(this.finalScore).subscribe();
           this.lost$.next();
         }
       });

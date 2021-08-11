@@ -1,7 +1,8 @@
-<div class="card bg-dark">
-  <div class="card-header text-center">
+<div class="h-50 card bg-dark overflow-auto">
+  <div class="card-header text-center" style="background-color: #111;">
     <h4>Games</h4>
   </div>
+  <div class="m-2 overflow-auto">
     <div class="accordion accordion-flush" id="accordionFlushExample">
       <div *ngFor = "let game of games; let i = index" class="accordion-item">
         <h5 class="accordion-header" id="flush-headingOne">
@@ -14,4 +15,5 @@
         </div>
       </div>
     </div>
+  </div>
 </div>

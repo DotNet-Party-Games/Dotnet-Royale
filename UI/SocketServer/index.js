@@ -7,6 +7,9 @@ let server = http.createServer(app);
 let socketIO = require('socket.io');
 let io = socketIO(server);
 
+// to store user list in live chat
+var userlist = [];
+
 const port = process.env.PORT ||  3001;
 
 server.listen(port, ()=>{
@@ -16,7 +19,15 @@ server.listen(port, ()=>{
 io.on('connection',(socket)=>{
     console.log('a user connected');
     socket.on('join',(data) =>{
-        console.log('a user joined');
+        console.log('a user joined ');
+        console.log(data);
+
+        // add joined user to the userlist
+        if(userlist.includes(data.user) == false) {
+            userlist.push(data.user);
+        }
+        console.log(userlist);
+
         socket.join(data.room);
         socket.broadcast.to(data.room).emit('user joined');
         
@@ -26,7 +37,17 @@ io.on('connection',(socket)=>{
        // socket.broadcast.in(data.room).emit('new message',{user : data.user, message : data.message});
         io.in(data.room).emit('new message',{user : data.user, message : data.message});
     });
-
+    
+    socket.on('leave', (data) => {
+        // add joined user to the userlist
+        let index = userlist.indexOf(data.user);
+        if(index > -1) {
+            userlist.splice(index, 1);
+        }
+        console.log(userlist);
+        
+        socket.leave(data.room)
+    })
 
 });
  

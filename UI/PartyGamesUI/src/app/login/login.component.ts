@@ -38,21 +38,18 @@ message:string;
   }
 
   onSubmit(loginUserGroup:FormGroup) {
-
-
     console.log(this.partyGameApi.login(loginUserGroup.value)
     .subscribe(res=>{
         console.log(res)
         if(res){
           sessionStorage.setItem('userId',res.id.toString())
-          sessionStorage.setItem('userName',res.password.toString())
-          sessionStorage.setItem('userPassword',res.userName.toString())
+          sessionStorage.setItem('userName',res.userName.toString())
+          sessionStorage.setItem('userPassword',res.password.toString())
           this.redirect('/layout');
         }else{
           this.error="Username or password invalid"
         }
       }
-
       ));
   }
 
