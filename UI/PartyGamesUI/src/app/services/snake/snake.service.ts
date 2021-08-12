@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-
+import {GameState} from '../../layout/layout.component'
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +22,7 @@ export class SnakeService {
     this.socket.emit('gamestate', data);
   }
   getSnakeGameState(): Observable<any>{
-    return new Observable<{GameState: any}>(observer => {
+    return new Observable<{GameState: GameState}>(observer => {
       this.socket.on('new gamestate', (data) => {
         observer.next(data);
       });

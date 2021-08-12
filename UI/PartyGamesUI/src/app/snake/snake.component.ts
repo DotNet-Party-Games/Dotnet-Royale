@@ -8,4 +8,7 @@ import { Component, Input } from "@angular/core";
 export class SnakeComponent {
   @Input()
   pos: { x: number; y: number }[] = [];
+
+  @Input()
+  pos2: { x: number; y: number }[] = [];
 }
