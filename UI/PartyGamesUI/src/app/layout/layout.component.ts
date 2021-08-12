@@ -8,13 +8,13 @@ import {
 } from "rxjs";
 import { distinctUntilChanged, map, takeUntil, tap } from "rxjs/operators";
 import { IGame } from '../services/game';
-
-interface GameState {
+export interface GameState {
   width: number;
   height: number;
   snakePos: { x: number; y: number }[];
   food: { x: number; y: number };
   lost: boolean;
+  snakePos2: {x: number; y: number}[];
 }
 import { PartygameService } from '../services/partygame.service';
 import { DataService } from '../services/data.service';
@@ -22,8 +22,7 @@ import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-
-
+import { io } from 'socket.io-client';
 enum Direction {
   UP,
   DOWN,
@@ -204,6 +203,9 @@ export class LayoutComponent implements OnInit {
     if (game.snakePos.some(pos => pos.x === field.x && pos.y === field.y)) {
       return FieldType.SNAKE;
     }
+    // if (game.snakePos2.some(async(pos) => pos.x === field.x && pos.y === field.y)) {
+    //   return FieldType.SNAKE;
+    // }
     return FieldType.EMPTY;
   }
 
@@ -219,13 +221,14 @@ export class LayoutComponent implements OnInit {
     const height = 33;
     const food = this.getRandomField(width, height);
     const snakePos = [this.getRandomField(width, height)];
-
+    let snakePos2;
     this.game$ = new BehaviorSubject<GameState>({
       food,
       snakePos,
       height,
       width,
-      lost: false
+      lost: false,
+      snakePos2
     });
 
     this.tick$
@@ -235,24 +238,30 @@ export class LayoutComponent implements OnInit {
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
+          
 
-
-           
+           var obj : GameState;
            this.snakeService.getSnakeGameState().subscribe((data: any) => {
-            console.log(data.b);
+            //  var gamestate = any.data[0].snakePos; 
+             snakePos2 =  data.b;
+
             
-             //console.log(this.obj['snakePos']);
-             //console.log(Object.values(this.obj.snakePos));
+            //var object2 = {snakePos: object.Gamestate.snakePos};
+          //  var object3 = object2.snakePos;
+            
+            //console.log("snakePos", JSON.stringify(data, null, 3));
+           //  console.log(object3);
+            
            });
-
-
-
+          console.log(snakePos2);
           switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
+              //game.snakePos2 =[...game.snakePos2.slice(1),nextField];
               break;
             case FieldType.FOOD:
               game.snakePos = [...game.snakePos, nextField];
+             // game.snakePos2= [...game.snakePos2,nextField]
               game.food = this.getRandomField(game.width, game.height);
               let loop = true;
               while (loop){
@@ -262,6 +271,10 @@ export class LayoutComponent implements OnInit {
                   {
                     game.food = this.getRandomField(game.width, game.height);
                   }
+                  // else if(game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
+                  // {
+                  //   game.food = this.getRandomField(game.width,game.height);
+                  // }
                   else
                   {
                     loop = false;
