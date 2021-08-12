@@ -3,11 +3,9 @@ import { IScore } from 'src/app/services/score';
 import { PartygameService } from '../../services/partygame.service';
 import { TicTacToeService } from 'src/app/services/TicTacToe/tic-tac-toe.service';
 import { ILoggedUser } from 'src/app/services/user';
-import * as internal from 'stream';
 import { Subscriber } from 'rxjs';
 import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-board',
