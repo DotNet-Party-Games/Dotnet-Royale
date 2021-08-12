@@ -50,8 +50,8 @@ export class BlackjackComponent implements OnInit {
 
   selectGameRoomHandler(): void
   {
-      this.roomId = '4';
-      this.join(this.currentUser.userName,this.roomId);
+      //this.roomId = '4';
+      //this.join(this.currentUser.userName,this.roomId);
   }
 
   join (username:string, roomId:string):void{

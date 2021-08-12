@@ -10,7 +10,7 @@ import { IGame } from '../services/game';
   templateUrl: './match.component.html',
   styleUrls: ['./match.component.css']
 })
-export class MatchComponent implements OnInit{
+export class MatchComponent implements OnInit {
   //@ViewChild(NgxWheelComponent, { static: false }) wheel;
 
   // seed = [...Array(10).keys()]
@@ -50,6 +50,7 @@ export class MatchComponent implements OnInit{
       this.currentGameId = p_gameId;
     });
   }
+
 
   // reset() {
   //   this.wheel.reset();
