@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -7,17 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidenavComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private data: DataService) { }
 
   ngOnInit(): void {
 
   }
-   openNav():void {
+
+  openNav():void {
     document.getElementById("mySidenav").style.width = "20%";
   }
-  
-   closeNav() {
+
+  closeNav() {
     document.getElementById("mySidenav").style.width = "0";
   }
 
+  home(){
+    this.data.changeGameId(-1);
+    this.router.navigate(['/layout']);
+  }
 }

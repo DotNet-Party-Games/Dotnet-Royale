@@ -67,4 +67,9 @@ export class PartygameService {
     return this.http.get<IUser>(this.url + "User/getUserFromUserId/" + userId);
   }
 
+  getScoreHistoryByUserId(userId: number) : Observable<IScore[]>
+  {
+    return this.http.get<IScore[]>(this.url + "User/getScoreHistoryByUserId/" + userId);
+  }
+
 }

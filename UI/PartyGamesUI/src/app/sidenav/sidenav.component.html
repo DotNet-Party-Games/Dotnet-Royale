@@ -1,8 +1,13 @@
 <div id="mySidenav" class="sidenav" >
-  <a class="closebtn" (click)="closeNav()">&times;</a>
-  <a href="#">User Profile</a>
-  <a href="#">About</a>
-  <a href="#">Contact</a>
+  <a class="btn closebtn" (click)="closeNav()">&times;</a>
+  <a href="#">
+    <button class="btn btn-primary">
+      <i class="fas fa-home" style="color:white; font-size: 2.0rem" (click)="home()"></i>
+    </button>
+  </a>
+  <a href="#" routerLink = "/UserProfile" routerLinkActive="active">User Profile</a>
+  <a href="#" routerLink = "/About" routerLinkActive="active">About</a>
+  <a href="#" routerLink = "/Contact" routerLinkActive="active">Contact</a>
   <!--<app-login></app-login>-->
 </div>
 <span class="btn btn-dark" style="font-size:1.5rem; cursor:pointer" (click)="openNav()">&#9776;</span>
