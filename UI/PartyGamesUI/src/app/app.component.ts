@@ -24,9 +24,14 @@ export class AppComponent {
     sessionStorage.removeItem("userPassword");
     this.router.navigate(['/Login']);
   }
- leave(username:string, roomId:string):void
+
+  leave(username:string, roomId:string):void
   {
     this.livechatService.leaveRoom({user:username, room:roomId});
+  }
+
+  home(){
+    this.router.navigate(['/layout']);
   }
 
 }
