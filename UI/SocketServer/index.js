@@ -38,7 +38,10 @@ io.on('connection',(socket)=>{
         console.log("gamestate data: " + JSON.stringify(data));
         io.in(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
     });
-    
+    socket.on('blackjack', (data)=> {
+        console.log("blackjack data: " + JSON.stringify(data));
+        io.in(data.room).emit('new blackjack',{data})
+    });
     socket.on('leave', (data) => {
         console.log('a user left');  
         let index = userlist.indexOf(data.user);
