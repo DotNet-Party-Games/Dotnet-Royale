@@ -36,12 +36,14 @@
           GO BACK TO MAIN SCREEN
         </div>
       </div>
-      <div *ngSwitchCase="'TicTacToe'">
+      <div *ngSwitchCase="'TicTacToe'" class="h-100">
         <!-- This is TicTac Toe Game -->
-        <app-board></app-board>
+        <div class="text-center" style="height: 93%">
+          <app-board></app-board>
+        </div>
         <!-- End of TicTacToe Game-->
-        <div class="card text-center bg-dark">
-          <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
+        <div class="text-center">
+          <div (click) = "resetScreen()" class="btn btn-primary">
             GO BACK TO MAIN SCREEN
           </div>
         </div>

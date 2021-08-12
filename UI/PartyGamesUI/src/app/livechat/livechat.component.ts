@@ -73,9 +73,8 @@ export class LivechatComponent implements OnInit,OnChanges {
   }
   getConnectedUser(){
     this.livechatService.getUserList().subscribe(userList => {
-      this.UserList=userList,
-      console.log(this.UserList)}
-      );
+      this.UserList=userList
+    });
 
   }
 
