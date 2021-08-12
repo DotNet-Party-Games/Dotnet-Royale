@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import {
   BehaviorSubject,
   fromEvent,
@@ -8,7 +8,7 @@ import {
 } from "rxjs";
 import { distinctUntilChanged, map, takeUntil, tap } from "rxjs/operators";
 import { IGame } from '../services/game';
-interface GameState {
+export interface GameState {
   width: number;
   height: number;
   snakePos: { x: number; y: number }[];
@@ -21,6 +21,8 @@ import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+import { BlackjackComponent } from '../blackjack/blackjack.component';
+import { Console } from 'console';
 
 enum Direction {
   UP,
@@ -222,7 +224,12 @@ export class LayoutComponent implements OnInit {
       width,
       lost: false
     });
-
+    let object2 : GameState;
+           this.snakeService.getSnakeGameState().subscribe((data: any) => {
+             object2 = data;
+            console.log(object2);
+            });
+            //console.log(object2.snakePos.values);
     this.tick$
       .pipe(
         map(tick => {
@@ -230,15 +237,14 @@ export class LayoutComponent implements OnInit {
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
-
-
-           var obj : GameState;
-           this.snakeService.getSnakeGameState().subscribe((data: GameState) => {
-             console.log(data);
-           });
           
 
 
+          //  let object2 : GameState;
+          //  this.snakeService.getSnakeGameState().subscribe((data: GameState) => {
+          //     object2 = data;
+          //     console.log(JSON.stringify(object2));
+          //   });
           switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
