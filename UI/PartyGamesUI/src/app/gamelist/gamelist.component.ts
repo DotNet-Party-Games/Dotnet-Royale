@@ -11,7 +11,7 @@ import { DataService } from '../services/data.service';
 export class GamelistComponent implements OnInit {
 
   games: IGame[];
-  currentGameId: number;
+  //currentGameId: number;
 
   constructor(private partyGameApi: PartygameService, private data: DataService ) {}
 

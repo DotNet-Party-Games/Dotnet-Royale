@@ -28,4 +28,20 @@
     <button (click) = "[reset(), spin()]" class="btn btn-warning">SPIN</button>
   </div> -->
 
+  <div class="container">
+    <div class="bg-secondary">
+      <div class="m-2 overflow-auto">
+        <table class="table table-sm">
+          <thead class="text-white">Joined Users</thead>
+          <tr *ngFor = "let user of joinedUsers" class="text-white bg-dark">
+            <td>
+              <i class="fas fa-user-circle mr-2"></i>{{user | uppercase}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
 </div>

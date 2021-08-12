@@ -6,7 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DataService {
   private gameIdSource = new BehaviorSubject<number>(1);
-  private mainScreenSource = new BehaviorSubject<string>("default")
+  private mainScreenSource = new BehaviorSubject<string>("default");
+
   currentGameId = this.gameIdSource.asObservable();
   mainScreen = this.mainScreenSource.asObservable();
 
@@ -18,4 +19,5 @@ export class DataService {
   changeMainScreen(p_mainScreen: string) {
     this.mainScreenSource.next(p_mainScreen)
   }
+
 }

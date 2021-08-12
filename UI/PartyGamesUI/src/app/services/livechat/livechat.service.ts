@@ -8,18 +8,19 @@ import { io, Socket } from 'socket.io-client';
 export class LivechatService {
 
   private socket: Socket;
-  //private url='http://localhost:3001';
+  private url='http://localhost:3001';
   //private url='https://arcane-woodland-27869.herokuapp.com/'; // your server local path
-  private url = 'https://partygamesocket.herokuapp.com/';
+  //private url = 'https://partygamesocket.herokuapp.com/';
 
-  constructor() { 
+  constructor() {
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
-    
+
   }
 
   joinRoom(data):void{
     this.socket.emit('join',data);
   }
+
 
   sendMessage(data):void{
     this.socket.emit('message',data);
@@ -35,13 +36,20 @@ export class LivechatService {
       }
     });
   }
-  
-  // getStorage() {
-  //   const storage: string = localStorage.getItem('chats');
-  //   return storage ? JSON.parse(storage) : [];
-  // }
 
-  // setStorage(data) {
-  //   localStorage.setItem('chats', JSON.stringify(data));
-  // }
+  leaveRoom(data):void{
+    this.socket.emit('leave',data);
+  }
+
+  // Method to get joined users list from socket server
+  getUserList():Observable<any>{
+    return new Observable<any>(observer=>{
+      this.socket.on('updatedUserList',(userList)=>{
+        observer.next(userList);
+      });
+      return()=>{
+        this.socket.disconnect();
+      }
+    });
+  }
 }
