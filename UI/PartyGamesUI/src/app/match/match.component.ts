@@ -5,7 +5,7 @@ import { LivechatService } from '../services/livechat/livechat.service';
 @Component({
   selector: 'app-match',
   templateUrl: './match.component.html',
-  styleUrls: ['./match.component.css']
+  styleUrls: ['./match.component.scss']
 })
 export class MatchComponent implements OnInit{
   //@ViewChild(NgxWheelComponent, { static: false }) wheel;
