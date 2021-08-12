@@ -8,12 +8,7 @@ import {
 } from "rxjs";
 import { distinctUntilChanged, map, takeUntil, tap } from "rxjs/operators";
 import { IGame } from '../services/game';
-<<<<<<< HEAD
 export interface GameState {
-=======
-
-interface GameState {
->>>>>>> 3b0cdde7b4389b15f0ecff9a7e160a17b71a12ef
   width: number;
   height: number;
   snakePos: { x: number; y: number }[];
