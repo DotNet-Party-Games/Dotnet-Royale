@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
-body {
-    background: #dbd4d4;
-}
 .container-fluid{
     padding: 2% 2%;
     overflow: hidden;
@@ -16,6 +13,7 @@ body {
 }
 #chbody{
     background-image: url('/assets/images/bg1.jpg') ;
+    opacity: 0.6;
     /* background-color: dimgray; */
     background-repeat: no-repeat;
     background-size: cover;
@@ -27,18 +25,18 @@ body {
 
 }
 .message-container{
-    background-color: rgb(107, 97, 97);
+    background-color: rgb(224, 210, 210);
     padding: 2px;
     border-radius:5px ;
     width: fit-content;
     max-width: 90%;
     margin: 2px;
     margin-bottom: 5px;
-    color: rgb(224, 235, 238);
+    color: rgb(19, 17, 17);
     word-wrap: break-word;
 }
 .messageUsername{
-    color: rgb(146, 235, 146);
+    color: rgb(33, 136, 33);
     float: right;
     font-size: 12px;
     font-style: italic;
@@ -55,7 +53,7 @@ body {
     background-color: white;
     border: 1px solid rgb(20, 17, 20);
     box-sizing: border-box;
-    border-radius: 15px;
+    border-radius:  0px 50px 50px 0px;
     font-size: 1rem;
 }
 
