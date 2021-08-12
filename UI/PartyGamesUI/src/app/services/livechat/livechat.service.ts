@@ -8,8 +8,9 @@ import { io, Socket } from 'socket.io-client';
 export class LivechatService {
 
   private socket: Socket;
-  private url='http://localhost:3001';
-  //private url = 'https://partygamesocket.herokuapp.com/';
+  //private url='http://localhost:3001';
+  private url = 'https://pgsocketserver.herokuapp.com/';
+
 
   constructor() { 
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
@@ -19,6 +20,7 @@ export class LivechatService {
   joinRoom(data):void{
     this.socket.emit('join',data);
   }
+  
 
   sendMessage(data):void{
     this.socket.emit('message',data);
@@ -34,13 +36,20 @@ export class LivechatService {
       }
     });
   }
-  
-  // getStorage() {
-  //   const storage: string = localStorage.getItem('chats');
-  //   return storage ? JSON.parse(storage) : [];
-  // }
 
-  // setStorage(data) {
-  //   localStorage.setItem('chats', JSON.stringify(data));
-  // }
+  leaveRoom(data):void{
+    this.socket.emit('leave',data);
+  }
+
+  getUserList():Observable<any>{
+    return new Observable<any>(observer=>{
+      this.socket.on('updatedUserList',(userList)=>{
+        observer.next(userList);
+        console.log(userList);
+      });
+      return()=>{
+        this.socket.disconnect();
+      }
+    });
+  }
 }
