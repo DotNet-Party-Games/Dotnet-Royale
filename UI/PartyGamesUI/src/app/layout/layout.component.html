@@ -20,7 +20,7 @@
           </div>
           <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
             <app-snake [pos]="game.snakePos"></app-snake>
-            <app-snake></app-snake>
+            <app-snake [pos]="game.snakePos2"></app-snake>
           </app-game-field>
         </ng-container>
         <!-- End of Snake Game-->

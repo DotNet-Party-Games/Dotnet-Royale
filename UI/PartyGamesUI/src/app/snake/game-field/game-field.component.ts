@@ -32,4 +32,8 @@ export class GameFieldComponent implements OnInit {
   isSnake(x: number, y: number): boolean {
     return this.snake.pos.some(coords => coords.x === x && coords.y === y);
   }
+
+  async isSnake2(x: number, y: number): Promise<boolean> {
+    return this.snake.pos2.some(coords => coords.x === x && coords.y === y);
+  }
 }

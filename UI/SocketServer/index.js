@@ -35,7 +35,7 @@ io.on('connection',(socket)=>{
         io.in(data.room).emit('new message',{user : data.user, message : data.message});
     });
     socket.on('gamestate', (data) =>{
-        console.log(data.GameState);
+        console.log("gamestate data: " + JSON.stringify(data));
         io.in(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
     });
     
