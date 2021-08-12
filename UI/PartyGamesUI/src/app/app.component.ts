@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { PartygameService } from './services/partygame.service';
 import { Router } from '@angular/router';
+import { LivechatService } from './services/livechat/livechat.service';
 
 
 @Component({
@@ -12,14 +13,20 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   title = 'PartyGamesUI';
+  userName = sessionStorage.getItem("userName");
 
-  constructor(public _partyGameService:PartygameService, private router: Router){}
+  constructor(public _partyGameService:PartygameService, private router: Router,private livechatService: LivechatService){}
 
   onLogout(){
+    this.leave(this.userName,'1');
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("userName");
     sessionStorage.removeItem("userPassword");
     this.router.navigate(['/Login']);
+  }
+ leave(username:string, roomId:string):void
+  {
+    this.livechatService.leaveRoom({user:username, room:roomId});
   }
 
 }
