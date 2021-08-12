@@ -8,8 +8,8 @@ import { io, Socket } from 'socket.io-client';
 export class LivechatService {
 
   private socket: Socket;
-  //private url='http://localhost:3001';
-  private url = 'https://pgsocketserver.herokuapp.com/';
+  private url='http://localhost:3001';
+  //private url = 'https://pgsocketserver.herokuapp.com/';
 
 
   constructor() {

@@ -23,21 +23,20 @@ io.on('connection',(socket)=>{
         if(userlist.includes(data.user) == false) {
             userlist.push(data.user);
         }
-        console.log(userlist);
+        // console.log(userlist);
         socket.join(data.room);
         io.in(data.room).emit('updatedUserList',userlist);
         socket.broadcast.to(data.room).emit('user joined',`welcome ${data.user}`); 
         
     });
 
-
     socket.on('message', (data)=>{
         console.log(data);
         io.in(data.room).emit('new message',{user : data.user, message : data.message});
     });
     socket.on('gamestate', (data) =>{
-        console.log("gamestate data: " + JSON.stringify(data));
-        io.in(data.room).emit('new gamestate', {GameState: data.GameState});
+        console.log(data.GameState);
+        io.in(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
     });
     
     socket.on('leave', (data) => {
