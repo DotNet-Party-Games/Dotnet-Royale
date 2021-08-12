@@ -8,7 +8,12 @@ import {
 } from "rxjs";
 import { distinctUntilChanged, map, takeUntil, tap } from "rxjs/operators";
 import { IGame } from '../services/game';
+<<<<<<< HEAD
 export interface GameState {
+=======
+
+interface GameState {
+>>>>>>> 3b0cdde7b4389b15f0ecff9a7e160a17b71a12ef
   width: number;
   height: number;
   snakePos: { x: number; y: number }[];
@@ -22,8 +27,13 @@ import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+<<<<<<< HEAD
 import { io } from 'socket.io-client';
 let object;
+=======
+
+
+>>>>>>> 3b0cdde7b4389b15f0ecff9a7e160a17b71a12ef
 enum Direction {
   UP,
   DOWN,
@@ -49,6 +59,7 @@ export class LayoutComponent implements OnInit {
     userId:null,
     score:null
   }
+  obj : GameState;
   public currentUser:ILoggedUser;
   games: IGame[];
   currentGameId: number;
@@ -62,9 +73,9 @@ export class LayoutComponent implements OnInit {
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
 
-  constructor(private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService) 
+  constructor(private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
   {
-    this.currentUser = 
+    this.currentUser =
     {
       id: 0,
       password: "",
@@ -73,12 +84,14 @@ export class LayoutComponent implements OnInit {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
+    
   }
 
   ngOnInit(): void {
     this.getGameList();
     this.data.currentGameId.subscribe(p_gameId => {
       this.currentGameId = p_gameId;
+      if(p_gameId == -1) this.resetScreen();
     });
     this.keyDown$ = fromEvent<KeyboardEvent>(document, "keydown").pipe(
       tap(event => event.stopPropagation()),
