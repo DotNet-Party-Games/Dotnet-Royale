@@ -8,6 +8,7 @@ import {
 } from "rxjs";
 import { distinctUntilChanged, map, takeUntil, tap } from "rxjs/operators";
 import { IGame } from '../services/game';
+
 interface GameState {
   width: number;
   height: number;
@@ -21,6 +22,7 @@ import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+
 
 enum Direction {
   UP,
@@ -47,6 +49,7 @@ export class LayoutComponent implements OnInit {
     userId:null,
     score:null
   }
+  obj : GameState;
   public currentUser:ILoggedUser;
   games: IGame[];
   currentGameId: number;
@@ -71,6 +74,7 @@ export class LayoutComponent implements OnInit {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
+    
   }
 
   ngOnInit(): void {
@@ -232,9 +236,12 @@ export class LayoutComponent implements OnInit {
           const nextFieldType = this.getFieldType(nextField, game);
 
 
-           var obj : GameState;
-           this.snakeService.getSnakeGameState().subscribe((data: GameState) => {
-             console.log(data);
+           
+           this.snakeService.getSnakeGameState().subscribe((data: any) => {
+            console.log(data.b);
+            
+             //console.log(this.obj['snakePos']);
+             //console.log(Object.values(this.obj.snakePos));
            });
           
 
