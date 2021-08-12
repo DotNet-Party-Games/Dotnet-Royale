@@ -27,13 +27,7 @@ import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-<<<<<<< HEAD
 import { io } from 'socket.io-client';
-let object;
-=======
-
-
->>>>>>> 3b0cdde7b4389b15f0ecff9a7e160a17b71a12ef
 enum Direction {
   UP,
   DOWN,
