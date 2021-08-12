@@ -4,28 +4,21 @@
   </div>
 </div>
 <div class="container-fluid">
-        <div class="row-md-9 scroller">
+        <div class="row-md-9 ">
             <div class="chat-container">
-                <ng-container >
-
-                    <!-- chat header -->
-                    <div class="chat-header">
-                        <i class="fas fa-comments" > Global</i>
-                    </div>
+                <ng-container >                   
 
                     <!-- chat body -->
-                    <div class="chat-body scroller"  data-bs-offset="0"  tabindex="0">
+                    <div class=" row-md-9" id="chbody">
                         <div *ngFor="let item of messageArray"
-                            [ngClass]= "item?.user === currentUser?.userName && 'same-user'"
-                            >
-                            <p class="message-container">{{item?.message}}<br><span style="float: right; color: rgb(194, 145, 194);">{{item?.user}}</span></p>
-                            <p style="color: black;"></p>
-
-                        </div>
+                            [ngClass]= "item?.user === currentUser?.userName && 'same-user'">
+                            <p class="message-container"><span  class="messageUsername">{{item?.user}}</span> <br>{{item?.message}} </p>     
+                        </div>                    
                     </div>
+
                     <!-- chat footer -->
-                    <div class="chat-footer">
-                        <div class="row">
+                    <div class="row-md-9">
+                        <div class="row chat-footer">
                             <div class="col-md-10">
                                 <div class="form-group mb-0">
                                     <input type="text"
@@ -40,9 +33,8 @@
                                 <button class="btn btn-success fas fa-paper-plane" (click)="sendMessage()"></button>
                             </div>
                         </div>
-                    </div>
+                    </div>                    
                 </ng-container>
-            </div>
+            </div>            
         </div>
-
 </div>

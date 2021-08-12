@@ -17,7 +17,7 @@ export class BlackjackComponent implements OnInit {
     bj.hppoints = document.getElementById("play-points");
     bj.hphand = document.getElementById("play-cards");
     bj.hpcon = document.getElementById("play-control");
-
+    bj.winner = document.getElementById("winner");
     // onclick events
     document.getElementById("playc-start").addEventListener("click", bj.start);
     document.getElementById("playc-hit").addEventListener("click", bj.hit);
@@ -44,7 +44,7 @@ var bj = {
   dstand : false, // Dealer has stood
   pstand : false, // Player has stood
   turn : 0, // Who's turn now? 0 for player, 1 for dealer (computer)
-
+  winner: null,
 
 
   // new game
@@ -58,7 +58,7 @@ var bj = {
     bj.hdstand.classList.remove("stood");
     bj.hpstand.classList.remove("stood");
     bj.hpcon.classList.add("started");
-
+    bj.winner.innerHTML=null;
     // (C2) RESHUFFLE DECK
     // S: SHAPE (0 = HEART, 1 = DIAMOND, 2 = CLUB, 3 = SPADE)
     // N: NUMBER (1 = ACE, 2 TO 10 = AS-IT-IS, 11 = JACK, 12 = QUEEN, 13 = KING)
@@ -206,7 +206,7 @@ var bj = {
       bj.hpcon.classList.remove("started");
 
       // WINNER IS...
-      alert(message);
+      bj.winner.innerHTML = message;
     }
     return winner;
   },

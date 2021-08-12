@@ -18,6 +18,9 @@ interface GameState {
 import { PartygameService } from '../services/partygame.service';
 import { DataService } from '../services/data.service';
 import { IScore } from '../services/score';
+import { SnakeService } from '../services/snake/snake.service';
+import { ILoggedUser } from '../services/user';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 enum Direction {
   UP,
@@ -38,11 +41,13 @@ enum FieldType {
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
+  public roomId : string;
   finalScore: IScore = {
     gamesId:null,
     userId:null,
     score:null
   }
+  public currentUser:ILoggedUser;
   games: IGame[];
   currentGameId: number;
   mainScreen: string;
@@ -55,7 +60,18 @@ export class LayoutComponent implements OnInit {
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
 
-  constructor(private partyGameApi: PartygameService, private data: DataService) { }
+  constructor(private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService) 
+  {
+    this.currentUser = 
+    {
+      id: 0,
+      password: "",
+      userName: ""
+    }
+    this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
+    this.currentUser.userName = sessionStorage.getItem('userName');
+    this.currentUser.password = sessionStorage.getItem('userPassword');
+  }
 
   ngOnInit(): void {
     this.getGameList();
@@ -67,7 +83,7 @@ export class LayoutComponent implements OnInit {
       map(event => event.key),
       distinctUntilChanged()
     );
-    this.tick$ = interval(125);
+    this.tick$ = interval(110);
     this.direction$.subscribe((currentDirection) =>
     this.snakeDirection = currentDirection);
     const direction = this.keyDown$.pipe(
@@ -117,9 +133,21 @@ export class LayoutComponent implements OnInit {
     direction.subscribe(this.direction$);
 
     this.newGame();
+    this.selectGameRoomHandler();
   }
   // handles the next game instance given the direction, does not seem to handle control of the snake
-
+  selectGameRoomHandler():void
+  {
+    this.roomId = '2';
+    this.join(this.currentUser.userName, this.roomId);
+  }
+  join (username:string, roomId:string):void{
+    this.snakeService.joinRoom({user:username, room:roomId});
+  }
+  sendSnakeGameState() : void
+  {
+    this.snakeService.sendSnakeGameState({GameState: this.game$.value, room: this.roomId});
+  }
   getNextField(
     game: GameState,
     direction: Direction
@@ -160,6 +188,7 @@ export class LayoutComponent implements OnInit {
         }
         break;
     }
+
     return nextField;
   }
 
@@ -181,8 +210,8 @@ export class LayoutComponent implements OnInit {
   }
 
   newGame(): void {
-    const width = 20;
-    const height = 15;
+    const width = 40;
+    const height = 33;
     const food = this.getRandomField(width, height);
     const snakePos = [this.getRandomField(width, height)];
 
@@ -201,6 +230,14 @@ export class LayoutComponent implements OnInit {
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
+
+
+           var obj : GameState;
+           this.snakeService.getSnakeGameState().subscribe((data: GameState) => {
+             console.log(data);
+           });
+          
+
 
           switch (nextFieldType) {
             case FieldType.EMPTY:
@@ -228,7 +265,7 @@ export class LayoutComponent implements OnInit {
               game.lost = true;
               break;
           }
-
+          this.sendSnakeGameState();
           return game;
         }),
         takeUntil(this.lost$)
@@ -240,6 +277,7 @@ export class LayoutComponent implements OnInit {
           this.finalScore.score = (game.snakePos.length * 100) -100;
           this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
           this.partyGameApi.addscore(this.finalScore).subscribe();
+          this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
           this.lost$.next();
         }
       });

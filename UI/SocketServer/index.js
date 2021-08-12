@@ -35,6 +35,10 @@ io.on('connection',(socket)=>{
         console.log(data);
         io.in(data.room).emit('new message',{user : data.user, message : data.message});
     });
+    socket.on('gamestate', (data) =>{
+        console.log("gamestate data: " + JSON.stringify(data));
+        io.in(data.room).emit('new gamestate', {GameState: data.GameState});
+    });
     
     socket.on('leave', (data) => {
         console.log('a user left');  
@@ -43,59 +47,4 @@ io.on('connection',(socket)=>{
         console.log(userlist);
         io.in(data.room).emit('updatedUserList',userlist);
     })
-
 });
- 
-
-
-// let users = [];
-// const messages = {
-//     snakeRoomMessages:[],
-//     BlackJackRoomMessages:[],
-// }
-
-// io.on('connection', (socket)=>{
-//     socket.on('join server',(username) =>{
-//         const user = {
-//             username,
-//             id:socket.id,
-//         };
-//         users.push(user);
-//         io.emit("new user", users)
-//     });
-
-//     socket.on("join room", (roomName, cb) =>{
-//         socket.join(roomName);
-//         cb(messages[roomName]);
-//         socket.emit("joined", messages[roomName]);
-//     });
-
-//     socket.on("send message",({content,to,sender,chatName,isChannel})=>{
-//         if(isChannel){
-//             const payload = {
-//                 content,
-//                 chatName,
-//                 sender,
-//             };
-//             socket.to(to).emit("new message", payload);
-//         }else{
-//             const payload = {
-//                 content,
-//                 chatName:sender,
-//                 sender,
-//             };
-//             socket.to(to).emit("new message", payload);
-//         }
-//         if(messages[chatName]){
-//             messages[chatName].push({
-//                 sender,
-//                 content,
-//             });
-//         }
-//     });
-
-//     socket.on("disconnect",() => {
-//         users = users.filter(u =>u.id !== socket.id);
-//         io.emit("new user",users);
-//     });
-// });

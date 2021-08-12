@@ -44,10 +44,61 @@ namespace PartyGameDL
                     select q).ToList();*/
 
         }
+        
 
         public async Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId)
         {
-            return await _context.Snakes.FirstOrDefaultAsync(user=>user.Id == UserId);
+            return await _context.Snakes.FirstOrDefaultAsync(snake =>snake.UserId == UserId);
+        }
+
+        public async Task<Snake> UpdateSnakeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            var snakeData = await GetSnakeGameStatsByUserIdAsync(p_scoreHistory.UserId);
+            var scoreHistories =  _context.ScoreHistories.Select(scores => scores).ToList();
+            int count = 0;
+            double totalScore = 0;
+            double highScore = 0;
+            foreach(ScoreHistory score in scoreHistories)
+            {
+                if(score.UserId == p_scoreHistory.UserId && score.GamesId==p_scoreHistory.GamesId)
+                {
+                    if(highScore<score.Score)
+                    {
+                        highScore = score.Score;
+                    }
+                    totalScore = score.Score;
+                    count++;
+                }
+            }
+            double avgScore = totalScore / count;
+            if (snakeData != null)
+            {
+                Console.WriteLine(snakeData);
+                _context.Snakes.Remove(snakeData);
+                _context.SaveChanges();
+                Snake newSnakeData = new Snake()
+                {
+                    UserId = p_scoreHistory.UserId,
+                    GamesId = p_scoreHistory.GamesId,
+                    AvgScore = avgScore,
+                    HighScore = highScore
+                };
+                _context.Snakes.Add(newSnakeData);
+                _context.SaveChanges();
+            }
+            else
+            {
+                await _context.Snakes.AddAsync(new Snake()
+                {
+                    UserId = p_scoreHistory.UserId,
+                    GamesId = p_scoreHistory.GamesId,
+                    AvgScore = avgScore,
+                    HighScore = highScore
+                });
+                _context.SaveChanges();
+            }
+
+            return snakeData;
         }
         public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
         {

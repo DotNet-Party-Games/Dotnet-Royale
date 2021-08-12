@@ -1,7 +1,7 @@
 import { IGame } from '../services/game';
 import { LivechatService } from '../services/livechat/livechat.service';
 import { PartygameService } from '../services/partygame.service';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ILoggedUser } from '../services/user';
 
@@ -10,15 +10,16 @@ import { ILoggedUser } from '../services/user';
   templateUrl: './livechat.component.html',
   styleUrls: ['./livechat.component.css']
 })
-export class LivechatComponent implements OnInit {
+export class LivechatComponent implements OnInit,OnChanges {
 
   public roomId : string;
   public messageText:string;
   public messageArray: {user:string, message:string}[] = [];
-  private storageArray =[];
 
   public currentUser:ILoggedUser;
   public selectedGame:IGame;
+
+  public UserList:[];
 
   constructor(private partyGameApi: PartygameService, private livechatService: LivechatService )
   {
@@ -31,6 +32,9 @@ export class LivechatComponent implements OnInit {
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
   }
+  ngOnChanges(changes: SimpleChanges): void {
+
+  }
 
   ngOnInit(): void
   {
@@ -38,6 +42,7 @@ export class LivechatComponent implements OnInit {
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = localStorage.getItem('userPassword');
     this.selectGameRoomHandler();
+    this.getConnectedUser();
   }
 
   selectGameRoomHandler():void
@@ -62,8 +67,16 @@ export class LivechatComponent implements OnInit {
       room: this.roomId,
       message:this.messageText
     });
-
     this.messageText = '';
+    let elem = document.getElementById('chbody');
+      elem.scrollTop = elem.scrollHeight;
+  }
+  getConnectedUser(){
+    this.livechatService.getUserList().subscribe(userList => {
+      this.UserList=userList,
+      console.log(this.UserList)}
+      );
+
   }
 
 }

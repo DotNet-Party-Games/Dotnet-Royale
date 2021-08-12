@@ -66,6 +66,7 @@ export class BoardComponent implements OnInit {
         this.finalScore.gamesId = 3;
         this.finalScore.score = 1;
         this.partyGameApi.addscore(this.finalScore).subscribe();
+       // This will be updateTictacToeStats this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
         return this.squares[a];
       }
     }

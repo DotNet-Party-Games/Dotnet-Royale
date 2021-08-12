@@ -8,9 +8,9 @@ import { io, Socket } from 'socket.io-client';
 export class LivechatService {
 
   private socket: Socket;
-  private url='http://localhost:3001';
-  //private url='https://arcane-woodland-27869.herokuapp.com/'; // your server local path
-  //private url = 'https://partygamesocket.herokuapp.com/';
+  //private url='http://localhost:3001';
+  private url = 'https://pgsocketserver.herokuapp.com/';
+
 
   constructor() {
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
@@ -22,10 +22,11 @@ export class LivechatService {
   }
 
 
+
   sendMessage(data):void{
     this.socket.emit('message',data);
   }
-
+  //repeat this for sendgame state, receive game state and display that within layout HTML (game.snakepos)
   getMessage():Observable<any>{
     return new Observable<{user: string, message:string}>(observer => {
       this.socket.on('new message',(data) =>{
@@ -41,7 +42,6 @@ export class LivechatService {
     this.socket.emit('leave',data);
   }
 
-  // Method to get joined users list from socket server
   getUserList():Observable<any>{
     return new Observable<any>(observer=>{
       this.socket.on('updatedUserList',(userList)=>{
