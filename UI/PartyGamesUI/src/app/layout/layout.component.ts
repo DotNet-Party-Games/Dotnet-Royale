@@ -241,19 +241,12 @@ export class LayoutComponent implements OnInit {
           
 
            var obj : GameState;
-           this.snakeService.getSnakeGameState().subscribe((data: any) => {
-            //  var gamestate = any.data[0].snakePos; 
-             snakePos2 =  data.b;
-
+          //  this.snakeService.getSnakeGameState().subscribe((data: any) => {
+          //   //  var gamestate = any.data[0].snakePos; 
+          //    snakePos2 =  data.b;
             
-            //var object2 = {snakePos: object.Gamestate.snakePos};
-          //  var object3 = object2.snakePos;
-            
-            //console.log("snakePos", JSON.stringify(data, null, 3));
-           //  console.log(object3);
-            
-           });
-          console.log(snakePos2);
+          //  });
+         // console.log(snakePos2);
           switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
