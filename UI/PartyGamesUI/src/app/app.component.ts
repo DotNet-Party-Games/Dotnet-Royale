@@ -33,6 +33,7 @@ export class AppComponent {
 
   home(){
     this.data.changeGameId(-1);
+    this.router.navigate(['/']);
     this.router.navigate(['/layout']);
   }
 

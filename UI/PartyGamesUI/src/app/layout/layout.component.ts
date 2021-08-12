@@ -142,7 +142,7 @@ export class LayoutComponent implements OnInit {
   // handles the next game instance given the direction, does not seem to handle control of the snake
   selectGameRoomHandler():void
   {
-    this.roomId = '2';
+    this.roomId = '1';
     this.join(this.currentUser.userName, this.roomId);
   }
   join (username:string, roomId:string):void{
@@ -320,6 +320,7 @@ export class LayoutComponent implements OnInit {
 
   resetScreen() {
     this.mainScreen = "default";
+    location.reload();
   }
 
 }
