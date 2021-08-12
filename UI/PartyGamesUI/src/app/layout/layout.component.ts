@@ -74,7 +74,7 @@ export class LayoutComponent implements OnInit {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
-    
+
   }
 
   ngOnInit(): void {
@@ -237,10 +237,10 @@ export class LayoutComponent implements OnInit {
           const nextFieldType = this.getFieldType(nextField, game);
 
 
-           
+
            this.snakeService.getSnakeGameState().subscribe((data: any) => {
             console.log(data.b);
-            
+
              //console.log(this.obj['snakePos']);
              //console.log(Object.values(this.obj.snakePos));
            });

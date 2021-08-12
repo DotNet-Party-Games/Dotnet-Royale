@@ -33,15 +33,7 @@ export class AppComponent {
 
   home(){
     this.data.changeGameId(-1);
-    this.getConnectedUser();
     this.router.navigate(['/layout']);
-  }
-
-  getConnectedUser(){
-    this.livechatService.getUserList().subscribe(userList => {
-      let index = userList.indexOf(sessionStorage.userName);
-      userList.splice(index, 1);
-    });
   }
 
 }
