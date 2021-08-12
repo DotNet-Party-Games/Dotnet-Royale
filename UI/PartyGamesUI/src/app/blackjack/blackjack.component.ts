@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ReservedOrUserEventNames } from 'socket.io-client/build/typed-events';
+import { BlackjackService } from '../services/blackjack/blackjack.service';
+import { IScore } from 'src/app/services/score';
+import { PartygameService } from '../services/partygame.service';
+import { ILoggedUser } from '../services/user';
 @Component({
   selector: 'app-blackjack',
   templateUrl: './blackjack.component.html',
@@ -7,8 +11,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlackjackComponent implements OnInit {
 
-  constructor() { }
+  finalScore : IScore = {
+    gamesId: null,
+    userId: null,
+    score: null,
+  }
+  public currentUser:ILoggedUser;
+  constructor(private partyGameApi: PartygameService, private blackjackservice: BlackjackService) { 
+    this.currentUser =
+    {
+      id: 0,
+      password: "",
+      userName: ""
+    }
+    this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
+    this.currentUser.userName = sessionStorage.getItem('userName');
+    this.currentUser.password = sessionStorage.getItem('userPassword');
+  }
 
+  public roomId: string;
   ngOnInit(): void {
     bj.hdstand = document.getElementById("deal-stand");
     bj.hdpoints = document.getElementById("deal-points");
@@ -22,9 +43,30 @@ export class BlackjackComponent implements OnInit {
     document.getElementById("playc-start").addEventListener("click", bj.start);
     document.getElementById("playc-hit").addEventListener("click", bj.hit);
     document.getElementById("playc-stand").addEventListener("click", bj.stand);
+    
+    this.selectGameRoomHandler();
   }
 
+
+  selectGameRoomHandler(): void
+  {
+      this.roomId = '4';
+      this.join(this.currentUser.userName,this.roomId);
+  }
+
+  join (username:string, roomId:string):void{
+    this.blackjackservice.joinRoom({user:username, room:roomId});
+  }
+
+  sendBlackJackData()
+  {
+    this.blackjackservice.sendBlackJackData({blackjack: bj});
+
+  }
+
+  
 }
+
 
 var bj = {
   hdstand : null, // dealer stand
@@ -59,6 +101,8 @@ var bj = {
     bj.hpstand.classList.remove("stood");
     bj.hpcon.classList.add("started");
     bj.winner.innerHTML=null;
+
+    
     // (C2) RESHUFFLE DECK
     // S: SHAPE (0 = HEART, 1 = DIAMOND, 2 = CLUB, 3 = SPADE)
     // N: NUMBER (1 = ACE, 2 TO 10 = AS-IT-IS, 11 = JACK, 12 = QUEEN, 13 = KING)
@@ -206,6 +250,9 @@ var bj = {
       bj.hpcon.classList.remove("started");
 
       // WINNER IS...
+      // this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
+      // this.finalScore.gamesId = 2;
+      // this.finalScore.score = 1;
       bj.winner.innerHTML = message;
     }
     return winner;
@@ -245,6 +292,9 @@ var bj = {
 
   // (I) WHO'S NEXT?
   next : function () {
+
+
+  
     // (I1) UP NEXT...
     bj.turn = bj.turn==0 ? 1 : 0 ;
 
