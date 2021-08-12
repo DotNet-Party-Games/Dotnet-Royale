@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 //import { NgxWheelComponent, TextOrientation, TextAlignment } from 'ngx-wheel';
 import { LivechatService } from '../services/livechat/livechat.service';
 import { DataService } from '../services/data.service';
+import { PartygameService } from '../services/partygame.service';
+import { IGame } from '../services/game';
 
 @Component({
   selector: 'app-match',
@@ -18,10 +20,12 @@ export class MatchComponent implements OnInit{
   // textAlignment: TextAlignment = TextAlignment.OUTER
 
   joinedUsers: string[]; // Placeholder for joined users list
-  counterpart: string = "?";
+  counterpart: string = "";
+  games: IGame[];
   currentGameId: number;
+  currentGameName: string;
 
-  constructor(private livechatService: LivechatService, private data: DataService) {}
+  constructor(private livechatService: LivechatService, private partyGameApi: PartygameService, private data: DataService) {}
 
   ngOnInit(): void {
     // this.idToLandOn = this.seed[Math.floor(Math.random() * this.seed.length)];
@@ -45,7 +49,6 @@ export class MatchComponent implements OnInit{
     this.data.currentGameId.subscribe(p_gameId => {
       this.currentGameId = p_gameId;
     });
-
   }
 
   // reset() {
@@ -83,7 +86,12 @@ export class MatchComponent implements OnInit{
   }
 
   selectGame(){
-
+    this.partyGameApi.getGames().subscribe((response: IGame[]) => { this.games = response });
+    console.log(this.games);
+    let index = Math.floor(Math.random() * this.games.length);
+    this.currentGameId = this.games[index].id;
+    this.currentGameName = this.games[index].name;
+    this.data.changeGameId(this.currentGameId);
   }
 
 }
