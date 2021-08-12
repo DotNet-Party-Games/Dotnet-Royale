@@ -47,9 +47,13 @@
       <div class="col col-6 h-100">
         <div class="card bg-dark h-100">
           <div class="card-header text-center" style="background-color: #111;">
-            <h5>Your Counterpart</h5>
+            <h5>Your Match</h5>
           </div>
-          <div class="container bg-secondary h-100"></div>
+          <div class="container bg-secondary h-100 overflow-auto">
+            <div class="mt-2 card bg-dark text-center" style="padding: 2rem">
+              <i class="mt-1 fas fa-user-circle" style="font-size: 5rem;"></i><strong>{{counterpart | uppercase}}</strong>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -59,7 +63,9 @@
           <div class="card-header text-center" style="background-color: #111;">
             <h5>Selected Game</h5>
           </div>
-          <div class="container bg-secondary h-100"></div>
+          <div class="container bg-secondary h-100">
+
+          </div>
         </div>
       </div>
     </div>

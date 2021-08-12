@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 //import { NgxWheelComponent, TextOrientation, TextAlignment } from 'ngx-wheel';
 import { LivechatService } from '../services/livechat/livechat.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-match',
@@ -17,8 +18,10 @@ export class MatchComponent implements OnInit{
   // textAlignment: TextAlignment = TextAlignment.OUTER
 
   joinedUsers: string[]; // Placeholder for joined users list
+  counterpart: string = "?";
+  currentGameId: number;
 
-  constructor(private livechatService: LivechatService) {}
+  constructor(private livechatService: LivechatService, private data: DataService) {}
 
   ngOnInit(): void {
     // this.idToLandOn = this.seed[Math.floor(Math.random() * this.seed.length)];
@@ -39,6 +42,9 @@ export class MatchComponent implements OnInit{
     // });
 
     this.getConnectedUser();
+    this.data.currentGameId.subscribe(p_gameId => {
+      this.currentGameId = p_gameId;
+    });
 
   }
 
@@ -61,8 +67,23 @@ export class MatchComponent implements OnInit{
   // Method to get joined users list from the socket server and store into UserList
   getConnectedUser(){
     this.livechatService.getUserList().subscribe(userList => {
-      this.joinedUsers=userList
+
+      // remove current user from userlist
+      let index = userList.indexOf(sessionStorage.userName);
+      userList.splice(index, 1);
+
+      this.joinedUsers=userList;
+      this.selectCounterPart();
     });
+  }
+
+  selectCounterPart(){
+    let index = Math.floor(Math.random() * this.joinedUsers.length);
+    this.counterpart = this.joinedUsers[index];
+  }
+
+  selectGame(){
+
   }
 
 }
