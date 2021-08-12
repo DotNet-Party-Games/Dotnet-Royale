@@ -53,7 +53,7 @@ import { BlackjackComponent } from './blackjack/blackjack.component';
     RouterModule.forRoot([
       {path: "Login", component: LoginComponent},
       {path: "Register", component: RegisterComponent},
-      { path: 'layout',
+      {path: 'layout',
         component: LayoutComponent,
         canActivate: [AuthGuard]
       },

@@ -17,6 +17,6 @@ namespace PartyGameDL
         Task<User> AddUserAsync(User p_user);
         Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory);
         Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score);
-
+        Task<Snake> UpdateSnakeGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
     }
 }

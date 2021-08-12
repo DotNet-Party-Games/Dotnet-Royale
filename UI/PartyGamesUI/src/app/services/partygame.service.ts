@@ -38,6 +38,9 @@ export class PartygameService {
   addscore(model: any): Observable<IScore>{
     return this.http.post<IScore>(this.url+'user/addScore', model);
   }
+  updateSnakeStats(model: any): Observable<IScore>{
+    return this.http.post<IScore>(this.url+'user/updateSnakeStats',model);
+  }
 
   //Register method
   register(model: any):Observable<ILoggedUser> {

@@ -34,14 +34,14 @@
   
   /* (B) DEALER'S CARDS */
   #deal-wrap { background: #e4f0ff; }
-  #deal-data { background: #d2e6ff; }
+  #deal-data { background: #1276f0; }
   #deal-first .front { display: none; }
   #deal-first.show .back { display: none; }
   #deal-first.show .front { display: block; }
   
   /* (C) PLAYER'S CARDS */
   #play-wrap { background: #ffe7e7; }
-  #play-data { background: #f1caca; }
+  #play-data { background: #f34f4f; }
   
   /* (D) PLAY CONTROLS */
   #play-control {

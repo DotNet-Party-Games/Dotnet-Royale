@@ -8,7 +8,8 @@ import {
 } from "rxjs";
 import { distinctUntilChanged, map, takeUntil, tap } from "rxjs/operators";
 import { IGame } from '../services/game';
-export interface GameState {
+
+interface GameState {
   width: number;
   height: number;
   snakePos: { x: number; y: number }[];
@@ -22,7 +23,7 @@ import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import { BlackjackComponent } from '../blackjack/blackjack.component';
-import { Console } from 'console';
+
 
 enum Direction {
   UP,
@@ -49,6 +50,7 @@ export class LayoutComponent implements OnInit {
     userId:null,
     score:null
   }
+  obj : GameState;
   public currentUser:ILoggedUser;
   games: IGame[];
   currentGameId: number;
@@ -62,9 +64,9 @@ export class LayoutComponent implements OnInit {
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
 
-  constructor(private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService) 
+  constructor(private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
   {
-    this.currentUser = 
+    this.currentUser =
     {
       id: 0,
       password: "",
@@ -73,12 +75,14 @@ export class LayoutComponent implements OnInit {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
+    
   }
 
   ngOnInit(): void {
     this.getGameList();
     this.data.currentGameId.subscribe(p_gameId => {
       this.currentGameId = p_gameId;
+      if(p_gameId == -1) this.resetScreen();
     });
     this.keyDown$ = fromEvent<KeyboardEvent>(document, "keydown").pipe(
       tap(event => event.stopPropagation()),
@@ -237,7 +241,16 @@ export class LayoutComponent implements OnInit {
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
-          
+
+
+           
+           this.snakeService.getSnakeGameState().subscribe((data: any) => {
+            console.log(data.b);
+            
+             //console.log(this.obj['snakePos']);
+             //console.log(Object.values(this.obj.snakePos));
+           });
+
 
 
           //  let object2 : GameState;
@@ -283,6 +296,7 @@ export class LayoutComponent implements OnInit {
           this.finalScore.score = (game.snakePos.length * 100) -100;
           this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
           this.partyGameApi.addscore(this.finalScore).subscribe();
+          this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
           this.lost$.next();
         }
       });
