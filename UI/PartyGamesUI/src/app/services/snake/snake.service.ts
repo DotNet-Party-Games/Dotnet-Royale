@@ -8,8 +8,8 @@ import {GameState} from '../../layout/layout.component'
 export class SnakeService {
 
   private socket: Socket;
-  private url='http://localhost:3001';
-  //private url = 'https://partygamesocket.herokuapp.com/';
+  //private url='http://localhost:3001';
+  private url = 'https://pgsocketserver.herokuapp.com/';
 
   constructor() 
   {
