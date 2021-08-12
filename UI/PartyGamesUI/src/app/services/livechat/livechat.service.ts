@@ -12,15 +12,16 @@ export class LivechatService {
   //private url = 'https://pgsocketserver.herokuapp.com/';
 
 
-  constructor() { 
+  constructor() {
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
-    
+
   }
 
   joinRoom(data):void{
     this.socket.emit('join',data);
   }
-  
+
+
 
   sendMessage(data):void{
     this.socket.emit('message',data);
@@ -45,7 +46,6 @@ export class LivechatService {
     return new Observable<any>(observer=>{
       this.socket.on('updatedUserList',(userList)=>{
         observer.next(userList);
-        console.log(userList);
       });
       return()=>{
         this.socket.disconnect();

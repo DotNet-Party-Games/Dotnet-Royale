@@ -21,8 +21,7 @@ export class LivechatComponent implements OnInit,OnChanges {
 
   public UserList:[];
 
-
-  constructor(private partyGameApi: PartygameService, private livechatService: LivechatService ) 
+  constructor(private partyGameApi: PartygameService, private livechatService: LivechatService )
   {
     this.currentUser ={
       id:0,
@@ -34,17 +33,16 @@ export class LivechatComponent implements OnInit,OnChanges {
     this.currentUser.password = sessionStorage.getItem('userPassword');
   }
   ngOnChanges(changes: SimpleChanges): void {
-      
+
   }
 
-  ngOnInit(): void 
+  ngOnInit(): void
   {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = localStorage.getItem('userPassword');
     this.selectGameRoomHandler();
     this.getConnectedUser();
-    
   }
 
   selectGameRoomHandler():void
@@ -69,17 +67,15 @@ export class LivechatComponent implements OnInit,OnChanges {
       room: this.roomId,
       message:this.messageText
     });
-    
     this.messageText = '';
     let elem = document.getElementById('chbody');
       elem.scrollTop = elem.scrollHeight;
   }
   getConnectedUser(){
     this.livechatService.getUserList().subscribe(userList => {
-      this.UserList=userList,
-      console.log(this.UserList)}      
-      );
-    
+      this.UserList=userList
+    });
+
   }
- 
+
 }
