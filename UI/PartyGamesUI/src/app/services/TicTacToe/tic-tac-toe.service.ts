@@ -7,8 +7,8 @@ import { BoardComponent } from 'src/app/tictactoe/board/board.component';
 })
 export class TicTacToeService {
   private socket: Socket;
-  private url = 'http://localhost:3001';
-  //private url = 'https://pgsocketserver.herokuapp.com/';
+  //private url = 'http://localhost:3001';
+  private url = 'https://pgsocketserver.herokuapp.com/';
 
   constructor() {
     this.socket = io (this.url, {transports: ['websocket', 'pulling', 'flashsocket']});

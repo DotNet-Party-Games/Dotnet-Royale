@@ -4,6 +4,7 @@ import { LivechatService } from '../services/livechat/livechat.service';
 import { DataService } from '../services/data.service';
 import { PartygameService } from '../services/partygame.service';
 import { IGame } from '../services/game';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-match',
@@ -49,6 +50,7 @@ export class MatchComponent implements OnInit {
     this.data.currentGameId.subscribe(p_gameId => {
       this.currentGameId = p_gameId;
     });
+    
   }
 
 
@@ -83,7 +85,8 @@ export class MatchComponent implements OnInit {
 
   selectCounterPart(){
     let index = Math.floor(Math.random() * this.joinedUsers.length);
-    this.counterpart = this.joinedUsers[index];
+    this.counterpart = this.joinedUsers[index]+sessionStorage.getItem("userName")+sessionStorage.getItem("userId");;
+    console.log(this.counterpart);
   }
 
   selectGame(){

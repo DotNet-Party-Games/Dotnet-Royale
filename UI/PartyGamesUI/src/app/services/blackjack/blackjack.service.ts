@@ -9,8 +9,8 @@ import { BlackjackComponent } from 'src/app/blackjack/blackjack.component';
 export class BlackjackService {
 
   private socket: Socket;
-  private url='http://localhost:3001';
-  //private url = 'https://pgsocketserver.herokuapp.com/';
+  //private url='http://localhost:3001';
+  private url = 'https://pgsocketserver.herokuapp.com/';
   constructor() { 
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
   }

@@ -1,0 +1,24 @@
+<div>
+  <div>
+    <p>id = {{userId }}</p>
+    <p>username = {{userName | uppercase}}</p>
+    <table>
+      <thead>
+        <td>Game</td>
+      </thead>
+      <tr *ngFor = "let game of games">
+        <td>{{game.name}}</td>
+      </tr>
+    </table>
+    <table>
+      <thead>
+        <td>Game ID</td>
+        <td>Score</td>
+      </thead>
+      <tr *ngFor = "let score of userscores">
+        <td>{{score.gamesId}}</td>
+        <td>{{score.score}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
