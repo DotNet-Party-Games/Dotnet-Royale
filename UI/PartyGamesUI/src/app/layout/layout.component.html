@@ -30,11 +30,15 @@
           </div>
         </div> -->
       </div>
-      <div *ngSwitchCase="'BlackJack'">
-        <app-blackjack></app-blackjack>
-        <div (click) = "resetScreen()" class="btn btn-primary card-footer bg-primary">
-          GO BACK TO MAIN SCREEN
+      <div *ngSwitchCase="'BlackJack'" class="h-100">
+        <div class="text-center" style="height: 93%">
+          <app-blackjack></app-blackjack>
         </div>
+        <div class="text-center">
+          <div (click) = "resetScreen()" class="btn btn-primary">
+            GO BACK TO MAIN SCREEN
+          </div>
+         </div>
       </div>
       <div *ngSwitchCase="'TicTacToe'" class="h-100">
         <!-- This is TicTac Toe Game -->
