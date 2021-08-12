@@ -73,7 +73,7 @@ export class LayoutComponent implements OnInit {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
-    
+
   }
 
   ngOnInit(): void {
@@ -142,7 +142,7 @@ export class LayoutComponent implements OnInit {
   // handles the next game instance given the direction, does not seem to handle control of the snake
   selectGameRoomHandler():void
   {
-    this.roomId = '2';
+    this.roomId = '1';
     this.join(this.currentUser.userName, this.roomId);
   }
   join (username:string, roomId:string):void{
@@ -238,16 +238,27 @@ export class LayoutComponent implements OnInit {
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
-          
 
-           var obj : GameState;
+
+
+           this.snakeService.getSnakeGameState().subscribe((data: any) => {
+            console.log(data.b);
+
+             //console.log(this.obj['snakePos']);
+             //console.log(Object.values(this.obj.snakePos));
+           });
+
+
+
+          //  var obj : GameState;
           //  this.snakeService.getSnakeGameState().subscribe((data: any) => {
-          //   //  var gamestate = any.data[0].snakePos; 
+          //   //  var gamestate = any.data[0].snakePos;
           //    snakePos2 =  data.b;
-            
+
           //  });
          // console.log(snakePos2);
-          switch (nextFieldType) {
+
+         switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
               //game.snakePos2 =[...game.snakePos2.slice(1),nextField];
@@ -309,6 +320,7 @@ export class LayoutComponent implements OnInit {
 
   resetScreen() {
     this.mainScreen = "default";
+    location.reload();
   }
 
 }

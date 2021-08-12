@@ -26,6 +26,9 @@ import { GameFieldComponent } from './snake/game-field/game-field.component';
 import { NgxWheelModule } from 'ngx-wheel';
 import { MatchComponent } from './match/match.component';
 import { BlackjackComponent } from './blackjack/blackjack.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ContactComponent } from './contact/contact.component';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -43,7 +46,10 @@ import { BlackjackComponent } from './blackjack/blackjack.component';
     MatchComponent,
     SnakeComponent,
     GameFieldComponent,
-    BlackjackComponent
+    BlackjackComponent,
+    UserProfileComponent,
+    ContactComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +63,9 @@ import { BlackjackComponent } from './blackjack/blackjack.component';
         component: LayoutComponent,
         canActivate: [AuthGuard]
       },
+      {path: "UserProfile", component: UserProfileComponent},
+      {path: "About", component: AboutComponent},
+      {path: "Contact", component: ContactComponent}
     ]),
     NgbModule,
     NgxWheelModule
