@@ -27,8 +27,8 @@ export class RegisterComponent implements OnInit {
       console.log(res)
       if(res){
         sessionStorage.setItem('userId',res.id.toString())
-        sessionStorage.setItem('userName',res.password.toString())
-        sessionStorage.setItem('userPassword',res.userName.toString())
+        sessionStorage.setItem('userName',res.userName.toString())
+        sessionStorage.setItem('userPassword',res.password.toString())
         // calling the redirect method to redirect to home page 
         this.redirect('/layout');
       }
