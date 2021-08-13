@@ -51,7 +51,7 @@
 ## **Tech Stack:**
 
 - Front End
-  - Angular
+  - Angular 11
   - Bootstrap
 - Back End
   - .NET C#
