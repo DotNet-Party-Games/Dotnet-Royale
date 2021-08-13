@@ -17,25 +17,26 @@ https://p2partygames.azurewebsites.net/
 1. As a user, I should be able to sign into an account.
 1. As a user, I should be able to view the global leaderboard.
 1. As a user, I should be able to play a functioning mini-game.
-1. As a user, I should be able to play Blackjack against another player
-   1. … be able to see dealer and player cards after round-end
-   1. … be able to see game stat history
-   1. … be able to request a rematch
-1. As a user, I should be able to play Snake against a leaderboard
-   1. … be able to control a Snake and collect dots to grow in size
-   1. … be able to see end game stats
-   1. ... be able to see game stat history
-   1. ... be able to request a rematch
-1. As a user, I should be able to view my game performance history.
-1. As a user, I should be able to access a live game chat feature
+1. As a user, I should be able to play Blackjack against the dealer.
+   1. … be able to see dealer and player cards after round-end.
+   1. ... be able to see match results.
+   1. … be able to request a rematch.
+1. As a user, I should be able to play Snake against a leaderboard.
+   1. … be able to control a Snake and collect dots to grow in size.
+   1. … be able to see end game result.
+   1. ... be able to see game stat history.
+1. As a user, I should be able to play a game of Tic-Tac-Toe against the computer.
+   1. ... be able to see end game result.
+1. As a user, I should be able to view my game performance history within user profile.
+1. As a user, I should be able to access a live chat feature.
 ## **Scope Goals (Post-MVP):**
-1. Increase number of games (n>5)
+1. Increase number of games (n>5).
    1. Tetris
    1. \*Atari Pong
    1. \*Tron Bike (multiplayer snake variation)
    1. Texas-Hold em (Poker)
 1. Snake Scope Goal
-   1. Both players able to operate snakes within the same window 
+   1. Both players able to operate snakes within the same window
    1. User able to choose texture of snake based off of achievements
    1. Multiple difficulty levels
 1. Blackjack Scope Goals
@@ -65,4 +66,5 @@ https://p2partygames.azurewebsites.net/
   - Sonarcoud
   - Github Actions
   - Azure App Service
+  - Heroku
 
