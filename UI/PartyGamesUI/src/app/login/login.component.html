@@ -1,31 +1,32 @@
-<div class="row " id="id01">
-  <div class="col-md-4 offset-md-3 mt-4 " id="loginContainer" >
+<div class="container mt-5 col-4" id="id01">
+  <div id="loginContainer" >
+    <!-- <div class="col-md-4 offset-md-3 mt-4 " id="loginContainer" > -->
     <h3>Login User</h3>
     <span class="text-danger">{{error}}</span>
-  <form  class="form-group" [formGroup]="loginUserGroup">
+    <form  class="form-group" [formGroup]="loginUserGroup">
 
-    <label for ="loginUsername">Username</label>
-    <input type="text"
-      name="username"
-      required
-      class="form-control"
-      id="loginUsername"
-      formControlName = "UserName">
+      <label for ="loginUsername">Username</label>
+      <input type="text"
+        name="username"
+        required
+        class="form-control"
+        id="loginUsername"
+        formControlName = "UserName">
 
-    <label for="loginPassword">Password</label>
-    <input type="password"
-      name="password"
-      required
-      class="form-control"
-      id="loginPassword"
-      formControlName = "Password">
+      <label for="loginPassword">Password</label>
+      <input type="password"
+        name="password"
+        required
+        class="form-control"
+        id="loginPassword"
+        formControlName = "Password">
 
-    <br>
+      <br>
 
-    <button  class="btn btn-primary col-5" [disabled]="loginUserGroup.invalid"
-      type="button" (click)="onSubmit(loginUserGroup)">Login <i class="fas fa-sign-in-alt"></i></button>
-    <button  class=" btn btn-danger col-5 float-right" type =" button" (click)="cancel('')" >Cancel <i class="fas fa-ban"></i></button>
-  </form>
-  <a href="#">Forgot password?</a>
+      <button  class="btn btn-primary col-5" [disabled]="loginUserGroup.invalid"
+        type="button" (click)="onSubmit(loginUserGroup)">Login <i class="fas fa-sign-in-alt"></i></button>
+      <button  class=" btn btn-danger col-5 float-right" type =" button" (click)="cancel('')" >Cancel <i class="fas fa-ban"></i></button>
+    </form>
+    <a href="#">Forgot password?</a>
   </div>
 </div>

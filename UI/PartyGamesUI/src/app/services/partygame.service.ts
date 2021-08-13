@@ -6,6 +6,8 @@ import { IGame } from './game';
 import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 import { IScore } from './score';
+import { IGameStats } from './gamestats';
+import { IUserScore } from './userscore';
 
 @Injectable({
   providedIn: 'root'
@@ -67,9 +69,20 @@ export class PartygameService {
     return this.http.get<IUser>(this.url + "User/getUserFromUserId/" + userId);
   }
 
-  getScoreHistoryByUserId(userId: number) : Observable<IScore[]>
+  getScoreHistoryByUserId(userId: number) :Observable<IUserScore[]>
   {
-    return this.http.get<IScore[]>(this.url + "User/getScoreHistoryByUserId/" + userId);
+    return this.http.get<IUserScore[]>(this.url + "User/getScoreHistoryByUserId/" + userId);
   }
+
+  getSnakeGameStatsByUserId(userId: number) : Observable<IGameStats>
+  {
+    return this.http.get<IGameStats>(this.url + "User/getSnakeGameStatsByUserId/" + userId);
+  }
+
+  getBlackJackGameStatsByUserId(userId: number) : Observable<IGameStats>
+  {
+    return this.http.get<IGameStats>(this.url + "User/getBlackJackGameStatsByUserId/" + userId);
+  }
+
 
 }

@@ -27,7 +27,6 @@ import { NgxWheelModule } from 'ngx-wheel';
 import { MatchComponent } from './match/match.component';
 import { BlackjackComponent } from './blackjack/blackjack.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 
 
@@ -48,7 +47,6 @@ import { AboutComponent } from './about/about.component';
     GameFieldComponent,
     BlackjackComponent,
     UserProfileComponent,
-    ContactComponent,
     AboutComponent
   ],
   imports: [
@@ -64,8 +62,7 @@ import { AboutComponent } from './about/about.component';
         canActivate: [AuthGuard]
       },
       {path: "UserProfile", component: UserProfileComponent},
-      {path: "About", component: AboutComponent},
-      {path: "Contact", component: ContactComponent}
+      {path: "About", component: AboutComponent}
     ]),
     NgbModule,
     NgxWheelModule
