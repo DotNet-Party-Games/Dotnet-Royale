@@ -1,5 +1,6 @@
 # **Proposal-** Dotnet Party Games
-[Dotnet.Party.Games.2.docx](https://github.com/210628-UTA-NET/P2-Dotnet-Party-Games/files/6903590/Dotnet.Party.Games.2.docx)
+<!-- [Dotnet.Party.Games.2.docx](https://github.com/210628-UTA-NET/P2-Dotnet-Party-Games/files/6903590/Dotnet.Party.Games.2.docx) -->
+https://p2partygames.azurewebsites.net/
 ## **Overview:**
 **	Dotnet Party Games is a multiplayer mini-game roulette- a web-based application that will allow users to compete with each other in a series of simple browser games. You can make an account and queue into live matchmaking allowing users to actively compete with each other through a variety of different web games. Here, game stats can be tracked and provided within a user’s profile and a global leaderboard can be established. After a game session, users will have the option to rematch or requeue into matchmaking, where the process will be repeated. Relevant game statistics will be recorded and available for access within a user profile (wins/losses/personal best(PB)/performance).
 ## **Tables:**
