@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PartygameService } from '../services/partygame.service';
 import { IGame } from '../services/game';
 import { IUserScore } from '../services/userscore';
+import { IGameStats } from '../services/gamestats';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,15 +17,23 @@ export class UserProfileComponent implements OnInit {
   userscores: IUserScore[];
   scores: {gameName: string, score: number}[];
 
+  snakeGameStats: IGameStats;
+  blackJackGameStats: IGameStats;
+
   constructor(private partyGameApi: PartygameService) { }
 
   ngOnInit(): void {
     this.userId = parseInt(sessionStorage.getItem("userId"));
     this.userName = sessionStorage.getItem("userName");
 
-    this.getGameList();
+    // this.getGameList();
+    // this.GetUserScoreHistory();
 
-    this.GetUserScoreHistory();
+    this.partyGameApi.getSnakeGameStatsByUserId(this.userId)
+      .subscribe((response: IGameStats) => {this.snakeGameStats = response});
+    this.partyGameApi.getBlackJackGameStatsByUserId(this.userId)
+      .subscribe((response: IGameStats) => {this.blackJackGameStats = response});
+
   }
 
   getGameList()
