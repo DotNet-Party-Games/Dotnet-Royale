@@ -15,16 +15,14 @@
 1. As a user, I should be able to sign up for an account.
 1. As a user, I should be able to sign into an account.
 1. As a user, I should be able to view the global leaderboard.
-1. As a user, I should be able to queue into matchmaking for at least 2 games.
-1. As a user, I should be able to play a randomized functioning multiplayer mini-game.
+1. As a user, I should be able to play a functioning mini-game.
 1. As a user, I should be able to play Blackjack against another player
-   1. … be able to play against dealer and another player
    1. … be able to see dealer and player cards after round-end
    1. … be able to see game stat history
    1. … be able to request a rematch
-1. As a user, I should be able to play Snake against another player
+1. As a user, I should be able to play Snake against a leaderboard
    1. … be able to control a Snake and collect dots to grow in size
-   1. … be able to see end game stats including size of all players in session
+   1. … be able to see end game stats
    1. ... be able to see game stat history
    1. ... be able to request a rematch
 1. As a user, I should be able to view my game performance history.
