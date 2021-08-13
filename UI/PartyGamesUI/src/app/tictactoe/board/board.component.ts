@@ -20,12 +20,14 @@ export class BoardComponent implements OnInit{
     userId: null,
     score: null,
   }
+  isOver: boolean;
   count: number;
   myClonedArray : any[];
   squares: any[];
   xIsNext: boolean;
   winner: string;
   public roomId : string;
+  counter:number;
 
   constructor(private partyGameApi: PartygameService, private tictactoeservice : TicTacToeService, private cd:ChangeDetectorRef) {
     this.currentUser =
@@ -42,8 +44,9 @@ export class BoardComponent implements OnInit{
   ngOnInit(): void {
     this.newGame();
     this.selectGameRoomHandler();
-    console.log("achieved");
+    //console.log("achieved");
     this.count = 0;
+    this.counter = 0;
 
   }
 
@@ -62,13 +65,13 @@ export class BoardComponent implements OnInit{
   }
   sendTicTacToeGameboard(squares: any[])
   {
-    console.log("Sending GameBoard Data");
+    //console.log("Sending GameBoard Data");
     this.tictactoeservice.sendTicTacToeData({gameboard : squares, room: this.roomId});
     
   }
   getTicTacToeGameboard()
   {
-    console.log("Getting GameBoard Data");
+    //console.log("Getting GameBoard Data");
     this.tictactoeservice.getTicTacToeData().subscribe(gameboard => {
       this.myClonedArray  = Object.assign([], gameboard.gameboard);
     });
@@ -78,30 +81,75 @@ export class BoardComponent implements OnInit{
     this.squares = Array(9).fill(null);
     this.winner = null;
     this.xIsNext = true;
+    this.isOver = false;
+    this.AlreadyClicked = false;
   }
 
   get player() {
     return this.xIsNext ? 'X' : 'O';
   }
-
+  randomNumber()
+  {
+    return Math.floor((Math.random()*9));
   
+  }
+  num: number;
+  
+  contentCheck(idx: number)
+  {
+    this.num = this.randomNumber();
+    while(this.squares[this.num] != null && this.num != idx)
+    {
+      this.num = this.randomNumber();
+    }
+    console.log("new number" + this.num);
+    return this.num;
 
+  }
+
+  index : number;
+  OpponentMove : Boolean;
+  AlreadyClicked : Boolean;
   async makeMove(idx: number) {
-    this.getTicTacToeGameboard();
-    if (!this.squares[idx]) {
+    if (!this.squares[idx] && this.isOver == false && this.AlreadyClicked == false) {
+      this.AlreadyClicked = true;
+      if (this.counter==0){
+      this.counter++;
+      this.index = this.contentCheck(idx);
+      this.OpponentMove = true;
+      let int = 0;
+      while (idx == this.index && int < 9){
+        this.OpponentMove = true;
+        this.index = this.contentCheck(idx);
+        int++;
+      }
+      }
       this.squares.splice(idx, 1, this.player);
       this.xIsNext = !this.xIsNext;
+      this.winner = this.calculateWinner();
+      if (this.OpponentMove == true)
+      {
+        await this.delay(400);
+        this.AlreadyClicked = false;
+        this.makeMove(this.index);
+        this.OpponentMove = false;
+        this.counter = 0;
+      }
+      
+      
     }
     this.sendTicTacToeGameboard(this.squares);
     this.getTicTacToeGameboard();
     // console.log(this.squares);
     //this.squares = this.myClonedArray;
-    console.log(this.squares);
-    console.log(this.myClonedArray);
+    //console.log(this.squares);
+    //console.log(this.myClonedArray);
     //console.log(this.myClonedArray); 
     //this.squares = Object.assign([], this.myClonedArray);
-    this.winner = this.calculateWinner();
   }
+    delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+    }
 
   calculateWinner() {
     const lines = [
@@ -126,8 +174,22 @@ export class BoardComponent implements OnInit{
         this.finalScore.score = 1;
         this.partyGameApi.addscore(this.finalScore).subscribe();
        // This will be updateTictacToeStats this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
-        return this.squares[a];
+        this.isOver = true;
+        return "Player " + this.squares[a];
       }
+
+    }
+    let total = 0;
+    for (let x = 0; x < 9; x++)
+    {
+      if (this.squares[x] != null)
+      {
+        total++;
+      }
+    }
+    if (total == 9)
+    {
+      return "Cats Game! Nobody";
     }
     return null;
   }

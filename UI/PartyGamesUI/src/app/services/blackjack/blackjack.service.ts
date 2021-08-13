@@ -16,7 +16,7 @@ export class BlackjackService {
   }
 
   joinRoom(data):void{
-    this.socket.emit('join',data);
+    //this.socket.emit('join',data);
   }
 
   sendBlackJackData(data):void{

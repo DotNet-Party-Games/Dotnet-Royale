@@ -15,7 +15,7 @@ export class TicTacToeService {
    }
   
   joinRoom(data):void{
-    this.socket.emit('join', data);
+    //this.socket.emit('join', data);
   }
 
   sendTicTacToeData(data):void{

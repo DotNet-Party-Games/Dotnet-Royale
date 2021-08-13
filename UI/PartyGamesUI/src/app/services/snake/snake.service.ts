@@ -16,7 +16,7 @@ export class SnakeService {
     this.socket = io(this.url, {transports: ['websocket', 'pulling', 'flashsocket']});
   }
   joinRoom(data):void{
-    this.socket.emit('join', data);
+    //this.socket.emit('join', data);
   }
   sendSnakeGameState(data): void {
     this.socket.emit('gamestate', data);
