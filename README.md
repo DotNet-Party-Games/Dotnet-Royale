@@ -1,4 +1,4 @@
-# **Proposal-** Dotnet Party Games
+# Dotnet Party Games
 <!-- [Dotnet.Party.Games.2.docx](https://github.com/210628-UTA-NET/P2-Dotnet-Party-Games/files/6903590/Dotnet.Party.Games.2.docx) -->
 https://p2partygames.azurewebsites.net/
 ## **Overview:**
