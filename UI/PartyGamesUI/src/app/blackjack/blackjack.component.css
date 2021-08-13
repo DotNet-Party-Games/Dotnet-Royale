@@ -7,6 +7,11 @@
     padding: 10px;
     color: #333;
   }
+  #winner{
+    overflow: hidden;
+    background: #008000;
+    color: #fff;
+  }
   #deal-stand, #play-stand {
     display: none;
     padding: 5px;
@@ -17,14 +22,15 @@
   
   /* (A2) CARDS */
   #deal-cards, #play-cards {
+    font-size: 40px;
     display: grid;
     grid-template-columns: repeat(4, auto);
     grid-gap: 10px;
-    padding: 10px;
+    padding: 7vh;
   }
   .bj-card {
     box-sizing: border-box;
-    font-size: 5em;
+    font-size: 20px;
     text-align: center;
     padding: 10px;
     width: 100%;
@@ -33,30 +39,37 @@
   }
   
   /* (B) DEALER'S CARDS */
-  #deal-wrap { background: #60656b; }
-  #deal-data { background: #1276f0; }
+  #deal-wrap { background: #343a40; }
+  #deal-data { background: #0275d8;}
+  #deal-data { font-size: 20px;
+              font-weight: bold;
+              color: #fff; }
   #deal-first .front { display: none; }
   #deal-first.show .back { display: none; }
   #deal-first.show .front { display: block; }
   
   /* (C) PLAYER'S CARDS */
-  #play-wrap { background: #60656b; }
-  #play-data { background: #f34f4f; }
+  #play-wrap { background: #343a40;}
+  #play-data { background: #d9534f;}
+  #play-data { font-size: 20px;
+    font-weight: bold;
+    color: #fff; }
   
   /* (D) PLAY CONTROLS */
   #play-control {
     display: grid;
     grid-template-columns: 100%;
-    grid-gap: 10px;
-    padding: 10px;
-    background: rgb(12, 0, 0);
+    grid-gap: 1px;
+    padding: 1px;
   }
   #play-control input {
+    font-size: 20px;
+    font-weight: bold;
     box-sizing: border-box;
     cursor: pointer;
     border: 0;
     padding: 10px 0;
-    background: #4381de;
+    background: #0275d8;
     color: #fff;
     width: 100%;
   }
