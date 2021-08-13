@@ -63,6 +63,10 @@ export class PartygameService {
   {
     return this.http.get<IScore[]>(this.url + "Game/getTop10ScoresByGameId/" + gameId);
   }
+  getScoreHistoryByGameId(gameId: number) : Observable<IScore[]>
+  {
+    return this.http.get<IScore[]>(this.url + "Game/getScoreHistoryByGameId/" + gameId);
+  }
 
   getUserFromUserId(userId: number) : Observable<IUser>
   {
