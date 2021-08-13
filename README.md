@@ -7,7 +7,7 @@
 1. Games table - List of Games
 1. Game-User Stat Tables (n)- Users Accumulated Game Stats
 1. Leaderboard table - Global Ranking of User Score Per Game![](Aspose.Words.fa931c7b-81a0-46f8-9bc1-4928c10d63da.001.png)
-<img src="https://raw.githubusercontent.com/210628-UTA-NET/P2-Dotnet-Party-Games/main/capture.png"/>
+<img src="https://raw.githubusercontent.com/210628-UTA-NET/P2-Dotnet-Party-Games/main/image.jpg"/>
 
 ##
 
