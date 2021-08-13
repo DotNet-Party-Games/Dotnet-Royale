@@ -1,24 +1,62 @@
-<div>
-  <div>
-    <p>id = {{userId }}</p>
-    <p>username = {{userName | uppercase}}</p>
-    <table>
-      <thead>
-        <td>Game</td>
-      </thead>
-      <tr *ngFor = "let game of games">
-        <td>{{game.name}}</td>
-      </tr>
-    </table>
-    <table>
-      <thead>
-        <td>Game ID</td>
-        <td>Score</td>
-      </thead>
-      <tr *ngFor = "let score of userscores">
-        <td>{{score.gamesId}}</td>
-        <td>{{score.score}}</td>
-      </tr>
-    </table>
+<div class="container h-100">
+  <div class="row mt-4 justify-content-md-center">
+    <div class="col col-8 h-100">
+      <div class="card bg-dark h-100">
+        <div class="card-header text-white text-center" style="background-color: #111;">
+          <h5><strong>{{userName | uppercase}}</strong></h5>
+        </div>
+        <div class="container bg-secondary h-100">
+
+          <div class="card text-white bg-dark m-3">
+            <div class="card-body">
+              <h5 class="card-title">SNAKE</h5>
+              <table class="table text-white">
+                <tr>
+                  <td>Average Score</td>
+                  <td>{{snakeGameStats.avgScore | number}}</td>
+                </tr>
+                <tr>
+                  <td>High Score</td>
+                  <td>{{snakeGameStats.highScore | number}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="card text-white bg-dark m-3">
+            <div class="card-body">
+              <h5 class="card-title">BLACKJACK</h5>
+              <table class="table text-white">
+                <tr>
+                  <td>Average Score</td>
+                  <td>{{blackJackGameStats.avgScore | number}}</td>
+                </tr>
+                <tr>
+                  <td>High Score</td>
+                  <td>{{blackJackGameStats.highScore | number}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="card text-white bg-dark m-3">
+            <div class="card-body">
+              <h5 class="card-title">TIC-TAC-TOE</h5>
+              <table class="table text-white">
+                <tr>
+                  <td>Average Score</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>High Score</td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 </div>
