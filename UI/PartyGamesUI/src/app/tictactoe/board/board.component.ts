@@ -82,6 +82,7 @@ export class BoardComponent implements OnInit{
     this.winner = null;
     this.xIsNext = true;
     this.isOver = false;
+    this.AlreadyClicked = false;
   }
 
   get player() {
@@ -93,6 +94,7 @@ export class BoardComponent implements OnInit{
   
   }
   num: number;
+  
   contentCheck(idx: number)
   {
     this.num = this.randomNumber();
@@ -105,23 +107,34 @@ export class BoardComponent implements OnInit{
 
   }
 
-  
-
+  index : number;
+  OpponentMove : Boolean;
+  AlreadyClicked : Boolean;
   async makeMove(idx: number) {
-    if (!this.squares[idx] && this.isOver == false) {
+    if (!this.squares[idx] && this.isOver == false && this.AlreadyClicked == false) {
+      this.AlreadyClicked = true;
       if (this.counter==0){
       this.counter++;
-      let index = this.contentCheck(idx);
+      this.index = this.contentCheck(idx);
+      this.OpponentMove = true;
       let int = 0;
-      while (idx == index && int < 9){
-        index = this.contentCheck(idx);
+      while (idx == this.index && int < 9){
+        this.OpponentMove = true;
+        this.index = this.contentCheck(idx);
         int++;
       }
-      this.makeMove(index);
       }
-      this.counter = 0;
       this.squares.splice(idx, 1, this.player);
       this.xIsNext = !this.xIsNext;
+      this.winner = this.calculateWinner();
+      if (this.OpponentMove == true)
+      {
+        await this.delay(400);
+        this.AlreadyClicked = false;
+        this.makeMove(this.index);
+        this.OpponentMove = false;
+        this.counter = 0;
+      }
       
       
     }
@@ -133,7 +146,6 @@ export class BoardComponent implements OnInit{
     //console.log(this.myClonedArray);
     //console.log(this.myClonedArray); 
     //this.squares = Object.assign([], this.myClonedArray);
-    this.winner = this.calculateWinner();
   }
     delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
@@ -163,8 +175,21 @@ export class BoardComponent implements OnInit{
         this.partyGameApi.addscore(this.finalScore).subscribe();
        // This will be updateTictacToeStats this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
         this.isOver = true;
-        return this.squares[a];
+        return "Player " + this.squares[a];
       }
+
+    }
+    let total = 0;
+    for (let x = 0; x < 9; x++)
+    {
+      if (this.squares[x] != null)
+      {
+        total++;
+      }
+    }
+    if (total == 9)
+    {
+      return "Cats Game! Nobody";
     }
     return null;
   }
