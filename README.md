@@ -58,7 +58,7 @@ https://p2partygames.azurewebsites.net/
 - Back End
   - .NET C#
   - SqlServer / Entity Framework
-  - RestAPI
+  - ASP.NET Core Web API
   - Moq/XUnit
   - socket.io
 - DevOps
