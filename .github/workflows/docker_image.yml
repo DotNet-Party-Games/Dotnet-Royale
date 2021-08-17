@@ -31,7 +31,7 @@ jobs:
        uses: docker/build-push-action@v2
        with:
           context: ./
-          file: ./PartyGameWebAPI/Dockerfile
+          file: ./API/PartyGameWebAPI/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USER }}/dotnetroyale:latest
 
