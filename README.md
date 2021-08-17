@@ -60,7 +60,6 @@ https://p2partygames.azurewebsites.net/
   - SqlServer / Entity Framework
   - RestAPI
   - Moq/XUnit
-  - Serilog
   - socket.io
 - DevOps
   - Sonarcoud
