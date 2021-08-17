@@ -41,9 +41,9 @@ import { BlackjackComponent } from './blackjack/blackjack.component';
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      {path: 'layout',
-        component: LayoutComponent
-      }
+      {path: 'layout', component: LayoutComponent},
+      {path: 'blackjack', component: BlackjackComponent},
+      {path: 'tictactoe', component: BoardComponent}
     ]),
     NgbModule
   ],
