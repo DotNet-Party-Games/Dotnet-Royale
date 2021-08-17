@@ -4,6 +4,7 @@ import { PartygameService } from './services/partygame.service';
 import { Router } from '@angular/router';
 import { LivechatService } from './services/livechat/livechat.service';
 import { DataService } from './services/data.service';
+import { IGame } from './services/game';
 
 
 @Component({
@@ -15,6 +16,9 @@ export class AppComponent {
 
   title = 'PartyGamesUI';
   userName = sessionStorage.getItem("userName");
+  games: IGame[];
+  currentGameId: number;
+  mainScreen: string;
 
   constructor(public _partyGameService:PartygameService, private router: Router, private livechatService: LivechatService, private data: DataService){}
 
@@ -37,4 +41,13 @@ export class AppComponent {
     location.reload();
   }
 
+  setGameId(p_gameId: number)
+  {
+    this.data.changeGameId(p_gameId);
+  }
+
+  showGame() {
+    let p_game = this.games.find(g => g.id == this.currentGameId).name;
+    this.mainScreen = p_game;
+  }
 }
