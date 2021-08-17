@@ -1,30 +1,39 @@
+name: Docker Image CI
+
 on:
-  push: 
-    branches: [ main ] #Put your Angular project in a different branch so whenever the frontend team pushes it won't activate the workflow of your backend team
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
-    name: Build and Deploy
+
+  build:
+
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js version
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
-        
-    - name: npm install, build, and test
-      run: |
-        npm install
-#        npm run build --prod
-      working-directory: ./UI/SocketServer
-        
-    - name: 'Deploy to Azure WebApp'
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'donetroyalsocketserver'
-        publish-profile: ${{ secrets.SERVER_SECRET }}
-        package: ./UI/SocketServer
+     - name: Check Out Repo 
+       uses: actions/checkout@v2
+
+     - name: Login to Docker Hub
+       uses: docker/login-action@v1
+       with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+     - name: Set up Docker Buildx
+       id: buildx
+       uses: docker/setup-buildx-action@v1
+
+     - name: Build and push
+       id: docker_build
+       uses: docker/build-push-action@v2
+       with:
+          context: ./UI/SocketServer
+          file: ./UI/SocketServer/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/socketserver:latest
+
+     - name: Image digest
+       run: echo ${{ steps.docker_build.outputs.digest }}
