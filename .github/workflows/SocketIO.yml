@@ -1,0 +1,30 @@
+on:
+  push: 
+    branches: [ main ] #Put your Angular project in a different branch so whenever the frontend team pushes it won't activate the workflow of your backend team
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js version
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+        
+    - name: npm install, build, and test
+      run: |
+        npm install
+#        npm run build --prod
+      working-directory: ./UI/SocketServer
+        
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'donetroyalsocketserver'
+        publish-profile: ${{ secrets.SERVER_SECRET }}
+        package: ./UI/SocketServer
