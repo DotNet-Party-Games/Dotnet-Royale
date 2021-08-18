@@ -12,28 +12,33 @@ import { SelectMultipleControlValueAccessor } from '@angular/forms';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent implements OnInit{
+export class BoardComponent implements OnInit {
 
-  public currentUser:ILoggedUser;
-  finalScore : IScore = {
+  public currentUser: ILoggedUser;
+  finalScore: IScore = {
     gamesId: null,
     userId: null,
     score: null,
   }
   isOver: boolean;
-  count: number;
-  myClonedArray : any[];
+  myClonedArray: any[];
   squares: any[];
+  grid: any[];
   xIsNext: boolean;
   winner: string;
-  public roomId : string;
-  counter:number;
-  numOfPlayers: number = 6; // This will be obtained from socketio
-  squareHeight: number = 100/(this.numOfPlayers+1); // used to generate columns of relative size
-  fontSize: number = 5*2/(this.numOfPlayers); // used to generate rows of relative size
+  public roomId: string;
+  numOfPlayers: number = 15; // This will be obtained from socketio
+  squareHeight: number = 100 / (this.numOfPlayers + 1); // used to generate columns of relative size
+  fontSize: number = 5 * 2 / (this.numOfPlayers); // used to generate rows of relative size
+  currentPlayer: number;
+  playerPieces: any[];
+  num: number;
+  index: number;
+  OpponentMove: Boolean;
+  alreadyClicked: Boolean;
 
 
-  constructor(private partyGameApi: PartygameService, private tictactoeservice : TicTacToeService, private cd:ChangeDetectorRef) {
+  constructor(private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef) {
     this.currentUser =
     {
       id: 0,
@@ -43,158 +48,155 @@ export class BoardComponent implements OnInit{
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
-   }
+  }
 
   ngOnInit(): void {
     this.newGame();
     this.selectGameRoomHandler();
     //console.log("achieved");
-    this.count = 0;
-    this.counter = 0;
-
   }
 
-  updatePlayerNum()
-  {
-    this.newGame();
-  }
-  selectGameRoomHandler(): void
-  {
+  selectGameRoomHandler(): void {
     this.roomId = '3';
     this.join(this.currentUser.userName, this.roomId);
   }
-  join (username: string, roomId: string):void{
-    this.tictactoeservice.joinRoom({user:username, room:roomId});
+  join(username: string, roomId: string): void {
+    this.tictactoeservice.joinRoom({ user: username, room: roomId });
   }
-  sendTicTacToeGameboard(squares: any[])
-  {
+  sendTicTacToeGameboard(squares: any[]) {
     //console.log("Sending GameBoard Data");
-    this.tictactoeservice.sendTicTacToeData({gameboard : squares, room: this.roomId});
-    
+    this.tictactoeservice.sendTicTacToeData({ gameboard: squares, room: this.roomId });
+
   }
-  getTicTacToeGameboard()
-  {
+  getTicTacToeGameboard() {
     //console.log("Getting GameBoard Data");
     this.tictactoeservice.getTicTacToeData().subscribe(gameboard => {
-      this.myClonedArray  = Object.assign([], gameboard.gameboard);
+      this.myClonedArray = Object.assign([], gameboard.gameboard);
     });
     // console.log(this.myClonedArray);
   }
-  newGame(){
-    this.squares = Array((this.numOfPlayers+1)**2).fill(null);
+  newGame() {
+    this.squares = new Array((this.numOfPlayers + 1) ** 2).fill(null);
+    this.currentPlayer=0;
+    this.createGrid();
+    this.generatePlayerPieces();
     this.winner = null;
-    this.xIsNext = true;
     this.isOver = false;
-    this.AlreadyClicked = false;
+    this.alreadyClicked = false;
   }
-
+  generatePlayerPieces()
+  {
+    this.playerPieces = new Array();
+     for(let x=0; x<this.numOfPlayers; x++)
+     {
+       this.playerPieces.push(String(x));
+     } 
+     this.playerPieces[3] = "\u0444";
+     this.playerPieces[2] = '\u30B7';
+  }
   get player() {
-    return this.xIsNext ? 'X' : 'O';
-  }
-  randomNumber()
-  {
-    return Math.floor((Math.random()*9));
-  
-  }
-  num: number;
-  
-  contentCheck(idx: number)
-  {
-    this.num = this.randomNumber();
-    while(this.squares[this.num] != null && this.num != idx)
-    {
-      this.num = this.randomNumber();
-    }
-    console.log("new number" + this.num);
-    return this.num;
-
+    return this.xIsNext ? "\u0444" : '\u30B7';
   }
 
-  index : number;
-  OpponentMove : Boolean;
-  AlreadyClicked : Boolean;
+  
   async makeMove(idx: number) {
-    if (!this.squares[idx] && this.isOver == false && this.AlreadyClicked == false) {
-      this.AlreadyClicked = true;
-      if (this.counter==0){
-      this.counter++;
-      this.index = this.contentCheck(idx);
-      this.OpponentMove = true;
-      let int = 0;
-      while (idx == this.index && int < 9){
-        this.OpponentMove = true;
-        this.index = this.contentCheck(idx);
-        int++;
-      }
-      }
-      this.squares.splice(idx, 1, this.player);
-      this.xIsNext = !this.xIsNext;
+    if (!this.squares[idx] && this.isOver == false && this.alreadyClicked == false) {
+      //this.AlreadyClicked = true;
+
+      this.squares[idx] = this.playerPieces[this.currentPlayer];
+      this.updateGrid(idx, this.playerPieces[this.currentPlayer]);
       this.winner = this.calculateWinner();
-      if (this.OpponentMove == true)
-      {
-        await this.delay(400);
-        this.AlreadyClicked = false;
-        this.makeMove(this.index);
-        this.OpponentMove = false;
-        this.counter = 0;
-      }
-      
-      
+      this.endTurn();
     }
-    this.sendTicTacToeGameboard(this.squares);
-    this.getTicTacToeGameboard();
-    // console.log(this.squares);
-    //this.squares = this.myClonedArray;
-    //console.log(this.squares);
-    //console.log(this.myClonedArray);
-    //console.log(this.myClonedArray); 
-    //this.squares = Object.assign([], this.myClonedArray);
   }
-    delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+  endTurn()
+  {
+    this.currentPlayer += 1;
+    if(this.currentPlayer > this.numOfPlayers-1)
+    {
+      this.currentPlayer=0;
     }
+    console.log(this.numOfPlayers);
+    console.log(this.currentPlayer);     
+  }
 
+  createGrid() {
+
+    this.grid = new Array(); //creating a new array
+    let x = 0;
+    while (x <= this.numOfPlayers) //this outer loop itereates the "rows"
+    {
+      let y = 0;
+      let tempArr = new Array(); //Creates a blank "row"
+      while (y <= this.numOfPlayers) {
+        tempArr.push(null);  //this pushes a null entry to the current "row"
+        y++
+      }
+      this.grid.push(tempArr); //pushes the filled "row" to the grid
+      x++
+    }
+  }
+  updateGrid(idx: number, piece: any) {
+    let row = Math.floor(idx / (this.numOfPlayers + 1)); // integer division (sorta) to get row
+    let col = idx % (this.numOfPlayers + 1); // remainder to specify column
+    this.grid[row][col] = piece;
+  }
   calculateWinner() {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
-      if (
-        this.squares[a] &&
-        this.squares[a] === this.squares[b] &&
-        this.squares[a] === this.squares[c]
-      ) {
-        this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
-        this.finalScore.gamesId = 3;
-        this.finalScore.score = 1;
-        this.partyGameApi.addscore(this.finalScore).subscribe();
-       // This will be updateTictacToeStats this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
-        this.isOver = true;
-        return "Player " + this.squares[a];
-      }
+    //checks (x,1) for horizontal wins
+    //checks (1,x) for vertical wins
+    //start checking at (1,1) and check the 4 win orientations
+    //then move to (1,2) until you hit (1,n-1) where n is the second to last column
+    //then move down to (2,1) and repeat until (n-1,n-1) 
+    for (let x = 0; x <= this.numOfPlayers; x++) {
+      for (let y = 0; y <= this.numOfPlayers; y++) {
+        // if middle piece is null then we can skip the other checks
+        if (this.grid[x][y]) {
+          
+          //check vertical when not next to the top or bottom edge
+          if (x > 0 && x<this.numOfPlayers) {
+            //check vertical
+            if ((this.grid[x - 1][y] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x + 1][y])) {
+              return "Player " + this.playerPieces[this.currentPlayer];
+            }
+          }
 
-    }
-    let total = 0;
-    for (let x = 0; x < 9; x++)
-    {
-      if (this.squares[x] != null)
-      {
-        total++;
+          // check horizontal when not next to left or right edge
+          if (y > 0 && y<this.numOfPlayers) {
+            //check horizontal
+            if ((this.grid[x][y - 1] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x][y + 1])) {
+              return "Player " + this.playerPieces[this.currentPlayer];
+            }
+          }
+          //check if near corners
+          if ((x > 0 && x < this.numOfPlayers) && (y > 0 && y < this.numOfPlayers)) {
+            //check aigu diagonal
+            if ((this.grid[x + 1][y - 1] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x - 1][y + 1])) {
+              return "Player " + this.playerPieces[this.currentPlayer];
+            }
+
+            //check grave diagonal
+            if ((this.grid[x - 1][y - 1] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x + 1][y + 1])) {
+              return "Player " + this.playerPieces[this.currentPlayer];
+            }
+          }
+        }
       }
     }
-    if (total == 9)
-    {
-      return "Cats Game! Nobody";
+    //     this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
+    //     this.finalScore.gamesId = 3;
+    //     this.finalScore.score = 1;
+    //     this.partyGameApi.addscore(this.finalScore).subscribe();
+    //     // This will be updateTictacToeStats this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
+    //     this.isOver = true;
+    let isCats: boolean = true;
+    for (let x = 0; x < this.squares.length; x++) {
+      if (!this.squares[x]) {
+        isCats = false;
+        return null;
+      }
     }
-    return null;
+    this.isOver = true;
+    return "Cats Game! Nobody";
   }
 }
 
