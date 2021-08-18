@@ -205,9 +205,12 @@ export class LayoutComponent implements OnInit {
     if (game.snakePos.some(pos => pos.x === field.x && pos.y === field.y)) {
       return FieldType.SNAKE;
     }
-    // if (game.snakePos2.some(async(pos) => pos.x === field.x && pos.y === field.y)) {
-    //   return FieldType.SNAKE;
-    // }
+    if (game.snakePos2 != undefined)
+      {
+        if (game.snakePos2.some(pos => pos.x === field.x && pos.y === field.y)) {
+          return FieldType.SNAKE;
+        }
+      }
     return FieldType.EMPTY;
   }
 
@@ -217,8 +220,9 @@ export class LayoutComponent implements OnInit {
       y: Math.floor(height * Math.random())
     };
   }
-  SnakeGameStateAtX: any = {};
-  SnakeGameStateAtY: any = {};
+  SnakeGameStateAtX: {x: number; y: number}[];
+  SnakeGameStateAtY: {x: number; y: number}[];
+  SnakeGameState: {x: number; y: number}[];
   newGame(): void {
     const width = 40;
     const height = 33;
@@ -236,15 +240,15 @@ export class LayoutComponent implements OnInit {
     this.tick$
       .pipe(
         map(tick => {
-          const game = this.game$.value;
-          const direction = this.direction$.value;
-          const nextField = this.getNextField(game, direction);
-          const nextFieldType = this.getFieldType(nextField, game);
           this.sendSnakeGameState();
           this.snakeService.getSnakeGameState();
-          this.snakeService.currentGameState.subscribe(data => ((this.SnakeGameStateAtX = data.map(a=> a.x)), (this.SnakeGameStateAtY = data.map(b=>b.y))));
-          console.log(this.SnakeGameStateAtX);
-          console.log(this.SnakeGameStateAtY);
+          //this.snakeService.currentGameState.subscribe(data => ((this.SnakeGameStateAtX = data.map(a=> a.x)), (this.SnakeGameStateAtY = data.map(b=>b.y))));
+          this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+          //console.log(this.SnakeGameState.length);
+          //console.log(this.SnakeGameStateAtX);
+          //console.log(this.SnakeGameStateAtY);
+          //console.log(this.SnakeGameState);
+          //console.log(this.game$.value.snakePos);
            //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
           //  for (let x = 0; x < this.myClonedArray.length; x++)
           //  {
@@ -254,14 +258,33 @@ export class LayoutComponent implements OnInit {
           //       this.game$.value.snakePos.push(this.myClonedArray[x]);
           //     }
           //  }
+          let game = this.game$.value;
+          game.snakePos2 = this.SnakeGameState;
+          // console.log(game.snakePos);
+          //console.log(game.snakePos2);
+          // for (let x = 0; x < game.snakePos.length; x++)
+          // {
+          //   if (game.snakePos[x] == {x:20, y:5})
+          //   {}
+          //   else{
+          //     game.snakePos.push({x:20, y:5});
+          //   }
+          // }
+          //console.log(game.snakePos.length);
+          const direction = this.direction$.value;
+          const nextField = this.getNextField(game, direction);
+          const nextFieldType = this.getFieldType(nextField, game);
          switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
-              //game.snakePos2 =[...game.snakePos2.slice(1),nextField];
+              if (game.snakePos2 != undefined)
+              {
+                game.snakePos2 = [...game.snakePos2.slice(1), nextField];
+              }
               break;
             case FieldType.FOOD:
               game.snakePos = [...game.snakePos, nextField];
-             // game.snakePos2= [...game.snakePos2,nextField]
+              game.snakePos2= [...game.snakePos2,nextField]
               game.food = this.getRandomField(game.width, game.height);
               let loop = true;
               while (loop){
@@ -271,10 +294,10 @@ export class LayoutComponent implements OnInit {
                   {
                     game.food = this.getRandomField(game.width, game.height);
                   }
-                  // else if(game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
-                  // {
-                  //   game.food = this.getRandomField(game.width,game.height);
-                  // }
+                  else if(game.snakePos2 != undefined && game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
+                  {
+                    game.food = this.getRandomField(game.width,game.height);
+                  }
                   else
                   {
                     loop = false;
