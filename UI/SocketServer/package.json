@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "index.js",
-    "start": "nodemon index.js"
+    "start": "index.js"
   },
   "keywords": [],
   "author": "",
