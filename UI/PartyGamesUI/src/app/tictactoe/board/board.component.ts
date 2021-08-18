@@ -28,6 +28,10 @@ export class BoardComponent implements OnInit{
   winner: string;
   public roomId : string;
   counter:number;
+  numOfPlayers: number = 6; // This will be obtained from socketio
+  squareHeight: number = 100/(this.numOfPlayers+1); // used to generate columns of relative size
+  fontSize: number = 5*2/(this.numOfPlayers); // used to generate rows of relative size
+
 
   constructor(private partyGameApi: PartygameService, private tictactoeservice : TicTacToeService, private cd:ChangeDetectorRef) {
     this.currentUser =
@@ -50,11 +54,10 @@ export class BoardComponent implements OnInit{
 
   }
 
-  // ngOnChanges():void{
-  //   this.sendTicTacToeGameboard(this.squares);
-  //   this.getTicTacToeGameboard();
-  // }
-  
+  updatePlayerNum()
+  {
+    this.newGame();
+  }
   selectGameRoomHandler(): void
   {
     this.roomId = '3';
@@ -78,7 +81,7 @@ export class BoardComponent implements OnInit{
     // console.log(this.myClonedArray);
   }
   newGame(){
-    this.squares = Array(9).fill(null);
+    this.squares = Array((this.numOfPlayers+1)**2).fill(null);
     this.winner = null;
     this.xIsNext = true;
     this.isOver = false;
