@@ -247,44 +247,30 @@ export class LayoutComponent implements OnInit {
           //console.log(this.SnakeGameState.length);
           //console.log(this.SnakeGameStateAtX);
           //console.log(this.SnakeGameStateAtY);
-          //console.log(this.SnakeGameState);
+          
           //console.log(this.game$.value.snakePos);
            //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
-          //  for (let x = 0; x < this.myClonedArray.length; x++)
-          //  {
-          //     if (this.game$.value.snakePos.includes(this.myClonedArray[x]))
-          //     { }
-          //     else{
-          //       this.game$.value.snakePos.push(this.myClonedArray[x]);
-          //     }
-          //  }
           let game = this.game$.value;
-          game.snakePos2 = this.SnakeGameState;
-          // console.log(game.snakePos);
-          //console.log(game.snakePos2);
-          // for (let x = 0; x < game.snakePos.length; x++)
-          // {
-          //   if (game.snakePos[x] == {x:20, y:5})
-          //   {}
-          //   else{
-          //     game.snakePos.push({x:20, y:5});
-          //   }
-          // }
-          //console.log(game.snakePos.length);
+          if (this.SnakeGameState != undefined)
+          {
+            console.log(this.SnakeGameState.length);
+            for (let x = 0; x < this.SnakeGameState.length; x++)
+            {
+              game.snakePos.push({x: this.SnakeGameState[x].x, y: this.SnakeGameState[x].y});
+            }
+            game.snakePos2 = this.SnakeGameState;
+          }
+
+          console.log(game.snakePos2);
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
          switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
-              if (game.snakePos2 != undefined)
-              {
-                game.snakePos2 = [...game.snakePos2.slice(1), nextField];
-              }
               break;
             case FieldType.FOOD:
               game.snakePos = [...game.snakePos, nextField];
-              game.snakePos2= [...game.snakePos2,nextField]
               game.food = this.getRandomField(game.width, game.height);
               let loop = true;
               while (loop){
@@ -294,10 +280,12 @@ export class LayoutComponent implements OnInit {
                   {
                     game.food = this.getRandomField(game.width, game.height);
                   }
-                  else if(game.snakePos2 != undefined && game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
-                  {
-                    game.food = this.getRandomField(game.width,game.height);
-                  }
+                  
+                  // else if (game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
+                  // {
+                  //     game.food = this.getRandomField(game.width,game.height);
+                  // }
+                  
                   else
                   {
                     loop = false;
