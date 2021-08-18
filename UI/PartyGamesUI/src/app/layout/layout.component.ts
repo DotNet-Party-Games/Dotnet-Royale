@@ -23,6 +23,7 @@ import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import { io } from 'socket.io-client';
+import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 enum Direction {
   UP,
   DOWN,
@@ -143,6 +144,7 @@ export class LayoutComponent implements OnInit {
   selectGameRoomHandler():void
   {
     this.roomId = '1';
+    this.currentUser.userName = "steven";
     this.join(this.currentUser.userName, this.roomId);
   }
   join (username:string, roomId:string):void{
@@ -215,7 +217,8 @@ export class LayoutComponent implements OnInit {
       y: Math.floor(height * Math.random())
     };
   }
-
+  SnakeGameStateAtX: any = {};
+  SnakeGameStateAtY: any = {};
   newGame(): void {
     const width = 40;
     const height = 33;
@@ -230,7 +233,6 @@ export class LayoutComponent implements OnInit {
       lost: false,
       snakePos2
     });
-
     this.tick$
       .pipe(
         map(tick => {
@@ -238,26 +240,20 @@ export class LayoutComponent implements OnInit {
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
-
-
-
-           this.snakeService.getSnakeGameState().subscribe((data: any) => {
-            console.log(data.b);
-
-             //console.log(this.obj['snakePos']);
-             //console.log(Object.values(this.obj.snakePos));
-           });
-
-
-
-          //  var obj : GameState;
-          //  this.snakeService.getSnakeGameState().subscribe((data: any) => {
-          //   //  var gamestate = any.data[0].snakePos;
-          //    snakePos2 =  data.b;
-
-          //  });
-         // console.log(snakePos2);
-
+          this.sendSnakeGameState();
+          this.snakeService.getSnakeGameState();
+          this.snakeService.currentGameState.subscribe(data => ((this.SnakeGameStateAtX = data.map(a=> a.x)), (this.SnakeGameStateAtY = data.map(b=>b.y))));
+          console.log(this.SnakeGameStateAtX);
+          console.log(this.SnakeGameStateAtY);
+           //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
+          //  for (let x = 0; x < this.myClonedArray.length; x++)
+          //  {
+          //     if (this.game$.value.snakePos.includes(this.myClonedArray[x]))
+          //     { }
+          //     else{
+          //       this.game$.value.snakePos.push(this.myClonedArray[x]);
+          //     }
+          //  }
          switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
