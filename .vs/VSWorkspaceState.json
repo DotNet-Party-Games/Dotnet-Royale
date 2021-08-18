@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\API",
+    "\\API\\PartyGameDL"
   ],
+  "SelectedNode": "\\API\\PartyGameDL\\PartyGameDL.csproj",
   "PreviewInSolutionExplorer": false
 }

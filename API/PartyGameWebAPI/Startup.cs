@@ -29,7 +29,7 @@ namespace PartyGameWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PartyGamesDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Reference2DB")));
+            services.AddDbContext<PartyGamesDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PartyGamesDB")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
