@@ -11,8 +11,9 @@ export class SnakeService {
   private socket: Socket;
   private url='http://localhost:3001';
   //private url = 'https://pgsocketserver.herokuapp.com/';
-  private newGameState = new BehaviorSubject<any>({});
+  private newGameState = new BehaviorSubject<any>({x:1,y:1});
   currentGameState = this.newGameState.asObservable();
+  
   constructor() 
   {
     this.socket = io(this.url, {transports: ['websocket', 'pulling', 'flashsocket']});
