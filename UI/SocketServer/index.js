@@ -20,9 +20,9 @@ io.on('connection',(socket)=>{
 
     socket.on('join',(data) =>{
         console.log('a user joined ');     
-        if(userlist.includes(data.user) == false) {
+        //if(userlist.includes(data.user) == false) {
             userlist.push(data.user);
-        }
+        //}
         console.log(userlist, data.room);
         socket.join(data.room);
         io.in(data.room).emit('updatedUserList',userlist);
@@ -37,6 +37,7 @@ io.on('connection',(socket)=>{
     socket.on('gamestate', (data) =>{
         //console.log("gamestate data: " + JSON.stringify(data));
         io.in(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
+        
     });
 
     socket.on('gameboard', (data) => {

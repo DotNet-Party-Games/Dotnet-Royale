@@ -23,6 +23,7 @@ import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import { io } from 'socket.io-client';
+import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 enum Direction {
   UP,
   DOWN,
@@ -143,6 +144,7 @@ export class LayoutComponent implements OnInit {
   selectGameRoomHandler():void
   {
     this.roomId = '1';
+    this.currentUser.userName = "steven";
     this.join(this.currentUser.userName, this.roomId);
   }
   join (username:string, roomId:string):void{
@@ -203,9 +205,12 @@ export class LayoutComponent implements OnInit {
     if (game.snakePos.some(pos => pos.x === field.x && pos.y === field.y)) {
       return FieldType.SNAKE;
     }
-    // if (game.snakePos2.some(async(pos) => pos.x === field.x && pos.y === field.y)) {
-    //   return FieldType.SNAKE;
-    // }
+    if (game.snakePos2 != undefined)
+      {
+        if (game.snakePos2.some(pos => pos.x === field.x && pos.y === field.y)) {
+          return FieldType.SNAKE;
+        }
+      }
     return FieldType.EMPTY;
   }
 
@@ -215,7 +220,9 @@ export class LayoutComponent implements OnInit {
       y: Math.floor(height * Math.random())
     };
   }
-
+  SnakeGameStateAtX: {x: number; y: number}[];
+  SnakeGameStateAtY: {x: number; y: number}[];
+  SnakeGameState: {x: number; y: number}[];
   newGame(): void {
     const width = 40;
     const height = 33;
@@ -230,42 +237,40 @@ export class LayoutComponent implements OnInit {
       lost: false,
       snakePos2
     });
-
     this.tick$
       .pipe(
         map(tick => {
-          const game = this.game$.value;
+          this.sendSnakeGameState();
+          this.snakeService.getSnakeGameState();
+          //this.snakeService.currentGameState.subscribe(data => ((this.SnakeGameStateAtX = data.map(a=> a.x)), (this.SnakeGameStateAtY = data.map(b=>b.y))));
+          this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+          //console.log(this.SnakeGameState.length);
+          //console.log(this.SnakeGameStateAtX);
+          //console.log(this.SnakeGameStateAtY);
+          
+          //console.log(this.game$.value.snakePos);
+           //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
+          let game = this.game$.value;
+          if (this.SnakeGameState != undefined)
+          {
+            console.log(this.SnakeGameState.length);
+            for (let x = 0; x < this.SnakeGameState.length; x++)
+            {
+              game.snakePos.push({x: this.SnakeGameState[x].x, y: this.SnakeGameState[x].y});
+            }
+            game.snakePos2 = this.SnakeGameState;
+          }
+
+          console.log(game.snakePos2);
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
-
-
-
-           this.snakeService.getSnakeGameState().subscribe((data: any) => {
-            console.log(data.b);
-
-             //console.log(this.obj['snakePos']);
-             //console.log(Object.values(this.obj.snakePos));
-           });
-
-
-
-          //  var obj : GameState;
-          //  this.snakeService.getSnakeGameState().subscribe((data: any) => {
-          //   //  var gamestate = any.data[0].snakePos;
-          //    snakePos2 =  data.b;
-
-          //  });
-         // console.log(snakePos2);
-
          switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
-              //game.snakePos2 =[...game.snakePos2.slice(1),nextField];
               break;
             case FieldType.FOOD:
               game.snakePos = [...game.snakePos, nextField];
-             // game.snakePos2= [...game.snakePos2,nextField]
               game.food = this.getRandomField(game.width, game.height);
               let loop = true;
               while (loop){
@@ -275,10 +280,12 @@ export class LayoutComponent implements OnInit {
                   {
                     game.food = this.getRandomField(game.width, game.height);
                   }
-                  // else if(game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
+                  
+                  // else if (game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
                   // {
-                  //   game.food = this.getRandomField(game.width,game.height);
+                  //     game.food = this.getRandomField(game.width,game.height);
                   // }
+                  
                   else
                   {
                     loop = false;

@@ -1,11 +1,4 @@
 <div class="row mt-2" style="height: 85vh">
-  <div class="col-3">
-    <div class="h-100 text-white">
-      <!-- left components -->
-      <app-gamelist></app-gamelist>
-      <app-leaderboard></app-leaderboard>
-    </div>
-  </div>
   <div class="col">
     <div class="h-100 bg-dark text-white overflow-auto" [ngSwitch]="mainScreen" >
       <!-- main components -->
@@ -19,8 +12,8 @@
           <h6 *ngIf="game.lost">Game Over! <button (click)="newGame()">Rematch?</button><button (click) = "resetScreen()">Quit</button></h6>
           </div>
           <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
-            <app-snake [pos]="game.snakePos"></app-snake>
-            <!-- <app-snake [pos]="game.snakePos2"></app-snake> -->
+            <app-snake [pos]="game.snakePos" ></app-snake>
+
           </app-game-field>
         </ng-container>
         <!-- End of Snake Game-->
@@ -55,7 +48,6 @@
       <div *ngSwitchDefault class="h-100">
         <!-- This is Spin for match making -->
         <div style="height: 93%;">
-          <app-match></app-match>
         </div>
         <div class="text-center">
           <button (click) = "showGame()" class="btn btn-primary">
@@ -64,12 +56,6 @@
         </div>
       </div>
       <!-- <app-board></app-board> -->
-    </div>
-  </div>
-  <div class="col-3">
-    <div class="h-100 text-white">
-      <!-- right components -->
-      <app-livechat></app-livechat>
     </div>
   </div>
 </div>
