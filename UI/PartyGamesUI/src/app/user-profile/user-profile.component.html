@@ -1,9 +1,9 @@
 <div style="height: 100vh;">
 
-  <div class="row justify-content-md-center">
+  <div class="row mt-4 justify-content-md-center">
     <div class="col col-12">
       <div class="p-5 text-center text-warning" style="background-color: #111;">
-        <h1>LEADERBOARD</h1>
+        <h1>USER PROFILE</h1>
       </div>
     </div>
   </div>
@@ -16,14 +16,14 @@
           <h3>Snake</h3>
         </div>
         <div class="overflow-auto">
-          <table class="table table-sm">
-            <tr *ngFor = "let snakeLeader of snakeLeaders" class="text-white bg-dark">
-              <td>
-                <i class="fas fa-user-circle mr-2"></i>{{snakeLeader.username | uppercase}}
-              </td>
-              <td>
-                {{snakeLeader.score}}
-              </td>
+          <table class="table text-white">
+            <tr>
+              <td>Average Score</td>
+              <td>{{snakeGameStats.avgScore | number}}</td>
+            </tr>
+            <tr>
+              <td>High Score</td>
+              <td>{{snakeGameStats.highScore | number}}</td>
             </tr>
           </table>
         </div>
@@ -36,18 +36,18 @@
           <h3>Black Jack</h3>
         </div>
         <div class="overflow-auto">
-          <table class="table table-sm">
-            <tr *ngFor = "let blackjackLeader of blackjackLeaders" class="text-white bg-dark">
-              <td>
-                <i class="fas fa-user-circle mr-2"></i>{{blackjackLeader.username | uppercase}}
-              </td>
-              <td>
-                {{blackjackLeader.score}}
-              </td>
+          <table class="table text-white">
+            <tr>
+              <td>Average Score</td>
+              <td>{{blackJackGameStats.avgScore | number}}</td>
+            </tr>
+            <tr>
+              <td>High Score</td>
+              <td>{{blackJackGameStats.highScore | number}}</td>
             </tr>
           </table>
         </div>
-       </div>
+      </div>
     </div>
 
     <div class="col col-4">
@@ -56,18 +56,18 @@
           <h3>Tic-Tac-Toe</h3>
         </div>
         <div class="overflow-auto">
-          <table class="table table-sm">
-            <tr *ngFor = "let tictactoeLeader of tictactoeLeaders" class="text-white bg-dark">
-              <td>
-                <i class="fas fa-user-circle mr-2"></i>{{tictactoeLeader.username | uppercase}}
-              </td>
-              <td>
-                {{tictactoeLeader.score}}
-              </td>
+          <table class="table text-white">
+            <tr>
+              <td>Average Score</td>
+              <td>{{tictactoeGameStats.avgScore | number}}</td>
+            </tr>
+            <tr>
+              <td>High Score</td>
+              <td>{{tictactoeGameStats.highScore | number}}</td>
             </tr>
           </table>
         </div>
-       </div>
+      </div>
     </div>
 
   </div>
