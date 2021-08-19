@@ -10,7 +10,7 @@ let io = socketIO(server);
 // to store user list in live chat
 var userlist = [];
 
-const port = process.env.PORT ||  3001;
+const port = process.env.PORT ||  3000;
 
 server.listen(port, ()=>{
     console.log(`started on port: ${port}`);
