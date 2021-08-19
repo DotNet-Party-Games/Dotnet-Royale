@@ -26,6 +26,9 @@ namespace PartyGameDL
         // {
         //     p_options.UseSqlServer(@"Server=tcp:revature-suraj-kalika.database.windows.net,1433;Initial Catalog=partyGamesDB;Persist Security Info=False;User ID=surajkalika;Password=Dawnking12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         // }
+//         PartyGamesDB connection string:
+// Server=tcp:revbox.database.windows.net,1433;Initial Catalog=PartyGamesDB;Persist Security Info=False;User ID=revbox;Password=R3vb0xP@55;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
         protected override void OnModelCreating(ModelBuilder p_modelBuilder)
         {
             p_modelBuilder.Entity<Games>()
