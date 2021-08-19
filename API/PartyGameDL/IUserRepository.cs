@@ -18,5 +18,6 @@ namespace PartyGameDL
         Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory);
         Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score);
         Task<Snake> UpdateSnakeGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
+        Task<TicTacToe> UpdateTicTacToeGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
     }
 }
