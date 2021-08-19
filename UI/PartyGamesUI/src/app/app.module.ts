@@ -20,6 +20,10 @@ import { SnakeComponent } from './snake/snake.component';
 import { GameFieldComponent } from './snake/game-field/game-field.component';
 
 import { BlackjackComponent } from './blackjack/blackjack.component';
+import { MainComponent } from './main/main.component';
+import { LobbyComponent } from './lobby/lobby.component';
+import { RoomComponent } from './room/room.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 
 @NgModule({
@@ -33,7 +37,11 @@ import { BlackjackComponent } from './blackjack/blackjack.component';
     BoardComponent,
     SnakeComponent,
     GameFieldComponent,
-    BlackjackComponent
+    BlackjackComponent,
+    MainComponent,
+    LobbyComponent,
+    RoomComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +49,13 @@ import { BlackjackComponent } from './blackjack/blackjack.component';
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      {path: 'layout', component: LayoutComponent},
+      {path: '', component: MainComponent},
+      {path: 'main', component: MainComponent},
+      {path: 'lobby', component: LobbyComponent},
+      {path: 'room', component: RoomComponent},
+      {path: 'leaderboard', component: LeaderboardComponent},
+      {path: 'user-profile', component: UserProfileComponent},
+      {path: 'snake', component: LayoutComponent},
       {path: 'blackjack', component: BlackjackComponent},
       {path: 'tictactoe', component: BoardComponent}
     ]),
