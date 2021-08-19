@@ -142,5 +142,50 @@ namespace PartyGameDL
             await _context.SaveChangesAsync();
             return scoreHistory;
         }
+
+        public async Task<TicTacToe> UpdateTicTacToeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            var ticTacToeData = await GetTicTacToeGameStatsByUserIdAsync(p_scoreHistory.UserId);
+            var scoreHistories = _context.ScoreHistories.Select(scores => scores).ToList();
+            int count = 0;
+            double totalScore = 0;
+            foreach (ScoreHistory score in scoreHistories)
+            {
+                if (score.UserId == p_scoreHistory.UserId && score.GamesId == p_scoreHistory.GamesId)
+                {
+
+                    totalScore = score.Score;
+                    count++;
+                }
+            }
+            double avgScore = totalScore / count;
+            if (ticTacToeData != null)
+            {
+                Console.WriteLine(ticTacToeData);
+                _context.TicTacToes.Remove(ticTacToeData);
+                _context.SaveChanges();
+                TicTacToe newTictacToeData = new TicTacToe()
+                {
+                    UserId = p_scoreHistory.UserId,
+                    GamesId = p_scoreHistory.GamesId,
+                    WinLossRatio = Math.Round(avgScore, 2)
+                };
+                _context.TicTacToes.Add(newTictacToeData);
+                _context.SaveChanges();
+            }
+            else
+            {
+                await _context.TicTacToes.AddAsync(new TicTacToe()
+                {
+                    UserId = p_scoreHistory.UserId,
+                    GamesId = p_scoreHistory.GamesId,
+                    WinLossRatio = Math.Round(avgScore, 2)
+                });
+                _context.SaveChanges();
+            }
+
+            return ticTacToeData;
+        }
+
     }
 }
