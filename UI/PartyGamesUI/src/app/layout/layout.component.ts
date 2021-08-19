@@ -24,6 +24,7 @@ import { ILoggedUser } from '../services/user';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import { io } from 'socket.io-client';
 import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
+import { Router } from '@angular/router';
 enum Direction {
   UP,
   DOWN,
@@ -63,7 +64,7 @@ export class LayoutComponent implements OnInit {
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
 
-  constructor(private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
+  constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
   {
     this.currentUser =
     {
@@ -247,7 +248,7 @@ export class LayoutComponent implements OnInit {
           //console.log(this.SnakeGameState.length);
           //console.log(this.SnakeGameStateAtX);
           //console.log(this.SnakeGameStateAtY);
-          
+
           //console.log(this.game$.value.snakePos);
            //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
           let game = this.game$.value;
@@ -280,12 +281,12 @@ export class LayoutComponent implements OnInit {
                   {
                     game.food = this.getRandomField(game.width, game.height);
                   }
-                  
+
                   // else if (game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
                   // {
                   //     game.food = this.getRandomField(game.width,game.height);
                   // }
-                  
+
                   else
                   {
                     loop = false;
@@ -328,6 +329,10 @@ export class LayoutComponent implements OnInit {
   resetScreen() {
     this.mainScreen = "default";
     location.reload();
+  }
+
+  goToRoom(){
+    this.router.navigate(['/room']);
   }
 
 }

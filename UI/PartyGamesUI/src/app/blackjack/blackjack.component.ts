@@ -4,6 +4,7 @@ import { BlackjackService } from '../services/blackjack/blackjack.service';
 import { IScore } from 'src/app/services/score';
 import { PartygameService } from '../services/partygame.service';
 import { ILoggedUser } from '../services/user';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-blackjack',
   templateUrl: './blackjack.component.html',
@@ -17,7 +18,7 @@ export class BlackjackComponent implements OnInit {
     score: null,
   }
   public currentUser:ILoggedUser;
-  constructor(private partyGameApi: PartygameService, private blackjackservice: BlackjackService) { 
+  constructor(private partyGameApi: PartygameService, private blackjackservice: BlackjackService, private router: Router) {
     this.currentUser =
     {
       id: 0,
@@ -43,7 +44,7 @@ export class BlackjackComponent implements OnInit {
     document.getElementById("playc-start").addEventListener("click", bj.start);
     document.getElementById("playc-hit").addEventListener("click", bj.hit);
     document.getElementById("playc-stand").addEventListener("click", bj.stand);
-    
+
     this.selectGameRoomHandler();
   }
 
@@ -64,7 +65,10 @@ export class BlackjackComponent implements OnInit {
 
   }
 
-  
+  goToRoom(){
+    this.router.navigate(['/room']);
+  }
+
 }
 
 
@@ -102,7 +106,7 @@ var bj = {
     bj.hpcon.classList.add("started");
     bj.winner.innerHTML=null;
 
-    
+
     // (C2) RESHUFFLE DECK
     // S: SHAPE (0 = HEART, 1 = DIAMOND, 2 = CLUB, 3 = SPADE)
     // N: NUMBER (1 = ACE, 2 TO 10 = AS-IT-IS, 11 = JACK, 12 = QUEEN, 13 = KING)
@@ -117,13 +121,13 @@ var bj = {
     }
 
     // (C3) DRAW FIRST 4 CARDS
-    bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw(); 
-    bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw(); 
+    bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw();
+    bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw();
 
     // (C4) LUCKY 21 ON FIRST DRAW?
     bj.turn = 0; bj.points();
     bj.turn = 1; bj.points();
-    var winner = bj.check(); 
+    var winner = bj.check();
     if (winner==null) { bj.turn = 0; }
   },
 
@@ -155,7 +159,7 @@ var bj = {
       bj.hphand.appendChild(cardh);
     }
   },
-  
+
   // (E) CALCULATE AND UPDATE POINTS
   points : function () {
     // (E1) RUN THROUGH CARDS
@@ -167,7 +171,7 @@ var bj = {
       else if (i.n>=11 && i.n<=13) { points += 10; }
       else { points += i.n; }
     }
-    
+
     // (E2) CALCULATIONS FOR ACES
     // NOTE: FOR MULTIPLE ACES, WE CALCULATE ALL POSSIBLE POINTS AND TAKE HIGHEST.
     if (aces!=0) {
@@ -181,7 +185,7 @@ var bj = {
         if (i > points && i <= 21) { points = i; }
       }
     }
-    
+
     // (E3) UPDATE POINTS
     if (bj.turn) { bj.dpoints = points; }
     else {
@@ -195,7 +199,7 @@ var bj = {
     // (F1) FLAGS
     // WINNER - 0 FOR PLAYER, 1 FOR DEALER, 2 FOR A TIE
     var winner = null, message = "";
-    
+
     // (F2) BLACKJACK - WIN ON FIRST ROUND
     if (bj.player.length==2 && bj.dealer.length==2) {
       // TIE
@@ -211,7 +215,7 @@ var bj = {
         winner = 1; message = "Dealer wins with a Blackjack!";
       }
     }
-    
+
     // (F3) WHO GONE BUST?
     if (winner == null) {
       // PLAYER GONE BUST
@@ -223,7 +227,7 @@ var bj = {
         winner = 0; message = "Dealer has gone bust - Player wins!";
       }
     }
-    
+
     // (F4) POINTS CHECK - WHEN BOTH PLAYERS STAND
     if (winner == null && bj.dstand && bj.pstand) {
       // DEALER HAS MORE POINTS
@@ -257,12 +261,12 @@ var bj = {
     }
     return winner;
   },
-  
+
   // (G) HIT A NEW CARD
   hit : function () {
     // (G1) DRAW A NEW CARD
     bj.draw(); bj.points();
-    
+
      // (G2) AUTO-STAND ON 21 POINTS
     if (bj.turn==0 && bj.ppoints==21 && !bj.pstand) {
       bj.pstand = true; bj.hpstand.classList.add("stood");
@@ -270,7 +274,7 @@ var bj = {
     if (bj.turn==1 && bj.dpoints==21 && !bj.dstand) {
       bj.dstand = true; bj.hdstand.classList.add("stood");
     }
-    
+
     // (G3) CONTINUE GAME IF NO WINNER
     var winner = bj.check();
     if (winner==null) { bj.next(); }
@@ -294,16 +298,16 @@ var bj = {
   next : function () {
 
 
-  
+
     // (I1) UP NEXT...
     bj.turn = bj.turn==0 ? 1 : 0 ;
 
     // (I2) DEALER IS NEXT
-    if (bj.turn==1) { 
+    if (bj.turn==1) {
       if (bj.dstand) { bj.turn = 0; } // SKIP DEALER TURN IF STOOD
       else { bj.ai(); }
     }
-    
+
     // (I2) PLAYER IS NEXT
     else {
       if (bj.pstand) { bj.turn = 1; bj.ai(); } // SKIP PLAYER TURN IF STOOD
