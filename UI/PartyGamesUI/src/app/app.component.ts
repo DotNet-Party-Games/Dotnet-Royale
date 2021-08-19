@@ -35,10 +35,13 @@ export class AppComponent {
     this.livechatService.leaveRoom({user:username, room:roomId});
   }
 
-  home(){
+  main(){
+    this.router.navigate(['/main']);
+  }
+
+  reset(){
     this.data.changeGameId(-1);
     this.router.navigate(['/layout']);
-    location.reload();
   }
 
   setGameId(p_gameId: number)

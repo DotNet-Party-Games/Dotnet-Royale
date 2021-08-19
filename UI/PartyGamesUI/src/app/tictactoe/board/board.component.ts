@@ -6,6 +6,7 @@ import { ILoggedUser } from 'src/app/services/user';
 import { Subscriber } from 'rxjs';
 import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -38,7 +39,7 @@ export class BoardComponent implements OnInit {
   alreadyClicked: Boolean;
 
 
-  constructor(private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef) {
     this.currentUser =
     {
       id: 0,
@@ -90,7 +91,7 @@ export class BoardComponent implements OnInit {
      for(let x=0; x<this.numOfPlayers; x++)
      {
        this.playerPieces.push(String(x));
-     } 
+     }
      this.playerPieces[3] = "\u0444";
      this.playerPieces[2] = '\u30B7';
   }
@@ -98,7 +99,7 @@ export class BoardComponent implements OnInit {
     return this.xIsNext ? "\u0444" : '\u30B7';
   }
 
-  
+
   async makeMove(idx: number) {
     if (!this.squares[idx] && this.isOver == false && this.alreadyClicked == false) {
       //this.AlreadyClicked = true;
@@ -117,7 +118,7 @@ export class BoardComponent implements OnInit {
       this.currentPlayer=0;
     }
     console.log(this.numOfPlayers);
-    console.log(this.currentPlayer);     
+    console.log(this.currentPlayer);
   }
 
   createGrid() {
@@ -146,12 +147,12 @@ export class BoardComponent implements OnInit {
     //checks (1,x) for vertical wins
     //start checking at (1,1) and check the 4 win orientations
     //then move to (1,2) until you hit (1,n-1) where n is the second to last column
-    //then move down to (2,1) and repeat until (n-1,n-1) 
+    //then move down to (2,1) and repeat until (n-1,n-1)
     for (let x = 0; x <= this.numOfPlayers; x++) {
       for (let y = 0; y <= this.numOfPlayers; y++) {
         // if middle piece is null then we can skip the other checks
         if (this.grid[x][y]) {
-          
+
           //check vertical when not next to the top or bottom edge
           if (x > 0 && x<this.numOfPlayers) {
             //check vertical
@@ -197,6 +198,10 @@ export class BoardComponent implements OnInit {
     }
     this.isOver = true;
     return "Cats Game! Nobody";
+  }
+
+  goToRoom(){
+    this.router.navigate(['/room']);
   }
 }
 

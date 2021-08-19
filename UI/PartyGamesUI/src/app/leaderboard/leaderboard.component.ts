@@ -4,6 +4,7 @@ import { Leader } from '../services/leader';
 import { IScore } from '../services/score';
 import { IUser } from '../services/user';
 import { DataService } from '../services/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-leaderboard',
@@ -12,31 +13,36 @@ import { DataService } from '../services/data.service';
 })
 export class LeaderboardComponent implements OnInit {
 
-  currentGameId: number;
-  leaders: Leader[];
+  snakeLeaders: Leader[];
+  blackjackLeaders: Leader[];
+  tictactoeLeaders: Leader[];
   scores: IScore[];
 
-  constructor(private partyGameApi: PartygameService, private data: DataService) { }
+  constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService) { }
 
   ngOnInit(): void {
-    this.data.currentGameId.subscribe(p_gameId => {
-        this.currentGameId = p_gameId;
-        this.getLeaderBoardByGameId(this.currentGameId);
-      });
+    this.snakeLeaders = this.getLeaderBoardByGameId(1);
+    this.blackjackLeaders = this.getLeaderBoardByGameId(2);
+    this.tictactoeLeaders = this.getLeaderBoardByGameId(3);
   }
 
-  getLeaderBoardByGameId(p_gameId: number)
+  getLeaderBoardByGameId(p_gameId: number) : Leader[]
   {
-    this.leaders = [];
+    let leaders: Leader[] = [];
     this.partyGameApi.getTop10ScoresByGameId(p_gameId).subscribe((response: IScore[]) => {
       this.scores = response;
       this.scores.forEach(s => {
         this.partyGameApi.getUserFromUserId(s.userId).subscribe((u: IUser) => {
-          this.leaders.push({username: u.userName, score:s.score});
-          this.leaders.sort((a, b) => b.score - a.score)
+          leaders.push({username: u.userName, score:s.score});
+          leaders.sort((a, b) => b.score - a.score)
           });
       })
     });
+    return leaders;
+  }
+
+  goToMain(){
+    this.router.navigate(['/main']);
   }
 
 }
