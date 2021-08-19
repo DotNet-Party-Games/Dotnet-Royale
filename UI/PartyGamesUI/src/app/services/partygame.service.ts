@@ -14,7 +14,7 @@ import { IUserScore } from './userscore';
 })
 export class PartygameService {
   // url referencing the WebAPI
-  private url = "https://dotnetpartygames.azurewebsites.net/";
+  private url = "http://20.81.113.152/dotnetroyaleapi/";
 
  isLoggedIn:boolean;
   currentScore: IScore = {
