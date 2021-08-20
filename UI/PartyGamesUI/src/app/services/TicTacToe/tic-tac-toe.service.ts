@@ -9,7 +9,6 @@ export class TicTacToeService {
   private socket: Socket;
   private url = 'http://localhost:3001';
   //private url = 'https://pgsocketserver.herokuapp.com/';
-
   constructor() {
     this.socket = io (this.url, {transports: ['websocket', 'pulling', 'flashsocket']});
    }
@@ -26,6 +25,7 @@ export class TicTacToeService {
     return new Observable<{gameBoard : BoardComponent}>(observer => {
       this.socket.on('new gameboard', (data) => {
         observer.next(data);
+        console.log(data);
       });
       return() => {
         this.socket.disconnect();
