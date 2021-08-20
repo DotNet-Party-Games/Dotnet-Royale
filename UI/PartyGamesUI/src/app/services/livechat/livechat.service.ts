@@ -8,7 +8,8 @@ import { io, Socket } from 'socket.io-client';
 export class LivechatService {
 
   private socket: Socket;
-  private url='http://localhost:3001';
+  private url='http://localhost:3000';
+  //private url = 'http://20.81.113.152/dotnetroyalesocket/';
   //private url = 'https://pgsocketserver.herokuapp.com/';
 
 
@@ -19,13 +20,17 @@ export class LivechatService {
 
   joinRoom(data):void{
     this.socket.emit('join',data);
+    sessionStorage.setItem('roomId', data.room);
   }
 
-
+  reloadRoomList(username):void{
+    this.socket.emit('reloadRoomList', username);
+  }
 
   sendMessage(data):void{
     this.socket.emit('message',data);
   }
+
   //repeat this for sendgame state, receive game state and display that within layout HTML (game.snakepos)
   getMessage():Observable<any>{
     return new Observable<{user: string, message:string}>(observer => {
@@ -40,16 +45,18 @@ export class LivechatService {
 
   leaveRoom(data):void{
     this.socket.emit('leave',data);
+    sessionStorage.removeItem('roomId');
   }
 
-  getUserList():Observable<any>{
+  getRoomList():Observable<any>{
     return new Observable<any>(observer=>{
-      this.socket.on('updatedUserList',(userList)=>{
-        observer.next(userList);
+      this.socket.on('updatedRoomList',(roomList)=>{
+        observer.next(roomList);
       });
       return()=>{
         this.socket.disconnect();
       }
     });
   }
+
 }

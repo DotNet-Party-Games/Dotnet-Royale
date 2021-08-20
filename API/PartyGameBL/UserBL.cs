@@ -72,5 +72,10 @@ namespace PartyGameBL
         {
             return await _repo.UpdateSnakeGameStatsByScoreHistory(p_scoreHistory);
         }
+
+        public async Task<TicTacToe> UpdateTicTacToeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            return await _repo.UpdateTicTacToeGameStatsByScoreHistory(p_scoreHistory);
+        }
     }
 }

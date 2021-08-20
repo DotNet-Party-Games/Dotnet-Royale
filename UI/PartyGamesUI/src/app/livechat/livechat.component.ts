@@ -30,7 +30,6 @@ export class LivechatComponent implements OnInit,OnChanges {
     }
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
-    this.currentUser.password = sessionStorage.getItem('userPassword');
   }
   ngOnChanges(changes: SimpleChanges): void {
 
@@ -38,11 +37,9 @@ export class LivechatComponent implements OnInit,OnChanges {
 
   ngOnInit(): void
   {
-    this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
+    //this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
-    this.currentUser.password = localStorage.getItem('userPassword');
-    this.selectGameRoomHandler();
-    this.getConnectedUser();
+    this.roomId = sessionStorage.getItem('roomId');
   }
 
   selectGameRoomHandler():void
@@ -71,11 +68,12 @@ export class LivechatComponent implements OnInit,OnChanges {
     let elem = document.getElementById('chbody');
       elem.scrollTop = elem.scrollHeight;
   }
-  getConnectedUser(){
-    this.livechatService.getUserList().subscribe(userList => {
-      this.UserList=userList
-    });
 
+  getConnectedUser(){
+    this.livechatService.getRoomList().subscribe(roomList => {
+      let room = roomList.find(({id}) => id == this.roomId);
+      this.UserList = room.users;
+    });
   }
 
 }
