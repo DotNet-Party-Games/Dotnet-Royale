@@ -7,7 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 
-
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LivechatComponent } from './livechat/livechat.component';
@@ -24,6 +23,7 @@ import { MainComponent } from './main/main.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { RoomComponent } from './room/room.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FakeLoginComponent } from './fake-login/fake-login.component';
 
 
 @NgModule({
@@ -41,7 +41,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MainComponent,
     LobbyComponent,
     RoomComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    FakeLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +50,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      {path: '', component: MainComponent},
+      {path: '', component: FakeLoginComponent},
       {path: 'main', component: MainComponent},
       {path: 'lobby', component: LobbyComponent},
       {path: 'room', component: RoomComponent},

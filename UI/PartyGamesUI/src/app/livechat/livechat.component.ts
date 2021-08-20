@@ -30,7 +30,6 @@ export class LivechatComponent implements OnInit,OnChanges {
     }
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
-    this.currentUser.password = sessionStorage.getItem('userPassword');
   }
   ngOnChanges(changes: SimpleChanges): void {
 
@@ -40,9 +39,8 @@ export class LivechatComponent implements OnInit,OnChanges {
   {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
-    this.currentUser.password = localStorage.getItem('userPassword');
-    this.selectGameRoomHandler();
-    this.getConnectedUser();
+
+
   }
 
   selectGameRoomHandler():void

@@ -8,7 +8,12 @@ let socketIO = require('socket.io');
 let io = socketIO(server);
 
 // to store user list in live chat
-var userlist = [];
+// var userlist = [];
+
+// Seunghoon's update from here ***********************************************
+var roomList = [];
+// Seunghoon's update to here *************************************************
+
 
 const port = process.env.PORT ||  3001;
 
@@ -19,14 +24,37 @@ server.listen(port, ()=>{
 io.on('connection',(socket)=>{   
 
     socket.on('join',(data) =>{
-        console.log('a user joined ');     
-        //if(userlist.includes(data.user) == false) {
-            userlist.push(data.user);
-        //}
-        console.log(userlist, data.room);
+
+        // console.log('a user joined ');     
+        // //if(userlist.includes(data.user) == false) {
+        //     userlist.push(data.user);
+        // //}
+        // console.log(userlist, data.room);
+        // socket.join(data.room);
+        // io.in(data.room).emit('updatedUserList',userlist);
+        // socket.broadcast.to(data.room).emit('user joined',`welcome ${data.user}`); 
+
+
+        // Seunghoon's update from here ***************************************
+        console.log('join requested');
+        console.log(data);
         socket.join(data.room);
-        io.in(data.room).emit('updatedUserList',userlist);
+        console.log('a user joined');
+        let room = roomList.find(({id}) => id == data.room);
+        if(!room) 
+        {
+            roomList.push({id: data.room, users: []});
+        }
+        room = roomList.find(({id}) => id == data.room);
+        if(!room.users.includes(data.user))
+        {
+            room.users.push(data.user);
+        }
+        console.log(roomList);
+        console.log(io.sockets.adapter.rooms);
+        io.emit('updatedRoomList',roomList);
         socket.broadcast.to(data.room).emit('user joined',`welcome ${data.user}`); 
+        // Seunghoon's update to here *****************************************
         
     });
 
@@ -45,17 +73,34 @@ io.on('connection',(socket)=>{
         io.in(data.room).emit('new gameboard', {gameboard: data.gameboard});
     });
     
-
     socket.on('blackjack', (data)=> {
         console.log("blackjack data: " + JSON.stringify(data));
         io.in(data.room).emit('new blackjack',{data})
     });
 
     socket.on('leave', (data) => {
-        console.log('a user left');  
-        let index = userlist.indexOf(data.user);
-        userlist.splice(index, 1);
-        console.log(userlist);
-        io.in(data.room).emit('updatedUserList',userlist);
+        console.log('leave requested');
+        console.log(data);
+        let room = roomList.find(({id}) => id == data.room);
+        if(room){
+            let index = room.users.indexOf(data.user);
+            if(index >= 0) {
+                socket.leave(data.room);
+                room.users.splice(index, 1);
+                console.log('a user left');  
+            }
+            roomList = roomList.filter((room) => room.users == []);
+        }
+        console.log(roomList);
+        console.log(io.sockets.adapter.rooms);
+        io.emit('updatedRoomList',roomList);
     })
+
+    socket.on('reloadRoomList', (username) =>
+    {
+        console.log('reload requested ' + username);
+        console.log(roomList);
+        io.emit('updatedRoomList',roomList);
+    })
+
 });
