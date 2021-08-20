@@ -23,22 +23,15 @@ export class BoardComponent implements OnInit {
     score: null,
   }
   gameState: GameState;
-  // isOver: boolean;
-  myClonedArray: any[];
-  // squares: any[];
-  // grid: any[];
   winner: string;
-  public roomId: string;
+  public roomId: string = sessionStorage.getItem('roomId');
   numOfPlayers: number = 4; // This will be obtained from socketio
   squareHeight: number = 100 / (this.numOfPlayers + 1); // is used to generate columns of relative size
   fontSize: number = 5 * 2 / (this.numOfPlayers); // is used to generate rows of relative size
-  // currentPlayer: number; // the player whos turn it is
-  thisPlayer: number; // the player number assigned by socket
-  // playerList: any[]; // List of all players, index should match "thisPlayer" number
-  // playerPieces: any[];
+  thisPlayer: number; // the player number of this specific player
+  thisPlayerName: string; // the player name of this specific player
   num: number;
   index: number;
-  // alreadyClicked: boolean;
 
 
   constructor(private router: Router, private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef) {
@@ -54,28 +47,26 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //get specific player name
     //pull list of players from socket
-    //get and assign room id
+    //set number of player based on socket server
+    //this.setThisPlayer(); //set current player stuff based on socket info
+
     this.tictactoeservice.getTicTacToeData().subscribe(newgamestate => {
       this.updateGameState(newgamestate);
     });
-    this.newGame();
-    this.selectGameRoomHandler();
-    //console.log("achieved");
+    if(this.thisPlayer == 0) //only player one generates a new game at first
+    {
+      this.newGame();
+    }
   }
 
-  selectGameRoomHandler(): void {
-    this.roomId = '3';
-    this.join(this.currentUser.userName, this.roomId);
-  }
-  join(username: string, roomId: string): void {
-    this.tictactoeservice.joinRoom({ user: username, room: roomId });
-  }
-  sendTicTacToeGameboard(squares: any[]) {
+  sendTicTacToeGameboard(currentGameState: GameState) {
     //console.log("Sending GameBoard Data");
-    this.tictactoeservice.sendTicTacToeData({ gameboard: squares, room: this.roomId });
+    this.tictactoeservice.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
 
   }
+
   newGame() {
     this.gameState.squares = new Array((this.numOfPlayers + 1) ** 2).fill(null);
     this.gameState.currentPlayer = 0;
@@ -84,7 +75,12 @@ export class BoardComponent implements OnInit {
     this.winner = null;
     this.gameState.isOver = false;
     this.gameState.alreadyClicked = false;
-    //emit starting game data
+    this.sendTicTacToeGameboard(this.gameState);
+  }
+  setThisPlayer(pList: string[])
+  {
+    this.gameState.playerList=pList;
+    this.thisPlayer = pList.indexOf(this.thisPlayerName)
   }
   generatePlayerPieces() {
     let possiblePieces: any[];
@@ -93,8 +89,6 @@ export class BoardComponent implements OnInit {
       let j = Math.floor(Math.random() * (i + 1));
       [possiblePieces[i], possiblePieces[j]] = [possiblePieces[j], possiblePieces[i]];
     }
-
-
     this.gameState.playerPieces = new Array();
     for (let x = 0; x < this.numOfPlayers; x++) {
       if (x >= possiblePieces.length) {
@@ -152,8 +146,6 @@ export class BoardComponent implements OnInit {
   }
   updateGameState(newGameState: GameState) {
     this.gameState = newGameState;
-
-
   }
   calculateWinner() {
     //checks (x,1) for horizontal wins

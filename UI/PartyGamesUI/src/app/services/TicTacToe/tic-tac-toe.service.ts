@@ -26,6 +26,7 @@ export class TicTacToeService {
     return new Observable<{gameBoard : BoardComponent}>(observer => {
       this.socket.on('new gameboard', (data) => {
         observer.next(data);
+        console.log("got data from server");
         console.log(data);
       });
       return() => {
