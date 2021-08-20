@@ -21,9 +21,6 @@ import { DataService } from '../services/data.service';
 import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-import { io } from 'socket.io-client';
-import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { Router } from '@angular/router';
 enum Direction {
   UP,
@@ -226,6 +223,7 @@ export class LayoutComponent implements OnInit {
       y: Math.floor(height * Math.random())
     };
   }
+  currentfood: { x: number; y: number };
   newGame(): void {
     const width = 40;
     const height = 33;
@@ -244,25 +242,22 @@ export class LayoutComponent implements OnInit {
     this.tick$
       .pipe(
         map(tick => {
-          //this.snakeService.currentGameState.subscribe(data => ((this.SnakeGameStateAtX = data.map(a=> a.x)), (this.SnakeGameStateAtY = data.map(b=>b.y))));
+          this.sendSnakeGameState();
+          this.snakeService.getSnakeGameState();
+          this.snakeService.getSnakeFood();
           const subscription = this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
-
-          //console.log(this.SnakeGameState.length);
-          //console.log(this.SnakeGameStateAtX);
-          //console.log(this.SnakeGameStateAtY);
+          const subscription1 = this.snakeService.currentFood.subscribe(data => this.currentfood = data);
           
-
-          //console.log(this.game$.value.snakePos);
-           //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
           let game = this.game$.value;
           if (this.SnakeGameState != undefined)
           {
-            //console.log(game.snakePos2.length);
+            
             game.snakePos2 = this.SnakeGameState;
             this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
-            //console.log(game.snakePos2.length);
+           
           }
           subscription.unsubscribe();
+        
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
@@ -282,11 +277,6 @@ export class LayoutComponent implements OnInit {
                     game.food = this.getRandomField(game.width, game.height);
                   }
 
-                  // else if (game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
-                  // {
-                  //     game.food = this.getRandomField(game.width,game.height);
-                  // }
-
                   else
                   {
                     loop = false;
@@ -298,6 +288,7 @@ export class LayoutComponent implements OnInit {
               game.lost = true;
               break;
           }
+          subscription1.unsubscribe();
           this.sendSnakeGameState();
           this.snakeService.getSnakeGameState();
           return game;
@@ -316,7 +307,6 @@ export class LayoutComponent implements OnInit {
         }
       });
   }
-
   getGameList()
   {
     this.partyGameApi.getGames().subscribe((response: IGame[]) => { this.games = response });
