@@ -28,8 +28,11 @@
             </div>
           </li>
           <li *ngFor = "let room of rooms" class="list-group-item bg-dark">
-            <h4>{{room.id}}
-              <button class="btn btn-warning" style="float: right" (click) = "goToRoom()">
+            <h4>
+              <div *ngIf = "room.id == roomId" class="mr-2 badge badge-danger"><i class="fas fa-star"></i></div>
+              <div *ngIf = "room.id != roomId" class="mr-2 badge badge-dark text-dark"><i class="fas fa-square-full"></i></div>
+              {{room.id}}<span class="ml-3 badge badge-info">{{room.users.length}}</span>
+              <button class="btn btn-warning" style="float: right" (click) = "goToRoom(room.id)">
               <i class="fas fa-sign-in-alt"></i></button>
             </h4>
           </li>

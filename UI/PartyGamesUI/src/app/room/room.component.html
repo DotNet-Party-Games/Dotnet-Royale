@@ -19,13 +19,17 @@
 
     <div class="col col-6">
       <div class="p-2 text-center text-white" style="background-color: #111; height: 7vh">
-        <h2>Player List</h2>
+        <h2>{{roomId}}</h2>
       </div>
       <div class="bg-dark" style="height: 74vh;">
         <ul class="list-group list-group-flush text-white overflow-auto" style="height: 66vh;">
-          <li class="list-group-item bg-dark"><h4>Player 1</h4></li>
-          <li class="list-group-item bg-dark"><h4>Player 2</h4></li>
-          <li class="list-group-item bg-dark"><h4>Player 3</h4></li>
+          <li *ngFor="let user of userList" class="list-group-item bg-dark">
+            <h4>
+              <div *ngIf = "user == username" class="mr-2 badge badge-danger"><i class="fas fa-star"></i></div>
+              <div *ngIf = "user != username" class="mr-2 badge badge-dark text-dark"><i class="fas fa-square-full"></i></div>
+              {{user}}
+            </h4>
+          </li>
         </ul>
         <div class="col col-12 bg-dark text-center">
           <button class="btn btn-warning container" (click)="goToLobby()">

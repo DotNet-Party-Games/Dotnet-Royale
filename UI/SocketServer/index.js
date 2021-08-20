@@ -25,18 +25,7 @@ io.on('connection',(socket)=>{
 
     socket.on('join',(data) =>{
 
-        // console.log('a user joined ');     
-        // //if(userlist.includes(data.user) == false) {
-        //     userlist.push(data.user);
-        // //}
-        // console.log(userlist, data.room);
-        // socket.join(data.room);
-        // io.in(data.room).emit('updatedUserList',userlist);
-        // socket.broadcast.to(data.room).emit('user joined',`welcome ${data.user}`); 
-
-
-        // Seunghoon's update from here ***************************************
-        console.log('join requested');
+        console.log('join requested by ' + data.user);
         console.log(data);
         socket.join(data.room);
         console.log('a user joined');
@@ -46,7 +35,7 @@ io.on('connection',(socket)=>{
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(!room.users.includes(data.user))
+        if(!room.users.find((user) => user == data.user))
         {
             room.users.push(data.user);
         }
@@ -54,14 +43,15 @@ io.on('connection',(socket)=>{
         console.log(io.sockets.adapter.rooms);
         io.emit('updatedRoomList',roomList);
         socket.broadcast.to(data.room).emit('user joined',`welcome ${data.user}`); 
-        // Seunghoon's update to here *****************************************
         
     });
 
     socket.on('message', (data)=>{
+        console.log('message')
         console.log(data);
         io.in(data.room).emit('new message',{user : data.user, message : data.message});
     });
+
     socket.on('gamestate', (data) =>{
         //console.log("gamestate data: " + JSON.stringify(data));
         io.in(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
@@ -79,7 +69,7 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('leave', (data) => {
-        console.log('leave requested');
+        console.log('leave requested by ' + data.user);
         console.log(data);
         let room = roomList.find(({id}) => id == data.room);
         if(room){
@@ -89,7 +79,7 @@ io.on('connection',(socket)=>{
                 room.users.splice(index, 1);
                 console.log('a user left');  
             }
-            roomList = roomList.filter((room) => room.users == []);
+            roomList = roomList.filter((room) => room.users != []);
         }
         console.log(roomList);
         console.log(io.sockets.adapter.rooms);
@@ -98,8 +88,9 @@ io.on('connection',(socket)=>{
 
     socket.on('reloadRoomList', (username) =>
     {
-        console.log('reload requested ' + username);
+        console.log('reload requested by ' + username);
         console.log(roomList);
+        console.log(io.sockets.adapter.rooms);
         io.emit('updatedRoomList',roomList);
     })
 
