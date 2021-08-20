@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class SnakeService {
 
   private socket: Socket;
-  private url='http://localhost:3001';
+  private url='http://localhost:3000';
   //private url = 'http://20.81.113.152/dotnetroyalesocket/';
   //private url = 'https://pgsocketserver.herokuapp.com/';
   private newGameState = new BehaviorSubject<any>({});
