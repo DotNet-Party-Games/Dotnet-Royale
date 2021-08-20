@@ -24,6 +24,7 @@ import { LobbyComponent } from './lobby/lobby.component';
 import { RoomComponent } from './room/room.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FakeLoginComponent } from './fake-login/fake-login.component';
+import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { FakeLoginComponent } from './fake-login/fake-login.component';
     LobbyComponent,
     RoomComponent,
     UserProfileComponent,
-    FakeLoginComponent
+    FakeLoginComponent,
+    TrueblackjackComponent
   ],
   imports: [
     BrowserModule,

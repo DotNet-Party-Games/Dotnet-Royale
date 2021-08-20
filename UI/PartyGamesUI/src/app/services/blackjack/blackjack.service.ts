@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { BlackjackComponent } from 'src/app/blackjack/blackjack.component';
 
@@ -12,6 +12,8 @@ export class BlackjackService {
   private url='http://localhost:3000';
   //private url = 'http://20.81.113.152/dotnetroyalesocket/';
   //private url = 'https://pgsocketserver.herokuapp.com/';
+  private newBlackjack = new BehaviorSubject<any>({});
+  currentBlackjack = this.newBlackjack.asObservable();
   constructor() { 
     this.socket = io(this.url, {transports:['websocket','pulling','flashsocket']});
   }
@@ -24,15 +26,10 @@ export class BlackjackService {
     this.socket.emit('blackjack',data)
   }
 
-  getBlackJackData():Observable<any>{
-    return new Observable<{blackjack: BlackjackComponent}>(observer => {
-      this.socket.on('new blackjack', (data) => {
-        observer.next(data);
-      });
-      return() =>{
-        this.socket.disconnect();
-      }
-    });
+  getBlackJackData():void{
+    this.socket.on('new blackjack', (data) => {
+        this.newBlackjack.next(data);
+    })
   }
 
   leaveRoom(data):void{
