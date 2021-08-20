@@ -20,12 +20,14 @@ export class LobbyComponent implements OnInit {
   ngOnInit(): void {
 
     this.username = sessionStorage.getItem('userName');
+    this.roomId = sessionStorage.getItem('roomId');
     this.reloadRoomList()
     this.getRoomList();
 
   }
 
-  goToRoom(){
+  goToRoom(p_roomId: string){
+    this.joinRoom(this.username, p_roomId);
     this.router.navigate(['/room']);
   }
 
@@ -50,7 +52,7 @@ export class LobbyComponent implements OnInit {
       this.livechatService.leaveRoom({user:username, room:oldRoomId})
     }
     this.livechatService.joinRoom({user:username, room:roomId});
-    sessionStorage.setItem('roomId', roomId);
+    this.roomId = roomId;
   }
 
   showInputRoomId(){
