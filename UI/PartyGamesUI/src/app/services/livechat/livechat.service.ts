@@ -20,6 +20,7 @@ export class LivechatService {
 
   joinRoom(data):void{
     this.socket.emit('join',data);
+    sessionStorage.setItem('roomId', data.room);
   }
 
   reloadRoomList(username):void{
@@ -44,17 +45,7 @@ export class LivechatService {
 
   leaveRoom(data):void{
     this.socket.emit('leave',data);
-  }
-
-  getUserList():Observable<any>{
-    return new Observable<any>(observer=>{
-      this.socket.on('updatedUserList',(userList)=>{
-        observer.next(userList);
-      });
-      return()=>{
-        this.socket.disconnect();
-      }
-    });
+    sessionStorage.removeItem('roomId');
   }
 
   getRoomList():Observable<any>{

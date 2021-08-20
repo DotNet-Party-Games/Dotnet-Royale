@@ -3,7 +3,6 @@ import { LivechatService } from '../services/livechat/livechat.service';
 import { PartygameService } from '../services/partygame.service';
 import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ILoggedUser } from '../services/user';
 
 @Component({
   selector: 'app-livechat',
@@ -16,20 +15,14 @@ export class LivechatComponent implements OnInit,OnChanges {
   public messageText:string;
   public messageArray: {user:string, message:string}[] = [];
 
-  public currentUser:ILoggedUser;
+  public currentUser:string;
   public selectedGame:IGame;
 
-  public UserList:[];
+  public UserList:string[];
 
   constructor(private partyGameApi: PartygameService, private livechatService: LivechatService )
   {
-    this.currentUser ={
-      id:0,
-      password:"",
-      userName:""
-    }
-    this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
-    this.currentUser.userName = sessionStorage.getItem('userName');
+    this.currentUser = sessionStorage.getItem('userName');
   }
   ngOnChanges(changes: SimpleChanges): void {
 
@@ -37,20 +30,21 @@ export class LivechatComponent implements OnInit,OnChanges {
 
   ngOnInit(): void
   {
-    this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
-    this.currentUser.userName = sessionStorage.getItem('userName');
-
-
+    this.currentUser = sessionStorage.getItem('userName');
+    this.roomId = sessionStorage.getItem('roomId');
+    this.selectGameRoomHandler();
+    this.reloadRoomList();
+    this.getRoomUserList();
   }
 
   selectGameRoomHandler():void
   {
-    this.roomId = '1';//this.selectedGame.id.toString();
+    this.roomId = sessionStorage.getItem("roomId");
     this.livechatService.getMessage().subscribe((data: {user:string, message:string}) => {
             this.messageArray.push(data);
         });
 
-    this.join(this.currentUser.userName,this.roomId);
+    this.join(this.currentUser,this.roomId);
   }
 
   join(username:string, roomId:string):void
@@ -61,7 +55,7 @@ export class LivechatComponent implements OnInit,OnChanges {
   sendMessage():void
   {
     this.livechatService.sendMessage({
-      user: this.currentUser.userName,
+      user: this.currentUser,
       room: this.roomId,
       message:this.messageText
     });
@@ -69,11 +63,16 @@ export class LivechatComponent implements OnInit,OnChanges {
     let elem = document.getElementById('chbody');
       elem.scrollTop = elem.scrollHeight;
   }
-  getConnectedUser(){
-    this.livechatService.getUserList().subscribe(userList => {
-      this.UserList=userList
-    });
 
+  reloadRoomList(){
+    this.livechatService.reloadRoomList(this.currentUser);
+  }
+
+  getRoomUserList(){
+    this.livechatService.getRoomList().subscribe(roomList => {
+      let room = roomList.find(({id}) => id == this.roomId);
+      this.UserList = room.users;
+    });
   }
 
 }
