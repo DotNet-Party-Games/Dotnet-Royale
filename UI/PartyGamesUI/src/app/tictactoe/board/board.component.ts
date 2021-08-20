@@ -23,7 +23,6 @@ export class BoardComponent implements OnInit {
     score: null,
   }
   gameState: GameState;
-  winner: string;
   public roomId: string = sessionStorage.getItem('roomId');
   numOfPlayers: number = 4; // This will be obtained from socketio
   squareHeight: number = 100 / (this.numOfPlayers + 1); // is used to generate columns of relative size
@@ -32,7 +31,7 @@ export class BoardComponent implements OnInit {
   thisPlayerName: string; // the player name of this specific player
   num: number;
   index: number;
-
+  audioUrl: string = "https://songsink.blob.core.windows.net/songs/"; //base url to access sounds
 
   constructor(private router: Router, private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef) {
     this.currentUser =
@@ -47,11 +46,13 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //get specific player name
+    this.thisPlayerName=sessionStorage.getItem('userName');
     //pull list of players from socket
     //set number of player based on socket server
     //this.setThisPlayer(); //set current player stuff based on socket info
-
+    this.tictactoeservice.getAudioTrigger().subscribe(audiotrigger => {
+      this.playAudio(audiotrigger);
+    });
     this.tictactoeservice.getTicTacToeData().subscribe(newgamestate => {
       this.updateGameState(newgamestate);
     });
@@ -61,21 +62,23 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  sendTicTacToeGameboard(currentGameState: GameState) {
+  sendTicTacToeGamestate(currentGameState: GameState) {
     //console.log("Sending GameBoard Data");
     this.tictactoeservice.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
 
   }
 
   newGame() {
+    let audio = <HTMLAudioElement>document.getElementById('audio');
+    audio.pause();
     this.gameState.squares = new Array((this.numOfPlayers + 1) ** 2).fill(null);
     this.gameState.currentPlayer = 0;
     this.createGrid();
     this.generatePlayerPieces();
-    this.winner = null;
+    this.gameState.winner = null;
     this.gameState.isOver = false;
     this.gameState.alreadyClicked = false;
-    this.sendTicTacToeGameboard(this.gameState);
+    this.sendTicTacToeGamestate(this.gameState);
   }
   setThisPlayer(pList: string[])
   {
@@ -106,7 +109,8 @@ export class BoardComponent implements OnInit {
 
       this.gameState.squares[idx] = this.gameState.playerPieces[this.gameState.currentPlayer];
       this.updateGrid(idx, this.gameState.playerPieces[this.gameState.currentPlayer]);
-      this.winner = this.calculateWinner();
+      this.tictactoeservice.sendAudioTrigger({audioFile: "placepiecesound", room: this.roomId})
+      this.gameState.winner = this.calculateWinner();
       this.endTurn();
     }
   }
@@ -116,10 +120,14 @@ export class BoardComponent implements OnInit {
       this.gameState.currentPlayer = 0;
     }
     this.gameState.alreadyClicked = false;
-    if (this.winner) {
+    if (this.gameState.winner && this.gameState.winner == this.thisPlayerName) {
       this.gameState.isOver = true;
+      this.playAudio("youwon");
+    } else if(this.gameState.winner)
+    {
+      this.tictactoeservice.sendAudioTrigger({audioFile: "youlose", room: this.roomId})
     }
-    //emit game state
+    this.sendTicTacToeGamestate(this.gameState);
 
   }
 
@@ -146,6 +154,19 @@ export class BoardComponent implements OnInit {
   }
   updateGameState(newGameState: GameState) {
     this.gameState = newGameState;
+  }
+
+  playAudio(audioCue: string)
+  {
+      let audio = <HTMLAudioElement>document.getElementById('audio');
+      audio.volume = 0.1;
+      audio.src = this.audioUrl + audioCue + ".mp3";
+      if(audioCue == "youwon")
+      {
+        audio.loop= true;
+      }
+      audio.load();
+      audio.play();
   }
   calculateWinner() {
     //checks (x,1) for horizontal wins
@@ -188,9 +209,6 @@ export class BoardComponent implements OnInit {
         }
       }
     }
-    //     this.partyGameApi.addscore(this.finalScore).subscribe();
-    //     // This will be updateTictacToeStats this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
-    //     this.isOver = true;
     let isCats: boolean = true;
     for (let x = 0; x < this.gameState.squares.length; x++) {
       if (!this.gameState.squares[x]) {

@@ -1,5 +1,5 @@
 <div style="height: 100vh;">
-
+<audio id="audio"></audio>
   <div style="height: 88vh;">
     <h1>Current Player: {{ gameState.playerPieces[gameState.currentPlayer] }} </h1>
     <div>
@@ -16,7 +16,7 @@
       </span>
       <span>{{gameState.playerPieces[0]}}</span>
     </div>
-      <main style = "grid-template-columns: repeat({{numOfPlayers+1}},{{squareHeight}}%);">
+      <main style="grid-template-columns: repeat({{numOfPlayers+1}},{{squareHeight}}%);">
         <app-square
             *ngFor="let val of gameState.squares; let i = index"
             [value]="val"
@@ -27,8 +27,8 @@
       </main>
     </div>
     <h2>It's {{gameState.playerList[gameState.currentPlayer]}} Turn</h2>
-    <h2 *ngIf="winner">
-        {{ winner }} won!
+    <h2 *ngIf="gameState.winner">
+        {{ gameState.winner }} won!
     </h2>
   </div>
 
