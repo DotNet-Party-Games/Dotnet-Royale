@@ -22,11 +22,14 @@ export class LivechatService {
     this.socket.emit('join',data);
   }
 
-
+  reloadRoomList(username):void{
+    this.socket.emit('reloadRoomList', username);
+  }
 
   sendMessage(data):void{
     this.socket.emit('message',data);
   }
+
   //repeat this for sendgame state, receive game state and display that within layout HTML (game.snakepos)
   getMessage():Observable<any>{
     return new Observable<{user: string, message:string}>(observer => {
@@ -53,4 +56,16 @@ export class LivechatService {
       }
     });
   }
+
+  getRoomList():Observable<any>{
+    return new Observable<any>(observer=>{
+      this.socket.on('updatedRoomList',(roomList)=>{
+        observer.next(roomList);
+      });
+      return()=>{
+        this.socket.disconnect();
+      }
+    });
+  }
+
 }

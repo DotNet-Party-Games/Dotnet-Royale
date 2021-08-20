@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LivechatService } from '../services/livechat/livechat.service';
+import { IRoom } from '../services/room';
 
 @Component({
   selector: 'app-lobby',
@@ -8,9 +10,19 @@ import { Router } from '@angular/router';
 })
 export class LobbyComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  username: string;
+  roomId: string;
+  isInputRoomId: boolean = false;
+  roomIdInput: string;
+  rooms: IRoom[];
+  constructor(private router: Router, private livechatService: LivechatService ) { }
 
   ngOnInit(): void {
+
+    this.username = sessionStorage.getItem('userName');
+    this.reloadRoomList()
+    this.getRoomList();
+
   }
 
   goToRoom(){
@@ -19,6 +31,34 @@ export class LobbyComponent implements OnInit {
 
   goToMain(){
     this.router.navigate(['/main']);
+  }
+
+  getRoomList(){
+    this.livechatService.getRoomList().subscribe(roomList => {
+      this.rooms=roomList;
+    });
+  }
+
+  reloadRoomList(){
+    this.livechatService.reloadRoomList(this.username);
+  }
+
+  joinRoom(username:string, roomId:string):void
+  {
+    let oldRoomId: string = sessionStorage.getItem('roomId');
+    if(oldRoomId){
+      this.livechatService.leaveRoom({user:username, room:oldRoomId})
+    }
+    this.livechatService.joinRoom({user:username, room:roomId});
+    sessionStorage.setItem('roomId', roomId);
+  }
+
+  showInputRoomId(){
+    this.isInputRoomId = true;
+  }
+
+  hideInputRoomId(){
+    this.isInputRoomId = false;
   }
 
 }

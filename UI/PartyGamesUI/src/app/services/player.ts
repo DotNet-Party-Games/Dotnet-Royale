@@ -1,4 +1,4 @@
-export interface IIPlayer
+export interface IPlayer
 {
   name: string;
 }
