@@ -63,6 +63,7 @@ export class LayoutComponent implements OnInit {
   tick$: Observable<number>;
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
+  snakePositionDisplay: {x: number; y: number}[];
 
   constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
   {
@@ -254,12 +255,8 @@ export class LayoutComponent implements OnInit {
           let game = this.game$.value;
           if (this.SnakeGameState != undefined)
           {
-            console.log(this.SnakeGameState.length);
-            for (let x = 0; x < this.SnakeGameState.length; x++)
-            {
-              game.snakePos.push({x: this.SnakeGameState[x].x, y: this.SnakeGameState[x].y});
-            }
             game.snakePos2 = this.SnakeGameState;
+            this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
           }
 
           console.log(game.snakePos2);

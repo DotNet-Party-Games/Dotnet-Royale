@@ -18,7 +18,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    height: 70vh;
+    height: 66vh;
     /* padding: 10px; */
     /* padding-bottom: 50px; */
     overflow-y: auto;
@@ -47,6 +47,7 @@
     justify-content: flex-end ;
 }
 .chat-footer{
+    height: 8vh;
     background-color: rgb(41, 40, 40);
 }
 .form-control{
