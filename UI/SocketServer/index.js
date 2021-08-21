@@ -79,7 +79,10 @@ io.on('connection',(socket)=>{
                 room.users.splice(index, 1);
                 console.log('a user left');  
             }
-            roomList = roomList.filter((room) => room.users != []);
+            console.log(roomList);
+            index = roomList.findIndex(room => room.users.length == 0);
+            console.log(index);
+            if(index >= 0) roomList.splice(index, 1);
         }
         console.log(roomList);
         console.log(io.sockets.adapter.rooms);
