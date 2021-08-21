@@ -30,12 +30,12 @@ io.on('connection',(socket)=>{
         socket.join(data.room);
         console.log('a user joined');
         let room = roomList.find(({id}) => id == data.room);
-        if(!room) 
+        if(!room && data.room) 
         {
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(!room.users.find((user) => user == data.user))
+        if(!room.users.find((user) => user == data.user) && data.user)
         {
             room.users.push(data.user);
         }
