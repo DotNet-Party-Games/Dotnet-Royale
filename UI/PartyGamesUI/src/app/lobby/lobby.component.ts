@@ -32,6 +32,9 @@ export class LobbyComponent implements OnInit {
   }
 
   goToMain(){
+    this.username = sessionStorage.getItem("userName");
+    this.roomId = sessionStorage.getItem("roomId");
+    this.livechatService.leaveRoom({room: this.roomId, user: this.username});
     this.router.navigate(['/main']);
   }
 
