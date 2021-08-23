@@ -30,12 +30,12 @@ io.on('connection',(socket)=>{
         socket.join(data.room);
         console.log('a user joined');
         let room = roomList.find(({id}) => id == data.room);
-        if(!room) 
+        if(!room && data.room) 
         {
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(!room.users.find((user) => user == data.user))
+        if(!room.users.find((user) => user == data.user) && data.user)
         {
             room.users.push(data.user);
         }
@@ -79,7 +79,10 @@ io.on('connection',(socket)=>{
                 room.users.splice(index, 1);
                 console.log('a user left');  
             }
-            roomList = roomList.filter((room) => room.users != []);
+            console.log(roomList);
+            index = roomList.findIndex(room => room.users.length == 0);
+            console.log(index);
+            if(index >= 0) roomList.splice(index, 1);
         }
         console.log(roomList);
         console.log(io.sockets.adapter.rooms);
