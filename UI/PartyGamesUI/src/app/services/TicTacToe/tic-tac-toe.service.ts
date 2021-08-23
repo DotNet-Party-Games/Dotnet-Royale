@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { BoardComponent } from 'src/app/tictactoe/board/board.component';
 @Injectable({
@@ -10,6 +10,8 @@ export class TicTacToeService {
   private url = 'http://localhost:3000';
   //private url = 'http://20.81.113.152/dotnetroyalesocket/';
   //private url = 'https://pgsocketserver.herokuapp.com/';
+  private newGameState = new BehaviorSubject<any>({});
+  currentGameState = this.newGameState.asObservable();
   constructor() {
     this.socket = io(this.url, { transports: ['websocket', 'pulling', 'flashsocket'] });
   }
@@ -17,22 +19,19 @@ export class TicTacToeService {
   joinRoom(data): void {
     this.socket.emit('join', data);
   }
+  getPlayers() {
 
+  }
   sendTicTacToeData(data): void {
     this.socket.emit('gameboard', data);
   }
 
-  getTicTacToeData(): Observable<any> {
-    return new Observable<{ gameBoard: BoardComponent }>(observer => {
+  getTicTacToeData(): void{
       this.socket.on('new gameboard', (data) => {
-        observer.next(data);
+        this.newGameState.next(data);
         console.log("got data from server");
         console.log(data);
       });
-      return () => {
-        this.socket.disconnect();
-      }
-    });
   }
 
   sendAudioTrigger(data): void {

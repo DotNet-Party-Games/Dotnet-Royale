@@ -50,22 +50,31 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("roomID "+ this.roomId);
     this.thisPlayerName = sessionStorage.getItem('userName');
+    console.log("Player name: "+ this.thisPlayerName);
     this.startup();
-
+    console.log("after start up but in ngOnInit");
 
   }
 
   startup() {
+    console.log("Entered startup method");
     this.livechatService.getRoomList().subscribe(roomList => {
+      console.log("Roomlist");
+      console.log(roomList);
       let room = roomList.find(({ id }) => id == this.roomId);
+      console.log("In observable2");
       this.gameState.playerList = room.users;
+      console.log("In observable3");
       this.numOfPlayers = this.gameState.playerList.length;
+      console.log("In observable4");
       this.thisPlayer = this.gameState.playerList.indexOf(this.thisPlayerName);
       console.log("name: " + this.thisPlayerName);
       console.log("number: " + this.thisPlayer);
       console.log("All players");
       console.log(this.gameState.playerList);
+
 
     })
 
@@ -79,7 +88,6 @@ export class BoardComponent implements OnInit {
   sendTicTacToeGamestate(currentGameState: GameState) {
     //console.log("Sending GameBoard Data");
     this.tictactoeservice.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
-
   }
 
   newGame() {
