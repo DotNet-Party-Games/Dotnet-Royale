@@ -58,5 +58,18 @@ export class LivechatService {
       }
     });
   }
-
+  getPlayers(data): void {
+    this.socket.emit('getPlayers', data);
+  }
+  findPlayers(): Observable<any> {
+    return new Observable(obs => {
+      this.socket.on('foundPlayers', (data) => {
+        console.log("in ttt service")
+        console.log("got players from socket");
+        console.log(data);
+        obs.next(data);
+        
+      });
+    });
+  }
 }

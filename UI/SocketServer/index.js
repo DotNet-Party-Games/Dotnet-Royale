@@ -35,7 +35,7 @@ io.on('connection',(socket)=>{
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(!room.users.find((user) => user == data.user) && data.user)
+        if(room.users && !room.users.find((user) => user == data.user) && data.user)
         {
             room.users.push(data.user);
         }
@@ -60,7 +60,7 @@ io.on('connection',(socket)=>{
 
     socket.on('gameboard', (data) => {
         console.log("gameboard data:" + JSON.stringify(data.gameboard));
-        io.in(data.room).emit('new gameboard', {gameboard: data.gameboard});
+        io.to(data.room).emit('new gameboard', {gameboard: data.gameboard});
     });
     
     socket.on('blackjack', (data)=> {
@@ -96,10 +96,10 @@ io.on('connection',(socket)=>{
         console.log(io.sockets.adapter.rooms);
         io.emit('updatedRoomList',roomList);
     })
-    socket.on('disconnect', () =>
-    { console.log(`${socket.id} has disconnected.`);
-        socket.leave(`${socket.id}`);    
-    })
-
-
+    socket.on('getPlayers',(data) => {
+        console.log("getting players");
+        let room = roomList.find(({id}) => id == data.room)
+        console.log(room.users);
+        io.in(data.room).emit('foundPlayers', room.users)
+    });
 });
