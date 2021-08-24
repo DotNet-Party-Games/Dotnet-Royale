@@ -36,6 +36,10 @@ export interface Blackjack {
 })
 export class BlackjackComponent implements OnInit {
 
+  players: string[] = ["Suraj", "Satyam"];
+  currentTurn: number = 0;
+  turn: number = 0;
+
   finalScore : IScore = {
     gamesId: null,
     userId: null,
@@ -56,42 +60,78 @@ export class BlackjackComponent implements OnInit {
   }
 
   public roomId: string;
-  ngOnInit(): void {
+  ngOnInit(): void {    
     bj.hdstand = document.getElementById("deal-stand");
     bj.hdpoints = document.getElementById("deal-points");
     bj.hdhand = document.getElementById("deal-cards");
-    bj.hpstand = document.getElementById("play-stand");
-    bj.hppoints = document.getElementById("play-points");
-    bj.hphand = document.getElementById("play-cards");
+    bj.hpstand = document.getElementById("play-stand0");
+    bj.hppoints = document.getElementById("play-points0");
+    bj.hphand = document.getElementById("play-cards0");
     bj.hpcon = document.getElementById("play-control");
     bj.winner = document.getElementById("winner");
     // onclick events
     document.getElementById("playc-start").addEventListener("click", bj.start);
+    //this.sendBlackJackData(bj);
     document.getElementById("playc-hit").addEventListener("click", bj.hit);
+    //this.sendBlackJackData(bj);
     document.getElementById("playc-stand").addEventListener("click", bj.stand);
+    this.sendBlackJackData(bj);
 
     this.selectGameRoomHandler();
+  }
+
+  start() {
+    this.sendBlackJackData(bj);
+  }
+
+  hit() {
+    this.sendBlackJackData(bj);
+    this.currentTurn++;
+    this.turn = this.currentTurn % this.players.length;
+    // if(this.currentPlayer == 1 && 1 < this.playerLength) {
+    //   this.currentPlayer = 2;
+    // }
+    // else if(this.currentPlayer == this.playerLength) {
+    //   this.currentPlayer -= 1;
+    // }
+
+    // if(this.currentPlayer == 2 && 2 < this.playerLength) {
+    //   this.currentPlayer = 3;
+    // }
+  }
+
+  stand() {
+    this.sendBlackJackData(bj);
+    this.currentTurn++;
+    this.turn = this.currentTurn % this.players.length;
   }
 
 
   selectGameRoomHandler(): void
   {
-      //this.roomId = '4';
+      this.roomId = '4';
+      // this.currentUser.userName = 'Stephen';
       //this.join(this.currentUser.userName,this.roomId);
+      for(let i = 0; i < this.players.length; i++) {
+        this.join(this.players[i], this.roomId);
+      }
+      
   }
 
   join (username:string, roomId:string):void{
     this.blackjackservice.joinRoom({user:username, room:roomId});
   }
 
-  sendBlackJackData()
+  sendBlackJackData(blackjack: Blackjack)
   {
+    console.log(blackjack);
     this.blackjackservice.sendBlackJackData({blackjack: bj});
-
   }
 
   goToRoom(){
-    this.router.navigate(['/room']);
+    // change to reroute to blackjack room
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['blackjack']);
   }
 
 }
@@ -121,12 +161,17 @@ var bj = {
 
   // new game
   start : function () {
+    // refresh the page
+    //this.Blackjack.ngOnInit();
     // (C1) RESET POINTS, HANDS, DECK, TURN, AND HTML
     bj.deck = [];  bj.dealer = [];  bj.player = [];
     bj.dpoints = 0;  bj.ppoints = 0;
     bj.dstand = false;  bj.pstand = false;
-    bj.hdpoints.innerHTML = "?"; bj.hppoints.innerHTML = 0;
-    bj.hdhand.innerHTML = ""; bj.hphand.innerHTML = "";
+    bj.hdpoints.value = 0; 
+    console.log(`Dealer points is ${bj.hdpoints.value}`);
+    bj.hppoints.value = 0;
+    console.log(`Player points is ${bj.hppoints.value}`);
+    bj.hdhand.value = ""; bj.hphand.value = "";
     bj.hdstand.classList.remove("stood");
     bj.hpstand.classList.remove("stood");
     bj.hpcon.classList.add("started");
@@ -155,6 +200,9 @@ var bj = {
     bj.turn = 1; bj.points();
     var winner = bj.check();
     if (winner==null) { bj.turn = 0; }
+
+    // call sending data to blackjack service
+    //this.blackjack.sendBlackJackData(bj);
   },
 
   // (D) DRAW A CARD FROM THE DECK
