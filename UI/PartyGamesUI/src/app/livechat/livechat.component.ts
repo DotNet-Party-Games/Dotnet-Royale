@@ -72,7 +72,7 @@ export class LivechatComponent implements OnInit,OnChanges {
   getRoomUserList(){
     this.socketService.getRoomList().subscribe(roomList => {
       let room = roomList.find(({id}) => id == this.roomId);
-      this.UserList = room.users;
+      if(room) this.UserList = room.users;
     });
   }
   
