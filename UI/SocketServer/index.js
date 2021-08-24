@@ -35,7 +35,7 @@ io.on('connection',(socket)=>{
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(!room.users.find((user) => user == data.user) && data.user)
+        if(room.users && !room.users.find((user) => user == data.user) && data.user)
         {
             room.users.push(data.user);
         }
