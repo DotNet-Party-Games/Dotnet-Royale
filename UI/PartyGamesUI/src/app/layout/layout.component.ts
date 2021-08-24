@@ -22,6 +22,7 @@ import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { Router } from '@angular/router';
+import { LivechatService } from '../services/livechat/livechat.service'; 
 enum Direction {
   UP,
   DOWN,
@@ -65,8 +66,10 @@ export class LayoutComponent implements OnInit {
   SnakeGameStateAtY: {x: number; y: number}[];
   SnakeGameState: {x: number; y: number}[];
   SnakeGameState2: {x: number; y: number}[];
+  userList: string[];
+  keypress: boolean;
 
-  constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
+  constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService, private livechatService: LivechatService)
   {
     this.currentUser =
     {
@@ -91,48 +94,56 @@ export class LayoutComponent implements OnInit {
       map(event => event.key),
       distinctUntilChanged()
     );
-    this.tick$ = interval(
-      
-
-    );
+ 
+    this.tick$ = interval(100);
     this.direction$.subscribe((currentDirection) =>
     this.snakeDirection = currentDirection);
     const direction = this.keyDown$.pipe(
       map(key => {
+        //print statements to determine what is allowing the double input !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         switch (key) {
           case "ArrowUp":
           case "w":
             //if the snake is already going down
             if (this.snakeDirection == 1) {
               //go down
+              this.keypress = true;
               return Direction.DOWN;
              }
              //if the snake isnt going down, it is allowed to go directly up
             else {
+              this.keypress = true;
             return Direction.UP;
+            
             }
           case "ArrowDown":
           case "s":
             if (this.snakeDirection == 0) {
+              this.keypress = true;
               return Direction.UP;
             }
             else {
+              this.keypress = true;
             return Direction.DOWN;
             }
           case "ArrowLeft":
           case "a":
             if (this.snakeDirection == 3) {
+              this.keypress = true;
               return Direction.RIGHT;
             }
             else{
+              this.keypress = true;
             return Direction.LEFT;
             }
           case "ArrowRight":
           case "d":
             if (this.snakeDirection == 2) {
+              this.keypress = true;
               return Direction.LEFT;
             }
             else{
+              this.keypress = true;
             return Direction.RIGHT;
             }
           default:
@@ -226,6 +237,13 @@ export class LayoutComponent implements OnInit {
       y: Math.floor(height * Math.random())
     };
   }
+  getRoomUserList()
+  {
+    this.livechatService.getRoomList().subscribe(roomList => {
+      let room = roomList.find(({id}) => id == this.roomId);
+      this.userList = room.users;
+    });
+  }
   currentfood: { x: number; y: number };
   newGame(): void {
     const width = 40;
@@ -233,6 +251,7 @@ export class LayoutComponent implements OnInit {
     const food = this.getRandomField(width, height);
     const snakePos = [this.getRandomField(width, height)];
     let snakePos2;
+    this.getRoomUserList()
     this.game$ = new BehaviorSubject<GameState>({
       food,
       snakePos,
@@ -247,16 +266,14 @@ export class LayoutComponent implements OnInit {
         map(tick => {
           this.sendSnakeGameState();
           this.snakeService.getSnakeGameState();
-
+          console.log("num of Users: " + this.userList.length);
           const subscription = this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
-          
+         
           let game = this.game$.value;
           if (this.SnakeGameState != undefined)
           {
-            
             game.snakePos2 = this.SnakeGameState;
             this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
-           
           }
           subscription.unsubscribe();
         
@@ -291,7 +308,6 @@ export class LayoutComponent implements OnInit {
               break;
           }
           this.sendSnakeGameState();
-          this.snakeService.getSnakeGameState();
           return game;
         }),
         takeUntil(this.lost$)
