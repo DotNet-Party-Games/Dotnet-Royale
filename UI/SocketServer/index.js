@@ -35,7 +35,7 @@ io.on('connection',(socket)=>{
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(room.users && !room.users.find((user) => user == data.user) && data.user)
+        if(room && room.users && !room.users.find((user) => user == data.user) && data.user)
         {
             room.users.push(data.user);
         }
@@ -59,8 +59,9 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('gameboard', (data) => {
+        console.log(data.room);
         console.log("gameboard data:" + JSON.stringify(data.gameboard));
-        io.to(data.room).emit('new gameboard', {gameboard: data.gameboard});
+        io.to(data.room).emit('new gameboard', data.gameboard);
     });
     
     socket.on('blackjack', (data)=> {

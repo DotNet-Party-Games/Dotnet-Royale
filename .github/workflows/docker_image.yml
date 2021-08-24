@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
 
@@ -42,14 +43,14 @@ jobs:
        uses: highbyte/sonarscan-dotnet@v2.1.1-beta
        with:
          # The key of the SonarQube project
-         sonarProjectKey: DotNet-Party-Games
+         sonarProjectKey: DotNet-Party-Games_Dotnet-Royale
          # The name of the SonarQube project
          sonarProjectName: Dotnet-Royale
-         sonarOrganization: DotNet-Party-Games
+         sonarOrganization: dotnet-party-games
          dotnetBuildArguments: API/
-         dotnetTestArguments: API/ --logger trx --collect:"XPlat Code Coverage" --DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+         dotnetTestArguments: API/ --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
          # Optional extra command arguments the the SonarScanner 'begin' command
-         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" - /d:sonar.exclusions="**/Migrations/**"
+         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" -d:sonar.exclusions="**/Migrations/**"
        env:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
