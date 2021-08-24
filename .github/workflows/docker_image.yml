@@ -46,7 +46,7 @@ jobs:
          sonarProjectKey: DotNet-Party-Games_Dotnet-Royale
          # The name of the SonarQube project
          sonarProjectName: Dotnet-Royale
-         sonarOrganization: DotNet-Party-Games
+         sonarOrganization: dotnet-party-games
          dotnetBuildArguments: API/
          dotnetTestArguments: API/ --logger trx --collect:"XPlat Code Coverage" --DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
          # Optional extra command arguments the the SonarScanner 'begin' command
