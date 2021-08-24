@@ -64,6 +64,10 @@ export class LayoutComponent implements OnInit {
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
   snakePositionDisplay: {x: number; y: number}[];
+  SnakeGameStateAtX: {x: number; y: number}[];
+  SnakeGameStateAtY: {x: number; y: number}[];
+  SnakeGameState: {x: number; y: number}[];
+  SnakeGameState2: {x: number; y: number}[];
 
   constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
   {
@@ -222,9 +226,6 @@ export class LayoutComponent implements OnInit {
       y: Math.floor(height * Math.random())
     };
   }
-  SnakeGameStateAtX: {x: number; y: number}[];
-  SnakeGameStateAtY: {x: number; y: number}[];
-  SnakeGameState: {x: number; y: number}[];
   newGame(): void {
     const width = 40;
     const height = 33;
@@ -239,27 +240,29 @@ export class LayoutComponent implements OnInit {
       lost: false,
       snakePos2
     });
+    
     this.tick$
       .pipe(
         map(tick => {
-          this.sendSnakeGameState();
-          this.snakeService.getSnakeGameState();
           //this.snakeService.currentGameState.subscribe(data => ((this.SnakeGameStateAtX = data.map(a=> a.x)), (this.SnakeGameStateAtY = data.map(b=>b.y))));
-          this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+          const subscription = this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+
           //console.log(this.SnakeGameState.length);
           //console.log(this.SnakeGameStateAtX);
           //console.log(this.SnakeGameStateAtY);
+          
 
           //console.log(this.game$.value.snakePos);
            //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
           let game = this.game$.value;
           if (this.SnakeGameState != undefined)
           {
+            //console.log(game.snakePos2.length);
             game.snakePos2 = this.SnakeGameState;
             this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
+            //console.log(game.snakePos2.length);
           }
-
-          console.log(game.snakePos2);
+          subscription.unsubscribe();
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
@@ -296,6 +299,7 @@ export class LayoutComponent implements OnInit {
               break;
           }
           this.sendSnakeGameState();
+          this.snakeService.getSnakeGameState();
           return game;
         }),
         takeUntil(this.lost$)
