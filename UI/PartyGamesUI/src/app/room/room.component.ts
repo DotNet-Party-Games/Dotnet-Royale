@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Live } from '@ng-bootstrap/ng-bootstrap/util/accessibility/live';
-import { LivechatService } from '../services/livechat/livechat.service';
-import { IRoom } from '../services/room';
+import { SocketioService } from '../services/socketio/socketio.service';
 
 @Component({
   selector: 'app-room',
@@ -16,7 +14,7 @@ export class RoomComponent implements OnInit {
   roomId: string;
   userList: string[];
 
-  constructor(private router: Router, private livechatService: LivechatService) { }
+  constructor(private router: Router, private socketService: SocketioService) { }
 
   ngOnInit(): void {
     this.username = sessionStorage.getItem('userName');
@@ -27,11 +25,11 @@ export class RoomComponent implements OnInit {
   }
 
   reloadRoomList(){
-    this.livechatService.reloadRoomList(this.username);
+    this.socketService.reloadRoomList(this.username);
   }
 
   getRoomUserList(){
-    this.livechatService.getRoomList().subscribe(roomList => {
+    this.socketService.getRoomList().subscribe(roomList => {
       let room = roomList.find(({id}) => id == this.roomId);
       if(room) this.userList = room.users;
     });
@@ -44,7 +42,7 @@ export class RoomComponent implements OnInit {
 
   leaveRoom(username:string, roomId:string):void
   {
-    this.livechatService.leaveRoom({user:username, room:roomId});
+    this.socketService.leaveRoom({user:username, room:roomId});
     sessionStorage.removeItem("roomId");
   }
 

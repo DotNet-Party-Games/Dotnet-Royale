@@ -7,6 +7,8 @@ import { Subscriber } from 'rxjs';
 import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GameState } from 'src/app/services/TTTTGameState';
+import { SocketioService } from 'src/app/services/socketio/socketio.service';
 
 @Component({
   selector: 'app-board',
@@ -21,25 +23,24 @@ export class BoardComponent implements OnInit {
     userId: null,
     score: null,
   }
-  isOver: boolean;
-  myClonedArray: any[];
-  squares: any[];
-  grid: any[];
-  xIsNext: boolean;
-  winner: string;
-  public roomId: string;
-  numOfPlayers: number = 15; // This will be obtained from socketio
-  squareHeight: number = 100 / (this.numOfPlayers + 1); // used to generate columns of relative size
-  fontSize: number = 5 * 2 / (this.numOfPlayers); // used to generate rows of relative size
-  currentPlayer: number;
-  playerPieces: any[];
+  gameState: GameState = {
+    gameStarted: false,
+    playerPieces: ["X", "O", "\u0444", "\u30B7", "\u02E0", "\u0376", "\u037C", "\u0394", "\u0398", "\u039B", "\u039E", "\u03A0", "\u03A8", "\u03A9", "\u00B5", "\u03A3", "\u0393", "\u0370"],
+  };
+  public roomId: string = sessionStorage.getItem('roomId');
+  numOfPlayers: number = 4; // This will be obtained from socketio
+  squareHeight: number = 100 / (this.numOfPlayers + 1); // is used to generate columns of relative size
+  fontSize: number = 5 * 2 / (this.numOfPlayers); // is used to generate rows of relative size
+  thisPlayer: number; // the player number of this specific player
+  thisPlayerName: string; // the player name of this specific player
   num: number;
   index: number;
-  OpponentMove: Boolean;
-  alreadyClicked: Boolean;
+  audioUrl: string = "https://songsink.blob.core.windows.net/songs/"; //base url to access sounds
+
+  
 
 
-  constructor(private router: Router, private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private partyGameApi: PartygameService, private cd: ChangeDetectorRef,private ttttService: TicTacToeService, private socketService: SocketioService) {
     this.currentUser =
     {
       id: 0,
@@ -52,78 +53,91 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.newGame();
-    this.selectGameRoomHandler();
-    //console.log("achieved");
+    this.thisPlayerName = sessionStorage.getItem('userName');
+    
+    this.socketService.findPlayers().subscribe(data =>
+      {
+        console.log("In ngOninit subscription, data: ");
+        console.log(data);
+      });
+    this.startup();
   }
 
-  selectGameRoomHandler(): void {
-    this.roomId = '3';
-    this.join(this.currentUser.userName, this.roomId);
+  startup() {
+    console.log("Entered startup method");
+
+    console.log("called get players here: ")
+    this.socketService.getPlayers(({ room: this.roomId }));
+
+    console.log("Hopefully has players: ");
+    console.log(this.gameState.playerList);
   }
-  join(username: string, roomId: string): void {
-    this.tictactoeservice.joinRoom({ user: username, room: roomId });
-  }
-  sendTicTacToeGameboard(squares: any[]) {
+  sendTicTacToeGamestate(currentGameState: GameState) {
     //console.log("Sending GameBoard Data");
-    this.tictactoeservice.sendTicTacToeData({ gameboard: squares, room: this.roomId });
+    this.socketService.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
+  }
 
-  }
-  getTicTacToeGameboard() {
-    //console.log("Getting GameBoard Data");
-    this.tictactoeservice.getTicTacToeData().subscribe(gameboard => {
-      this.myClonedArray = Object.assign([], gameboard.gameboard);
-    });
-    // console.log(this.myClonedArray);
-  }
   newGame() {
-    this.squares = new Array((this.numOfPlayers + 1) ** 2).fill(null);
-    this.currentPlayer=0;
+    let audio = <HTMLAudioElement>document.getElementById('audio');
+    audio.pause();
+    this.gameState.squares = new Array((this.numOfPlayers + 1) ** 2).fill(null);
+    this.gameState.currentPlayer = 0;
     this.createGrid();
     this.generatePlayerPieces();
-    this.winner = null;
-    this.isOver = false;
-    this.alreadyClicked = false;
-  }
-  generatePlayerPieces()
-  {
-    this.playerPieces = new Array();
-     for(let x=0; x<this.numOfPlayers; x++)
-     {
-       this.playerPieces.push(String(x));
-     }
-     this.playerPieces[3] = "\u0444";
-     this.playerPieces[2] = '\u30B7';
-  }
-  get player() {
-    return this.xIsNext ? "\u0444" : '\u30B7';
+    this.gameState.winner = null;
+    this.gameState.isOver = false;
+    this.gameState.alreadyClicked = false;
+    this.sendTicTacToeGamestate(this.gameState);
   }
 
+  generatePlayerPieces() {
+    let possiblePieces: any[];
+    possiblePieces = ["X", "O", "\u0444", "\u30B7", "\u02E0", "\u0376", "\u037C", "\u0394", "\u0398", "\u039B", "\u039E", "\u03A0", "\u03A8", "\u03A9", "\u00B5", "\u03A3", "\u0393", "\u0370"];
+    for (let i = possiblePieces.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [possiblePieces[i], possiblePieces[j]] = [possiblePieces[j], possiblePieces[i]];
+    }
+    this.gameState.playerPieces = new Array();
+    for (let x = 0; x < this.numOfPlayers; x++) {
+      if (x >= possiblePieces.length) {
+        this.gameState.playerPieces.push(String(x));
+      } else {
+        this.gameState.playerPieces.push(possiblePieces[x]);
+      }
+
+    }
+  }
 
   async makeMove(idx: number) {
-    if (!this.squares[idx] && this.isOver == false && this.alreadyClicked == false) {
-      //this.AlreadyClicked = true;
+    if (!this.gameState.squares[idx] && !this.gameState.isOver && !this.gameState.alreadyClicked && this.gameState.currentPlayer == this.thisPlayer) {
+      this.gameState.alreadyClicked = true;
 
-      this.squares[idx] = this.playerPieces[this.currentPlayer];
-      this.updateGrid(idx, this.playerPieces[this.currentPlayer]);
-      this.winner = this.calculateWinner();
+      this.gameState.squares[idx] = this.gameState.playerPieces[this.gameState.currentPlayer];
+      this.updateGrid(idx, this.gameState.playerPieces[this.gameState.currentPlayer]);
+      this.socketService.sendAudioTrigger({ audioFile: "placepiecesound", room: this.roomId })
+      this.gameState.winner = this.calculateWinner();
       this.endTurn();
     }
   }
-  endTurn()
-  {
-    this.currentPlayer += 1;
-    if(this.currentPlayer > this.numOfPlayers-1)
-    {
-      this.currentPlayer=0;
+  endTurn() {
+    this.gameState.currentPlayer += 1;
+    if (this.gameState.currentPlayer > this.numOfPlayers - 1) {
+      this.gameState.currentPlayer = 0;
     }
-    console.log(this.numOfPlayers);
-    console.log(this.currentPlayer);
+    this.gameState.alreadyClicked = false;
+    if (this.gameState.winner && this.gameState.winner == this.thisPlayerName) {
+      this.gameState.isOver = true;
+      this.playAudio("youwon");
+    } else if (this.gameState.winner) {
+      this.socketService.sendAudioTrigger({ audioFile: "youlose", room: this.roomId })
+    }
+    this.sendTicTacToeGamestate(this.gameState);
+
   }
 
   createGrid() {
 
-    this.grid = new Array(); //creating a new array
+    this.gameState.grid = new Array(); //creating a new array
     let x = 0;
     while (x <= this.numOfPlayers) //this outer loop itereates the "rows"
     {
@@ -133,14 +147,28 @@ export class BoardComponent implements OnInit {
         tempArr.push(null);  //this pushes a null entry to the current "row"
         y++
       }
-      this.grid.push(tempArr); //pushes the filled "row" to the grid
+      this.gameState.grid.push(tempArr); //pushes the filled "row" to the grid
       x++
     }
   }
   updateGrid(idx: number, piece: any) {
     let row = Math.floor(idx / (this.numOfPlayers + 1)); // integer division (sorta) to get row
     let col = idx % (this.numOfPlayers + 1); // remainder to specify column
-    this.grid[row][col] = piece;
+    this.gameState.grid[row][col] = piece;
+  }
+  updateGameState(newGameState: GameState) {
+    this.gameState = newGameState;
+  }
+
+  playAudio(audioCue: string) {
+    let audio = <HTMLAudioElement>document.getElementById('audio');
+    audio.volume = 0.1;
+    audio.src = this.audioUrl + audioCue + ".mp3";
+    if (audioCue == "youwon") {
+      audio.loop = true;
+    }
+    audio.load();
+    audio.play();
   }
   calculateWinner() {
     //checks (x,1) for horizontal wins
@@ -151,57 +179,53 @@ export class BoardComponent implements OnInit {
     for (let x = 0; x <= this.numOfPlayers; x++) {
       for (let y = 0; y <= this.numOfPlayers; y++) {
         // if middle piece is null then we can skip the other checks
-        if (this.grid[x][y]) {
+        if (this.gameState.grid[x][y]) {
 
           //check vertical when not next to the top or bottom edge
-          if (x > 0 && x<this.numOfPlayers) {
+          if (x > 0 && x < this.numOfPlayers) {
             //check vertical
-            if ((this.grid[x - 1][y] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x + 1][y])) {
-              return "Player " + this.playerPieces[this.currentPlayer];
+            if ((this.gameState.grid[x - 1][y] == this.gameState.grid[x][y]) && (this.gameState.grid[x][y] == this.gameState.grid[x + 1][y])) {
+              return "Player " + this.gameState.playerPieces[this.gameState.currentPlayer];
             }
           }
 
           // check horizontal when not next to left or right edge
-          if (y > 0 && y<this.numOfPlayers) {
+          if (y > 0 && y < this.numOfPlayers) {
             //check horizontal
-            if ((this.grid[x][y - 1] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x][y + 1])) {
-              return "Player " + this.playerPieces[this.currentPlayer];
+            if ((this.gameState.grid[x][y - 1] == this.gameState.grid[x][y]) && (this.gameState.grid[x][y] == this.gameState.grid[x][y + 1])) {
+              return "Player " + this.gameState.playerPieces[this.gameState.currentPlayer];
             }
           }
           //check if near corners
           if ((x > 0 && x < this.numOfPlayers) && (y > 0 && y < this.numOfPlayers)) {
             //check aigu diagonal
-            if ((this.grid[x + 1][y - 1] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x - 1][y + 1])) {
-              return "Player " + this.playerPieces[this.currentPlayer];
+            if ((this.gameState.grid[x + 1][y - 1] == this.gameState.grid[x][y]) && (this.gameState.grid[x][y] == this.gameState.grid[x - 1][y + 1])) {
+              return "Player " + this.gameState.playerPieces[this.gameState.currentPlayer];
             }
 
             //check grave diagonal
-            if ((this.grid[x - 1][y - 1] == this.grid[x][y]) && (this.grid[x][y] == this.grid[x + 1][y + 1])) {
-              return "Player " + this.playerPieces[this.currentPlayer];
+            if ((this.gameState.grid[x - 1][y - 1] == this.gameState.grid[x][y]) && (this.gameState.grid[x][y] == this.gameState.grid[x + 1][y + 1])) {
+              return "Player " + this.gameState.playerPieces[this.gameState.currentPlayer];
             }
           }
         }
       }
     }
-    //     this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
-    //     this.finalScore.gamesId = 3;
-    //     this.finalScore.score = 1;
-    //     this.partyGameApi.addscore(this.finalScore).subscribe();
-    //     // This will be updateTictacToeStats this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
-    //     this.isOver = true;
     let isCats: boolean = true;
-    for (let x = 0; x < this.squares.length; x++) {
-      if (!this.squares[x]) {
-        isCats = false;
-        return null;
+    for (let x = 0; x < this.gameState.squares.length; x++) {
+      if (!this.gameState.squares[x]) {
+        if (!this.gameState.squares[x]) {
+          isCats = false;
+          return null;
+        }
       }
+      this.gameState.isOver = true;
+      return "Cats Game! Nobody";
     }
-    this.isOver = true;
-    return "Cats Game! Nobody";
   }
-
-  goToRoom(){
+  goToRoom() {
     this.router.navigate(['/room']);
   }
+
 }
 

@@ -3,6 +3,7 @@ import { LivechatService } from '../services/livechat/livechat.service';
 import { PartygameService } from '../services/partygame.service';
 import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SocketioService } from '../services/socketio/socketio.service';
 
 @Component({
   selector: 'app-livechat',
@@ -20,7 +21,7 @@ export class LivechatComponent implements OnInit,OnChanges {
 
   public UserList:string[];
 
-  constructor(private partyGameApi: PartygameService, private livechatService: LivechatService )
+  constructor(private partyGameApi: PartygameService, private socketService: SocketioService )
   {
     this.currentUser = sessionStorage.getItem('userName');
   }
@@ -40,7 +41,7 @@ export class LivechatComponent implements OnInit,OnChanges {
   selectGameRoomHandler():void
   {
     this.roomId = sessionStorage.getItem("roomId");
-    this.livechatService.getMessage().subscribe((data: {user:string, message:string}) => {
+    this.socketService.getMessage().subscribe((data: {user:string, message:string}) => {
             this.messageArray.push(data);
         });
 
@@ -49,12 +50,12 @@ export class LivechatComponent implements OnInit,OnChanges {
 
   join(username:string, roomId:string):void
   {
-    this.livechatService.joinRoom({user:username, room:roomId});
+    this.socketService.joinRoom({user:username, room:roomId});
   }
 
   sendMessage():void
   {
-    this.livechatService.sendMessage({
+    this.socketService.sendMessage({
       user: this.currentUser,
       room: this.roomId,
       message:this.messageText
@@ -65,14 +66,15 @@ export class LivechatComponent implements OnInit,OnChanges {
   }
 
   reloadRoomList(){
-    this.livechatService.reloadRoomList(this.currentUser);
+    this.socketService.reloadRoomList(this.currentUser);
   }
 
   getRoomUserList(){
-    this.livechatService.getRoomList().subscribe(roomList => {
+    this.socketService.getRoomList().subscribe(roomList => {
       let room = roomList.find(({id}) => id == this.roomId);
       if(room) this.UserList = room.users;
     });
   }
+  
 
 }

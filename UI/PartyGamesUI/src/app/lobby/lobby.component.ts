@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LivechatService } from '../services/livechat/livechat.service';
 import { IRoom } from '../services/room';
+import { SocketioService } from '../services/socketio/socketio.service';
 
 @Component({
   selector: 'app-lobby',
@@ -15,7 +15,7 @@ export class LobbyComponent implements OnInit {
   isInputRoomId: boolean = false;
   roomIdInput: string;
   rooms: IRoom[];
-  constructor(private router: Router, private livechatService: LivechatService ) { }
+  constructor(private router: Router, private socketService: SocketioService ) { }
 
   ngOnInit(): void {
 
@@ -39,35 +39,34 @@ export class LobbyComponent implements OnInit {
   goToMain(){
     this.username = sessionStorage.getItem("userName");
     this.roomId = sessionStorage.getItem("roomId");
-
     this.leaveRoom(this.username, this.roomId);
     this.router.navigate(['/main']);
   }
 
   getRoomList(){
-    this.livechatService.getRoomList().subscribe(roomList => {
+    this.socketService.getRoomList().subscribe(roomList => {
       this.rooms=roomList;
     });
   }
 
   reloadRoomList(){
-    this.livechatService.reloadRoomList(this.username);
+    this.socketService.reloadRoomList(this.username);
   }
 
   joinRoom(username:string, roomId:string):void
   {
     let oldRoomId: string = sessionStorage.getItem('roomId');
     if(oldRoomId && oldRoomId != roomId){
-      this.livechatService.leaveRoom({user:username, room:oldRoomId});
+      this.socketService.leaveRoom({user:username, room:oldRoomId})
     }
-    this.livechatService.joinRoom({user:username, room:roomId});
+    this.socketService.joinRoom({user:username, room:roomId});
     this.roomId = roomId;
     sessionStorage.setItem("roomId", this.roomId);
   }
 
   leaveRoom(username:string, roomId:string):void
   {
-    this.livechatService.leaveRoom({user:username, room:roomId});
+    this.socketService.leaveRoom({user:username, room:roomId});
     sessionStorage.removeItem("roomId");
   }
 
