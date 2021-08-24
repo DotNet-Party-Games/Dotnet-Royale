@@ -74,5 +74,6 @@ export class LivechatComponent implements OnInit,OnChanges {
       this.UserList = room.users;
     });
   }
+  
 
 }
