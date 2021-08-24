@@ -8,7 +8,7 @@ import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameState } from 'src/app/services/TTTTGameState';
-import { LivechatService } from 'src/app/services/livechat/livechat.service';
+import { SocketioService } from 'src/app/services/socketio/socketio.service';
 
 @Component({
   selector: 'app-board',
@@ -40,7 +40,7 @@ export class BoardComponent implements OnInit {
   
 
 
-  constructor(private router: Router, private partyGameApi: PartygameService, private cd: ChangeDetectorRef,private livechatService: LivechatService) {
+  constructor(private router: Router, private partyGameApi: PartygameService, private cd: ChangeDetectorRef,private ttttService: TicTacToeService, private socketService: SocketioService) {
     this.currentUser =
     {
       id: 0,
@@ -55,7 +55,7 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.thisPlayerName = sessionStorage.getItem('userName');
     
-    this.livechatService.findPlayers().subscribe(data =>
+    this.socketService.findPlayers().subscribe(data =>
       {
         console.log("In ngOninit subscription, data: ");
         console.log(data);
@@ -66,49 +66,15 @@ export class BoardComponent implements OnInit {
   startup() {
     console.log("Entered startup method");
 
-    // this.livechatService.getRoomList().subscribe(roomList => {
-    //   let room = roomList.find(({id}) => id == this.roomId);
-    //   console.log("room");
-    //   console.log(room);
-    //   console.log("room.users");
-    //   console.log(room.users);
-    //   this.gameState.playerList = room.users;
-    // });
-
-    // const subscription = this.tictactoeservice.currentPlayerList.subscribe(data => {
-    //   console.log(data);
-    //   this.gameState.playerList= data.users;
-    
-    // });
     console.log("called get players here: ")
-    this.livechatService.getPlayers(({ room: this.roomId }));
-    // this.tictactoeservice.findPlayers();
+    this.socketService.getPlayers(({ room: this.roomId }));
+
     console.log("Hopefully has players: ");
     console.log(this.gameState.playerList);
-
-    //const subscription = this.tictactoeservice.currentPlayerList.subscribe(data => (this.gameState.playerList = data.map(a=>a)));
-// this.tictactoeservice.findPlayers().subscribe(players => {
-//       console.log("players");
-//       console.log(players);
-//       console.log("In observable2");
-//       this.gameState.playerList = players;
-//       // console.log("In observable3");
-//       // this.numOfPlayers = this.gameState.playerList.length;
-//       // console.log("In observable4");
-//       // this.thisPlayer = this.gameState.playerList.indexOf(this.thisPlayerName);
-//       // console.log("name: " + this.thisPlayerName);
-//       // console.log("number: " + this.thisPlayer);
-//       // console.log("All players");
-//       // console.log(this.gameState.playerList);
-//     });
-    // this.tictactoeservice.getAudioTrigger().subscribe(audiotrigger => {
-    //   this.playAudio(audiotrigger);
-    // });
-    // this.tictactoeservice.getTicTacToeData();
   }
   sendTicTacToeGamestate(currentGameState: GameState) {
     //console.log("Sending GameBoard Data");
-    //this.tictactoeservice.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
+    this.socketService.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
   }
 
   newGame() {
@@ -148,7 +114,7 @@ export class BoardComponent implements OnInit {
 
       this.gameState.squares[idx] = this.gameState.playerPieces[this.gameState.currentPlayer];
       this.updateGrid(idx, this.gameState.playerPieces[this.gameState.currentPlayer]);
-     // this.tictactoeservice.sendAudioTrigger({ audioFile: "placepiecesound", room: this.roomId })
+      this.socketService.sendAudioTrigger({ audioFile: "placepiecesound", room: this.roomId })
       this.gameState.winner = this.calculateWinner();
       this.endTurn();
     }
@@ -163,7 +129,7 @@ export class BoardComponent implements OnInit {
       this.gameState.isOver = true;
       this.playAudio("youwon");
     } else if (this.gameState.winner) {
-      //this.tictactoeservice.sendAudioTrigger({ audioFile: "youlose", room: this.roomId })
+      this.socketService.sendAudioTrigger({ audioFile: "youlose", room: this.roomId })
     }
     this.sendTicTacToeGamestate(this.gameState);
 
