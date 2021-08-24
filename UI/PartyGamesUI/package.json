@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "~11.2.14",
     "@angular/router": "~11.2.14",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
-    "@types/socket.io-client": "^3.0.0",
     "bootstrap": "^4.5.0",
     "fix": "0.0.6",
     "ng-bootstrap": "^1.6.3",

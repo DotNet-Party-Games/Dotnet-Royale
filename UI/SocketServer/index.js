@@ -100,6 +100,6 @@ io.on('connection',(socket)=>{
         console.log("getting players");
         let room = roomList.find(({id}) => id == data.room)
         console.log(room.users);
-        io.in(data.room).emit('foundPlayers', room)
+        io.in(data.room).emit('foundPlayers', room.users)
     });
 });

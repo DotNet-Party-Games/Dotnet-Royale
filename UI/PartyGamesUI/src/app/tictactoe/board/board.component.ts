@@ -37,7 +37,10 @@ export class BoardComponent implements OnInit {
   index: number;
   audioUrl: string = "https://songsink.blob.core.windows.net/songs/"; //base url to access sounds
 
-  constructor(private router: Router, private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef,private livechatService: LivechatService) {
+  
+
+
+  constructor(private router: Router, private partyGameApi: PartygameService, private cd: ChangeDetectorRef,private livechatService: LivechatService) {
     this.currentUser =
     {
       id: 0,
@@ -52,11 +55,12 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.thisPlayerName = sessionStorage.getItem('userName');
     
-    
+    this.livechatService.findPlayers().subscribe(data =>
+      {
+        console.log("In ngOninit subscription, data: ");
+        console.log(data);
+      });
     this.startup();
-
-    console.log("after start up but in ngOnInit");
-
   }
 
   startup() {
@@ -76,10 +80,13 @@ export class BoardComponent implements OnInit {
     //   this.gameState.playerList= data.users;
     
     // });
-    // this.tictactoeservice.getPlayers(({ room: this.roomId }));
+    console.log("called get players here: ")
+    this.livechatService.getPlayers(({ room: this.roomId }));
     // this.tictactoeservice.findPlayers();
     console.log("Hopefully has players: ");
     console.log(this.gameState.playerList);
+
+    //const subscription = this.tictactoeservice.currentPlayerList.subscribe(data => (this.gameState.playerList = data.map(a=>a)));
 // this.tictactoeservice.findPlayers().subscribe(players => {
 //       console.log("players");
 //       console.log(players);
@@ -94,14 +101,14 @@ export class BoardComponent implements OnInit {
 //       // console.log("All players");
 //       // console.log(this.gameState.playerList);
 //     });
-    this.tictactoeservice.getAudioTrigger().subscribe(audiotrigger => {
-      this.playAudio(audiotrigger);
-    });
-    this.tictactoeservice.getTicTacToeData();
+    // this.tictactoeservice.getAudioTrigger().subscribe(audiotrigger => {
+    //   this.playAudio(audiotrigger);
+    // });
+    // this.tictactoeservice.getTicTacToeData();
   }
   sendTicTacToeGamestate(currentGameState: GameState) {
     //console.log("Sending GameBoard Data");
-    this.tictactoeservice.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
+    //this.tictactoeservice.sendTicTacToeData({ gameboard: currentGameState, room: this.roomId });
   }
 
   newGame() {
@@ -141,7 +148,7 @@ export class BoardComponent implements OnInit {
 
       this.gameState.squares[idx] = this.gameState.playerPieces[this.gameState.currentPlayer];
       this.updateGrid(idx, this.gameState.playerPieces[this.gameState.currentPlayer]);
-      this.tictactoeservice.sendAudioTrigger({ audioFile: "placepiecesound", room: this.roomId })
+     // this.tictactoeservice.sendAudioTrigger({ audioFile: "placepiecesound", room: this.roomId })
       this.gameState.winner = this.calculateWinner();
       this.endTurn();
     }
@@ -156,7 +163,7 @@ export class BoardComponent implements OnInit {
       this.gameState.isOver = true;
       this.playAudio("youwon");
     } else if (this.gameState.winner) {
-      this.tictactoeservice.sendAudioTrigger({ audioFile: "youlose", room: this.roomId })
+      //this.tictactoeservice.sendAudioTrigger({ audioFile: "youlose", room: this.roomId })
     }
     this.sendTicTacToeGamestate(this.gameState);
 

@@ -55,15 +55,14 @@ export class TicTacToeService {
     this.socket.emit('getPlayers', data);
   }
   findPlayers(): Observable<any> {
-    return new Observable<{}>(obs => {
+    return new Observable(obs => {
       this.socket.on('foundPlayers', (data) => {
-        obs.next(data);
+        console.log("in ttt service")
         console.log("got players from socket");
         console.log(data);
+        obs.next(data);
+        
       });
-      return () => {
-        this.socket.disconnect();
-      }
     });
   }
   // findPlayers():void{
