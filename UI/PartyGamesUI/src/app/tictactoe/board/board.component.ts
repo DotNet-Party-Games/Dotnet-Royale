@@ -37,7 +37,7 @@ export class BoardComponent implements OnInit {
   index: number;
   audioUrl: string = "https://songsink.blob.core.windows.net/songs/"; //base url to access sounds
 
-  constructor(private router: Router, private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef, private livechatService: LivechatService) {
+  constructor(private router: Router, private partyGameApi: PartygameService, private tictactoeservice: TicTacToeService, private cd: ChangeDetectorRef,private livechatService: LivechatService) {
     this.currentUser =
     {
       id: 0,
@@ -50,40 +50,54 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("roomID "+ this.roomId);
     this.thisPlayerName = sessionStorage.getItem('userName');
-    console.log("Player name: "+ this.thisPlayerName);
+    
+    
     this.startup();
+
     console.log("after start up but in ngOnInit");
 
   }
 
   startup() {
     console.log("Entered startup method");
-    this.livechatService.getRoomList().subscribe(roomList => {
-      console.log("Roomlist");
-      console.log(roomList);
-      let room = roomList.find(({ id }) => id == this.roomId);
-      console.log("In observable2");
-      this.gameState.playerList = room.users;
-      console.log("In observable3");
-      this.numOfPlayers = this.gameState.playerList.length;
-      console.log("In observable4");
-      this.thisPlayer = this.gameState.playerList.indexOf(this.thisPlayerName);
-      console.log("name: " + this.thisPlayerName);
-      console.log("number: " + this.thisPlayer);
-      console.log("All players");
-      console.log(this.gameState.playerList);
 
+    // this.livechatService.getRoomList().subscribe(roomList => {
+    //   let room = roomList.find(({id}) => id == this.roomId);
+    //   console.log("room");
+    //   console.log(room);
+    //   console.log("room.users");
+    //   console.log(room.users);
+    //   this.gameState.playerList = room.users;
+    // });
 
-    })
-
+    // const subscription = this.tictactoeservice.currentPlayerList.subscribe(data => {
+    //   console.log(data);
+    //   this.gameState.playerList= data.users;
+    
+    // });
+    // this.tictactoeservice.getPlayers(({ room: this.roomId }));
+    // this.tictactoeservice.findPlayers();
+    console.log("Hopefully has players: ");
+    console.log(this.gameState.playerList);
+// this.tictactoeservice.findPlayers().subscribe(players => {
+//       console.log("players");
+//       console.log(players);
+//       console.log("In observable2");
+//       this.gameState.playerList = players;
+//       // console.log("In observable3");
+//       // this.numOfPlayers = this.gameState.playerList.length;
+//       // console.log("In observable4");
+//       // this.thisPlayer = this.gameState.playerList.indexOf(this.thisPlayerName);
+//       // console.log("name: " + this.thisPlayerName);
+//       // console.log("number: " + this.thisPlayer);
+//       // console.log("All players");
+//       // console.log(this.gameState.playerList);
+//     });
     this.tictactoeservice.getAudioTrigger().subscribe(audiotrigger => {
       this.playAudio(audiotrigger);
     });
-    this.tictactoeservice.getTicTacToeData().subscribe(newgamestate => {
-      this.updateGameState(newgamestate);
-    });
+    this.tictactoeservice.getTicTacToeData();
   }
   sendTicTacToeGamestate(currentGameState: GameState) {
     //console.log("Sending GameBoard Data");

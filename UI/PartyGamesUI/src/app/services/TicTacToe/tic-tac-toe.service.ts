@@ -12,15 +12,14 @@ export class TicTacToeService {
   //private url = 'https://pgsocketserver.herokuapp.com/';
   private newGameState = new BehaviorSubject<any>({});
   currentGameState = this.newGameState.asObservable();
+  private playerList = new BehaviorSubject<any>({});
+  currentPlayerList = this.playerList.asObservable();
   constructor() {
     this.socket = io(this.url, { transports: ['websocket', 'pulling', 'flashsocket'] });
   }
 
   joinRoom(data): void {
     this.socket.emit('join', data);
-  }
-  getPlayers() {
-
   }
   sendTicTacToeData(data): void {
     this.socket.emit('gameboard', data);
@@ -52,6 +51,28 @@ export class TicTacToeService {
   leaveRoom(data): void {
     this.socket.emit('leave', data);
   }
+  getPlayers(data): void {
+    this.socket.emit('getPlayers', data);
+  }
+  findPlayers(): Observable<any> {
+    return new Observable<{}>(obs => {
+      this.socket.on('foundPlayers', (data) => {
+        obs.next(data);
+        console.log("got players from socket");
+        console.log(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      }
+    });
+  }
+  // findPlayers():void{
+  //   this.socket.on('foundPlayers', (data) => {
+  //     this.playerList.next(data);
+  //     console.log("got players from socket");
+  //     console.log(data);
+  //   });
+  // }
 }
 
 

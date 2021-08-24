@@ -96,5 +96,10 @@ io.on('connection',(socket)=>{
         console.log(io.sockets.adapter.rooms);
         io.emit('updatedRoomList',roomList);
     })
-
+    socket.on('getPlayers',(data) => {
+        console.log("getting players");
+        let room = roomList.find(({id}) => id == data.room)
+        console.log(room.users);
+        io.in(data.room).emit('foundPlayers', room)
+    });
 });
