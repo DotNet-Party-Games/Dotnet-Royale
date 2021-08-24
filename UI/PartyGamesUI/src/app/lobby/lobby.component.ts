@@ -21,6 +21,11 @@ export class LobbyComponent implements OnInit {
 
     this.username = sessionStorage.getItem('userName');
     this.roomId = sessionStorage.getItem('roomId');
+    if(!this.roomId)
+    {
+      sessionStorage.setItem("roomId", 'lobby');
+      this.joinRoom(this.username, sessionStorage.getItem('roomId'));
+    }
     this.reloadRoomList()
     this.getRoomList();
 
@@ -34,7 +39,8 @@ export class LobbyComponent implements OnInit {
   goToMain(){
     this.username = sessionStorage.getItem("userName");
     this.roomId = sessionStorage.getItem("roomId");
-    this.livechatService.leaveRoom({room: this.roomId, user: this.username});
+
+    this.leaveRoom(this.username, this.roomId);
     this.router.navigate(['/main']);
   }
 
@@ -52,10 +58,17 @@ export class LobbyComponent implements OnInit {
   {
     let oldRoomId: string = sessionStorage.getItem('roomId');
     if(oldRoomId && oldRoomId != roomId){
-      this.livechatService.leaveRoom({user:username, room:oldRoomId})
+      this.livechatService.leaveRoom({user:username, room:oldRoomId});
     }
     this.livechatService.joinRoom({user:username, room:roomId});
     this.roomId = roomId;
+    sessionStorage.setItem("roomId", this.roomId);
+  }
+
+  leaveRoom(username:string, roomId:string):void
+  {
+    this.livechatService.leaveRoom({user:username, room:roomId});
+    sessionStorage.removeItem("roomId");
   }
 
   showInputRoomId(){

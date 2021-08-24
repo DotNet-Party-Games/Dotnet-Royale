@@ -33,13 +33,19 @@ export class RoomComponent implements OnInit {
   getRoomUserList(){
     this.livechatService.getRoomList().subscribe(roomList => {
       let room = roomList.find(({id}) => id == this.roomId);
-      this.userList = room.users;
+      if(room) this.userList = room.users;
     });
   }
 
   goToLobby(){
-    this.livechatService.leaveRoom({user:this.username, room:this.roomId})
+    this.leaveRoom(this.username, this.roomId);
     this.router.navigate(['/lobby']);
+  }
+
+  leaveRoom(username:string, roomId:string):void
+  {
+    this.livechatService.leaveRoom({user:username, room:roomId});
+    sessionStorage.removeItem("roomId");
   }
 
   setGameId(p_gameId: number)
