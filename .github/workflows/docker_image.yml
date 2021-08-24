@@ -43,7 +43,7 @@ jobs:
        uses: highbyte/sonarscan-dotnet@v2.1.1-beta
        with:
          # The key of the SonarQube project
-         sonarProjectKey: DotNet-Party-Games
+         sonarProjectKey: DotNet-Party-Games_Dotnet-Royale
          # The name of the SonarQube project
          sonarProjectName: Dotnet-Royale
          sonarOrganization: DotNet-Party-Games
