@@ -10,8 +10,8 @@ export class TicTacToeService {
   private url = 'http://localhost:3000';
   //private url = 'http://20.81.113.152/dotnetroyalesocket/';
   //private url = 'https://pgsocketserver.herokuapp.com/';
-  private newGameState = new BehaviorSubject<any>({});
-  currentGameState = this.newGameState.asObservable();
+  private newTTTTGameState = new BehaviorSubject<any>({});
+  currentTTTTGameState = this.newTTTTGameState.asObservable();
   private playerList = new BehaviorSubject<any>({});
   currentPlayerList = this.playerList.asObservable();
   constructor() {
@@ -27,7 +27,7 @@ export class TicTacToeService {
 
   getTicTacToeData(): void{
       this.socket.on('new gameboard', (data) => {
-        this.newGameState.next(data);
+        this.newTTTTGameState.next(data);
         console.log("got data from server");
         console.log(data);
       });
