@@ -5,6 +5,30 @@ import { IScore } from 'src/app/services/score';
 import { PartygameService } from '../services/partygame.service';
 import { ILoggedUser } from '../services/user';
 import { Router } from '@angular/router';
+
+export interface Blackjack {
+  
+  hdstand : any; // dealer stand
+  hdpoints : any; // dealer points
+  hdhand : any; // dealer hand
+  hpstand : any; // player stand
+  hppoints : any; // player points
+  hphand : any; // player hand
+  hpcon : any; // player controls
+
+  deck : any[]; // The current deck of cards
+  dealer : any[]; // The dealer's current hand
+  player : any[]; // The player's current hand
+  dpoints : number; // The dealer's current points
+  ppoints : number; // The player's current points
+  safety : number; // Computer will stand on or past this point
+  dstand : boolean; // Dealer has stood
+  pstand : boolean; // Player has stood
+  turn : number; // Who's turn now? 0 for player, 1 for dealer (computer)
+  winner: any;
+}
+
+
 @Component({
   selector: 'app-blackjack',
   templateUrl: './blackjack.component.html',
@@ -17,6 +41,7 @@ export class BlackjackComponent implements OnInit {
     userId: null,
     score: null,
   }
+
   public currentUser:ILoggedUser;
   constructor(private partyGameApi: PartygameService, private blackjackservice: BlackjackService, private router: Router) {
     this.currentUser =
@@ -73,6 +98,7 @@ export class BlackjackComponent implements OnInit {
 
 
 var bj = {
+  
   hdstand : null, // dealer stand
   hdpoints : null, // dealer points
   hdhand : null, // dealer hand

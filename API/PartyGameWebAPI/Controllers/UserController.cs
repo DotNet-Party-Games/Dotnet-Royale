@@ -83,7 +83,7 @@ namespace PartyGameWebAPI.Controllers
         [HttpPost("updateTicTacToeStats")]
         public async Task<IActionResult> UpdateTicTacToeStats([FromBody] ScoreHistory p_scoreHistory)
         {
-            return Created("api/User/updateTicTacToeStats", await _userBL.UpdateSnakeGameStatsByScoreHistory(p_scoreHistory));
+            return Created("api/User/updateTicTacToeStats", await _userBL.UpdateTicTacToeGameStatsByScoreHistory(p_scoreHistory));
         }
 
         [HttpPost("add")]
