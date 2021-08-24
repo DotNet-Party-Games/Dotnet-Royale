@@ -91,7 +91,10 @@ export class LayoutComponent implements OnInit {
       map(event => event.key),
       distinctUntilChanged()
     );
-    this.tick$ = interval(110);
+    this.tick$ = interval(
+      
+
+    );
     this.direction$.subscribe((currentDirection) =>
     this.snakeDirection = currentDirection);
     const direction = this.keyDown$.pipe(
@@ -146,8 +149,8 @@ export class LayoutComponent implements OnInit {
   // handles the next game instance given the direction, does not seem to handle control of the snake
   selectGameRoomHandler():void
   {
-    this.roomId = '1';
-    this.currentUser.userName = "steven";
+    this.roomId = sessionStorage.roomId;
+    this.currentUser.userName = sessionStorage.userName;
     this.join(this.currentUser.userName, this.roomId);
   }
   join (username:string, roomId:string):void{
@@ -244,9 +247,8 @@ export class LayoutComponent implements OnInit {
         map(tick => {
           this.sendSnakeGameState();
           this.snakeService.getSnakeGameState();
-          this.snakeService.getSnakeFood();
+
           const subscription = this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
-          const subscription1 = this.snakeService.currentFood.subscribe(data => this.currentfood = data);
           
           let game = this.game$.value;
           if (this.SnakeGameState != undefined)
@@ -288,7 +290,6 @@ export class LayoutComponent implements OnInit {
               game.lost = true;
               break;
           }
-          subscription1.unsubscribe();
           this.sendSnakeGameState();
           this.snakeService.getSnakeGameState();
           return game;

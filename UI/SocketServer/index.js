@@ -93,5 +93,10 @@ io.on('connection',(socket)=>{
         console.log(io.sockets.adapter.rooms);
         io.emit('updatedRoomList',roomList);
     })
+    socket.on('disconnect', () =>
+    { console.log(`${socket.id} has disconnected.`);
+        socket.leave(`${socket.id}`);    
+    })
+
 
 });
