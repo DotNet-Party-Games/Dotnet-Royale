@@ -51,7 +51,7 @@ export class LobbyComponent implements OnInit {
   joinRoom(username:string, roomId:string):void
   {
     let oldRoomId: string = sessionStorage.getItem('roomId');
-    if(oldRoomId){
+    if(oldRoomId && oldRoomId != roomId){
       this.livechatService.leaveRoom({user:username, room:oldRoomId})
     }
     this.livechatService.joinRoom({user:username, room:roomId});
