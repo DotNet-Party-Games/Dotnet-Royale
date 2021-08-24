@@ -1,0 +1,20 @@
+<p>blackjacksr works!</p>
+<label>How many players you want?</label>
+<input type="text" [(ngModel)]="numberOfPlayers">
+<button (click)="presentNumber()">Submit</button>
+
+<br>
+
+<label>How much you want to bet?</label>
+<input type="text" [(ngModel)]="moneyBet">
+<button (click)="getMoneyBet()">Submit</button>
+
+<div>{{domMessage}}</div>
+
+<div>Dealer</div>
+<div>Dealer hand</div>
+
+<div *ngFor="let player of players">
+    <div>Player: {{player.name}}</div>
+    <div>Player total: {{player.initialMoney}}</div>
+</div>

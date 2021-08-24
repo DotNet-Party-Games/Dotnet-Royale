@@ -24,7 +24,7 @@ import { LobbyComponent } from './lobby/lobby.component';
 import { RoomComponent } from './room/room.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FakeLoginComponent } from './fake-login/fake-login.component';
-import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component';
+import { BlackjacksrComponent } from './blackjacksr/blackjacksr.component';
 
 
 @NgModule({
@@ -44,7 +44,7 @@ import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component'
     RoomComponent,
     UserProfileComponent,
     FakeLoginComponent,
-    TrueblackjackComponent
+    BlackjacksrComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +60,8 @@ import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component'
       {path: 'user-profile', component: UserProfileComponent},
       {path: 'snake', component: LayoutComponent},
       {path: 'blackjack', component: BlackjackComponent},
-      {path: 'tictactoe', component: BoardComponent}
+      {path: 'tictactoe', component: BoardComponent},
+      {path: 'blackjacksatyam', component:BlackjacksrComponent}
     ]),
     NgbModule
   ],
