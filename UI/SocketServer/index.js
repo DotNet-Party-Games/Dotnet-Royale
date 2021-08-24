@@ -59,8 +59,9 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('gameboard', (data) => {
+        console.log(data.room);
         console.log("gameboard data:" + JSON.stringify(data.gameboard));
-        io.to(data.room).emit('new gameboard', {gameboard: data.gameboard});
+        io.to(data.room).emit('new gameboard', data.gameboard);
     });
     
     socket.on('blackjack', (data)=> {
