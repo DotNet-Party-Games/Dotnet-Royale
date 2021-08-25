@@ -53,7 +53,7 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('gamestate', (data) =>{
-        //console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
+        console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
         socket.broadcast.to(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
         
     });

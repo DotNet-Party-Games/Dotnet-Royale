@@ -23,6 +23,7 @@ import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
 import { Router } from '@angular/router';
 import { LivechatService } from '../services/livechat/livechat.service'; 
+
 enum Direction {
   UP,
   DOWN,
@@ -63,11 +64,12 @@ export class LayoutComponent implements OnInit {
   lost$ = new Subject<void>();
   snakePositionDisplay: {x: number; y: number}[];
   SnakeGameStateAtX: {x: number; y: number}[];
-  SnakeGameStateAtY: {x: number; y: number}[];
+  tempSnake: {x: number; y: number}[];
   SnakeGameState: {x: number; y: number}[];
   SnakeGameState2: {x: number; y: number}[];
   userList: string[];
   keypress: boolean;
+  count12:number;
 
   constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService, private livechatService: LivechatService)
   {
@@ -94,7 +96,11 @@ export class LayoutComponent implements OnInit {
       map(event => event.key),
       distinctUntilChanged()
     );
- 
+    const sub = this.snakeService.getSnakeGameState().subscribe(data=> {
+      (this.SnakeGameState = data.map(a=>a));
+      this.snakePositionDisplay = [].concat(this.snakePositionDisplay, this.SnakeGameState);
+      console.log("updating");
+    });
     this.tick$ = interval(100);
     this.direction$.subscribe((currentDirection) =>
     this.snakeDirection = currentDirection);
@@ -260,22 +266,85 @@ export class LayoutComponent implements OnInit {
       lost: false,
       snakePos2
     });
-    
+    //Maybe transition to an observable and the subscriber is set on the latest value since it subscribed until next(), then do next() for n number of players
     this.tick$
       .pipe(
         map(tick => {
-          this.sendSnakeGameState();
-          this.snakeService.getSnakeGameState();
+          this.count12 = 0;
           console.log("num of Users: " + this.userList.length);
-          const subscription = this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
-         
           let game = this.game$.value;
-          if (this.SnakeGameState != undefined)
-          {
-            game.snakePos2 = this.SnakeGameState;
-            this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
-          }
-          subscription.unsubscribe();
+          this.snakePositionDisplay = game.snakePos;
+          this.sendSnakeGameState();
+          
+          // this.snakePositionDisplay = [].concat(this.snakePositionDisplay, this.SnakeGameState);
+          // this.snakePositionDisplay = [].concat(this.snakePositionDisplay, this.SnakeGameState);
+
+
+          //const subscription = this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+          //for (let n = 0; n < this.userList.length-1; n++)
+          //{
+            // this.sendSnakeGameState();
+            // //loop through for n number of players with an observable that is already subscribed and do .next for the amount of players there are... boom multiplayer
+            // const subscription = this.snakeService.getSnakeGameState().subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+            // this.sendSnakeGameState();
+
+            // this.SnakeGameState2 = [].concat(this.SnakeGameState2, this.SnakeGameState);
+            
+            // this.snakeService.getSnakeGameState().subscribe(data=>
+            //   (this.SnakeGameState = data.map(a=>a)));
+            // this.SnakeGameState2 = [].concat(this.SnakeGameState2, this.SnakeGameState);
+              
+
+            
+            // console.log(JSON.stringify(this.SnakeGameState2));
+
+
+
+            //subscription2.unsubscribe();
+            //maybe flip
+
+            //if (this.SnakeGameState != undefined)
+            //{
+            //  if (n>0)
+            //   {
+            //     let count = 0;
+            //     while (JSON.stringify(this.SnakeGameState) === JSON.stringify(this.tempSnake))
+            //      {
+            //        count++;
+            //        console.log("true");
+            //        this.tempSnake = this.snakeService.newGameState.getValue();
+            //        if (count > 10)
+            //        {
+            //          break;
+            //        }
+            //      }
+            //     this.SnakeGameState2.push(...this.SnakeGameState);
+            //   }
+            //   else
+            //   {
+            //     this.tempSnake = this.SnakeGameState;
+            //     this.SnakeGameState2 = this.SnakeGameState; 
+            //   }
+            // }
+            //subscription.unsubscribe();
+          //}
+          
+          //this.snakePositionDisplay = [].concat(this.snakePositionDisplay, game.snakePos);
+          //console.log(JSON.stringify(this.snakePositionDisplay));
+          //game.snakePos2 = this.snakePositionDisplay;
+          //this.snakePositionDisplay = [].concat(game.snakePos, this.snakePositionDisplay);
+
+
+          // if (this.SnakeGameState != undefined)
+          // {
+          //   game.snakePos2 = this.SnakeGameState;
+          //   this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
+          // }
+          // else
+          // {
+          //   this.snakePositionDisplay = game.snakePos;
+          // }
+          //subscription.unsubscribe();
         
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
@@ -307,7 +376,6 @@ export class LayoutComponent implements OnInit {
               game.lost = true;
               break;
           }
-          this.sendSnakeGameState();
           return game;
         }),
         takeUntil(this.lost$)
