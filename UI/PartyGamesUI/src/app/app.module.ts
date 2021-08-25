@@ -25,6 +25,7 @@ import { RoomComponent } from './room/room.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FakeLoginComponent } from './fake-login/fake-login.component';
 import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component';
+import { VerticalCarouselComponent } from './vertical-carousel/vertical-carousel.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component'
     RoomComponent,
     UserProfileComponent,
     FakeLoginComponent,
-    TrueblackjackComponent
+    TrueblackjackComponent,
+    VerticalCarouselComponent
   ],
   imports: [
     BrowserModule,
