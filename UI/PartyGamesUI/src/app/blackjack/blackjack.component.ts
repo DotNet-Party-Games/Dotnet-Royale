@@ -7,24 +7,18 @@ import { ILoggedUser } from '../services/user';
 import { Router } from '@angular/router';
 
 export interface Blackjack {
+  name: string;
   
-  hdstand : any; // dealer stand
-  hdpoints : any; // dealer points
-  hdhand : any; // dealer hand
   hpstand : any; // player stand
   hppoints : any; // player points
   hphand : any; // player hand
   hpcon : any; // player controls
 
-  deck : any[]; // The current deck of cards
-  dealer : any[]; // The dealer's current hand
+  //deck : any[]; // The current deck of cards
   player : any[]; // The player's current hand
-  dpoints : number; // The dealer's current points
   ppoints : number; // The player's current points
-  safety : number; // Computer will stand on or past this point
-  dstand : boolean; // Dealer has stood
   pstand : boolean; // Player has stood
-  turn : number; // Who's turn now? 0 for player, 1 for dealer (computer)
+  //turn : number; // Who's turn now? 0 for player, 1 for dealer (computer)
   winner: any;
 }
 
@@ -35,8 +29,23 @@ export interface Blackjack {
   styleUrls: ['./blackjack.component.css']
 })
 export class BlackjackComponent implements OnInit {
+  // dealer variables moved here
+  deck: any[];
+  hdstand : any; // dealer stand
+  hdpoints : any; // dealer points
+  hdhand : any; // dealer hand
+  dealer : any[]; // The dealer's current hand
+  dpoints : number; // The dealer's current points
+  safety : number; // Computer will stand on or past this point
+  dstand : boolean; // Dealer has stood
+
+  //cards
+  dsymbols: any[] = ["&hearts;", "&diams;", "&clubs;", "&spades;"]; // HTML symbols for cards
+  dnum: any = { 1 : "A", 11 : "J", 12 : "Q", 13 : "K" }; // Card numbers
+
 
   players: string[] = ["Suraj", "Satyam"];
+  bjplayers: Blackjack[] = [];
   currentTurn: number = 0;
   turn: number = 0;
 
@@ -60,62 +69,35 @@ export class BlackjackComponent implements OnInit {
   }
 
   public roomId: string;
+
   ngOnInit(): void {    
-    bj.hdstand = document.getElementById("deal-stand");
-    bj.hdpoints = document.getElementById("deal-points");
-    bj.hdhand = document.getElementById("deal-cards");
-    bj.hpstand = document.getElementById("play-stand0");
-    bj.hppoints = document.getElementById("play-points0");
-    bj.hphand = document.getElementById("play-cards0");
-    bj.hpcon = document.getElementById("play-control");
-    bj.winner = document.getElementById("winner");
+    // initialize variables for dealer upon ngoninit
+    this.hdstand = document.getElementById("deal-stand"); // dealer stand
+    this.hdpoints = document.getElementById("deal-points"); // dealer points
+    this.hdhand = document.getElementById("deal-cards"); // dealer hand
+    
     // onclick events
-    document.getElementById("playc-start").addEventListener("click", bj.start);
+    document.getElementById("playc-start").addEventListener("click", this.start);
     //this.sendBlackJackData(bj);
-    document.getElementById("playc-hit").addEventListener("click", bj.hit);
+    document.getElementById("playc-hit").addEventListener("click", this.hit);
     //this.sendBlackJackData(bj);
-    document.getElementById("playc-stand").addEventListener("click", bj.stand);
-    this.sendBlackJackData(bj);
+    document.getElementById("playc-stand").addEventListener("click", this.stand);
+
+    //this.sendBlackJackData(bj);
 
     this.selectGameRoomHandler();
+    this.readyPlayers();
+    console.log(this.bjplayers);
   }
-
-  start() {
-    this.sendBlackJackData(bj);
-  }
-
-  hit() {
-    this.sendBlackJackData(bj);
-    this.currentTurn++;
-    this.turn = this.currentTurn % this.players.length;
-    // if(this.currentPlayer == 1 && 1 < this.playerLength) {
-    //   this.currentPlayer = 2;
-    // }
-    // else if(this.currentPlayer == this.playerLength) {
-    //   this.currentPlayer -= 1;
-    // }
-
-    // if(this.currentPlayer == 2 && 2 < this.playerLength) {
-    //   this.currentPlayer = 3;
-    // }
-  }
-
-  stand() {
-    this.sendBlackJackData(bj);
-    this.currentTurn++;
-    this.turn = this.currentTurn % this.players.length;
-  }
-
 
   selectGameRoomHandler(): void
   {
-      this.roomId = '4';
-      // this.currentUser.userName = 'Stephen';
-      //this.join(this.currentUser.userName,this.roomId);
-      for(let i = 0; i < this.players.length; i++) {
-        this.join(this.players[i], this.roomId);
-      }
-      
+    this.roomId = '4';
+    // this.currentUser.userName = 'Stephen';
+    //this.join(this.currentUser.userName,this.roomId);
+    for(let i = 0; i < this.players.length; i++) {
+      this.join(this.players[i], this.roomId);
+    }
   }
 
   join (username:string, roomId:string):void{
@@ -125,7 +107,7 @@ export class BlackjackComponent implements OnInit {
   sendBlackJackData(blackjack: Blackjack)
   {
     console.log(blackjack);
-    this.blackjackservice.sendBlackJackData({blackjack: bj});
+    //this.blackjackservice.sendBlackJackData({blackjack: bj});
   }
 
   goToRoom(){
@@ -134,116 +116,139 @@ export class BlackjackComponent implements OnInit {
     this.router.navigate(['blackjack']);
   }
 
-}
-
-
-var bj = {
+  // array to declare objects based on users in room
+  readyPlayers() {
+    for(let i = 0; i < this.players.length; i++) {
+      let bj = {
+        name: this.players[i],
   
-  hdstand : null, // dealer stand
-  hdpoints : null, // dealer points
-  hdhand : null, // dealer hand
-  hpstand : null, // player stand
-  hppoints : null, // player points
-  hphand : null, // player hand
-  hpcon : null, // player controls
+        hpstand : document.getElementById("play-stand" + i), // player stand
+        hppoints : document.getElementById("play-points" + i), // player points
+        hphand : document.getElementById("play-cards" + i), // player hand
+        hpcon : document.getElementById("play-control" + i), // player controls
 
-  deck : [], // The current deck of cards
-  dealer : [], // The dealer's current hand
-  player : [], // The player's current hand
-  dpoints : 0, // The dealer's current points
-  ppoints : 0, // The player's current points
-  safety : 17, // Computer will stand on or past this point
-  dstand : false, // Dealer has stood
-  pstand : false, // Player has stood
-  turn : 0, // Who's turn now? 0 for player, 1 for dealer (computer)
-  winner: null,
+        //deck : [], // The current deck of cards
+        player : [], // The player's current hand
+        ppoints : 0, // The player's current points
+        pstand : false, // Player has stood
+        //turn : number, // Who's turn now? 0 for player, 1 for dealer (computer)
+        winner : document.getElementById("winner" + i)
+        
+      }
+      this.bjplayers.push(bj);
+    }
+  }
 
-
-  // new game
-  start : function () {
-    // refresh the page
-    //this.Blackjack.ngOnInit();
-    // (C1) RESET POINTS, HANDS, DECK, TURN, AND HTML
-    bj.deck = [];  bj.dealer = [];  bj.player = [];
-    bj.dpoints = 0;  bj.ppoints = 0;
-    bj.dstand = false;  bj.pstand = false;
-    bj.hdpoints.value = 0; 
-    console.log(`Dealer points is ${bj.hdpoints.value}`);
-    bj.hppoints.value = 0;
-    console.log(`Player points is ${bj.hppoints.value}`);
-    bj.hdhand.value = ""; bj.hphand.value = "";
-    bj.hdstand.classList.remove("stood");
-    bj.hpstand.classList.remove("stood");
-    bj.hpcon.classList.add("started");
-    bj.winner.innerHTML=null;
+  start() {
+    //this.sendBlackJackData(bj);
+    this.deck = [];  
+    this.dealer = [];  
+    //bj.player = [];
+    this.dpoints = 0;  
+    //bj.ppoints = 0;
+    this.dstand = false;  
+    //bj.pstand = false;
+    this.hdpoints.value = 0; 
+    console.log(`Dealer points is ${this.hdpoints.value}`);
+    //bj.hppoints.value = 0;
+    //console.log(`Player points is ${bj.hppoints.value}`);
+    this.hdhand.value = ""; 
+    //bj.hphand.value = "";
+    this.hdstand.classList.remove("stood");
+    //bj.hpstand.classList.remove("stood");
+    //bj.hpcon.classList.add("started");
+    //bj.winner.innerHTML=null;
 
 
     // (C2) RESHUFFLE DECK
     // S: SHAPE (0 = HEART, 1 = DIAMOND, 2 = CLUB, 3 = SPADE)
     // N: NUMBER (1 = ACE, 2 TO 10 = AS-IT-IS, 11 = JACK, 12 = QUEEN, 13 = KING)
-    for (let i=0; i<4; i++) { for (let j=1; j<14; j++) {
-      bj.deck.push({s : i, n : j});
-    }}
-    for (let i=bj.deck.length - 1; i>0; i--) {
+    for (let i=0; i<4; i++) { 
+      for (let j=1; j<14; j++) {
+        this.deck.push({s : i, n : j});
+      }
+    }
+
+    for (let i = this.deck.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * i);
-      let temp = bj.deck[i];
-      bj.deck[i] = bj.deck[j];
-      bj.deck[j] = temp;
+      let temp = this.deck[i];
+      this.deck[i] = this.deck[j];
+      this.deck[j] = temp;
+    }
+
+    for(let i = 0; i < this.bjplayers.length; i++) {
+      this.draw(i);
+      this.draw(i);
+      this.points();
+      let winner = this.check(i);
+      if (winner==null) { 
+        this.turn = 0; 
+      }
     }
 
     // (C3) DRAW FIRST 4 CARDS
-    bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw();
-    bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw();
+    // this.turn = 0; this.draw(); this.turn = 1; this.draw();
+    // this.turn = 0; this.draw(); this.turn = 1; this.draw();
 
     // (C4) LUCKY 21 ON FIRST DRAW?
-    bj.turn = 0; bj.points();
-    bj.turn = 1; bj.points();
-    var winner = bj.check();
-    if (winner==null) { bj.turn = 0; }
-
-    // call sending data to blackjack service
-    //this.blackjack.sendBlackJackData(bj);
-  },
+    // bj.turn = 0; bj.points();
+    // bj.turn = 1; bj.points();
+    // let winner = bj.check();
+    // if (winner==null) { 
+    //   this.turn = 0; 
+    // }
+  }
 
   // (D) DRAW A CARD FROM THE DECK
-  dsymbols : ["&hearts;", "&diams;", "&clubs;", "&spades;"], // HTML symbols for cards
-  dnum : { 1 : "A", 11 : "J", 12 : "Q", 13 : "K" }, // Card numbers
-  draw : function () {
+  draw(i : number) {
     // (D1) TAKE LAST CARD FROM DECK + CREATE HTML
-    var card = bj.deck.pop(),
+    let card = this.deck.pop(),
         cardh = document.createElement("div"),
-        cardv = (bj.dnum[card.n] ? bj.dnum[card.n] : card.n) + bj.dsymbols[card.s];
+        cardv = (this.dnum[card.n] ? this.dnum[card.n] : card.n) + this.dsymbols[card.s];
     cardh.className = "bj-card";
     cardh.innerHTML = cardv ;
 
     // (D2) DEALER'S CARD
     // NOTE : HIDE FIRST DEALER CARD
-    if (bj.turn) {
-      if (bj.dealer.length==0) {
+    if (this.turn) {
+      if (this.dealer.length==0) {
         cardh.id = "deal-first";
         cardh.innerHTML = `<div class="back">?</div><div class="front">${cardv}</div>`;
       }
-      bj.dealer.push(card);
-      bj.hdhand.appendChild(cardh);
+      this.dealer.push(card);
+      this.hdhand.appendChild(cardh);
     }
 
     // (D3) PLAYER'S CARD
     else {
-      bj.player.push(card);
-      bj.hphand.appendChild(cardh);
+      this.bjplayers[i].player.push(card);
+      this.bjplayers[i].hphand.appendChild(cardh);
     }
-  },
+  }
 
-  // (E) CALCULATE AND UPDATE POINTS
-  points : function () {
+  hit() {
+    //this.sendBlackJackData(bj);
+    this.currentTurn++;
+    this.turn = this.currentTurn % this.players.length;
+  }
+
+  stand() {
+    //this.sendBlackJackData(bj);
+    this.currentTurn++;
+    this.turn = this.currentTurn % this.players.length;
+  }
+
+  points() {
     // (E1) RUN THROUGH CARDS
     // TAKE CARDS 1-10 AT FACE VALUE + J, Q, K AT 10 POINTS.
     // DON'T CALCULATE ACES YET, THEY CAN EITHER BE 1 OR 11.
     var aces = 0, points = 0;
-    for (let i of (bj.turn ? bj.dealer : bj.player)) {
-      if (i.n == 1) { aces++; }
-      else if (i.n>=11 && i.n<=13) { points += 10; }
-      else { points += i.n; }
+    for(let h = 0; h < this.bjplayers.length; h++) {
+      for (let i of (this.turn ? this.dealer : this.bjplayers[h].player)) {
+        if (i.n == 1) { aces++; }
+        else if (i.n>=11 && i.n<=13) { points += 10; }
+        else { points += i.n; }
+      }
     }
 
     // (E2) CALCULATIONS FOR ACES
@@ -261,139 +266,355 @@ var bj = {
     }
 
     // (E3) UPDATE POINTS
-    if (bj.turn) { bj.dpoints = points; }
-    else {
-      bj.ppoints = points;
-      bj.hppoints.innerHTML = points;
+    if (this.turn) { 
+      this.dpoints = points; 
     }
-  },
+    else {
+      for(let i = 0; i < this.bjplayers.length; i++) {
+        this.bjplayers[i].ppoints = points;
+        this.bjplayers[i].hppoints.innerHTML = points;
+      }
+    }
+  }
 
-  // (F) CHECK FOR WINNERS (AND LOSERS)
-  check : function () {
+
+  check(i : number) {
     // (F1) FLAGS
     // WINNER - 0 FOR PLAYER, 1 FOR DEALER, 2 FOR A TIE
-    var winner = null, message = "";
+    let winner = null, message = "";
 
     // (F2) BLACKJACK - WIN ON FIRST ROUND
-    if (bj.player.length==2 && bj.dealer.length==2) {
-      // TIE
-      if (bj.ppoints==21 && bj.dpoints==21) {
-        winner = 2; message = "It's a tie with Blackjacks";
-      }
-      // PLAYER WINS
-      if (winner==null && bj.ppoints==21) {
-        winner = 0; message = "Player wins with a Blackjack!";
-      }
-      // DEALER WINS
-      if (winner==null && bj.dpoints==21) {
-        winner = 1; message = "Dealer wins with a Blackjack!";
-      }
-    }
+    // if (bj.player.length==2 && bj.dealer.length==2) {
+    //   // TIE
+    //   if (bj.ppoints==21 && bj.dpoints==21) {
+    //     winner = 2; message = "It's a tie with Blackjacks";
+    //   }
+    //   // PLAYER WINS
+    //   if (winner==null && bj.ppoints==21) {
+    //     winner = 0; message = "Player wins with a Blackjack!";
+    //   }
+    //   // DEALER WINS
+    //   if (winner==null && bj.dpoints==21) {
+    //     winner = 1; message = "Dealer wins with a Blackjack!";
+    //   }
+    // }
 
-    // (F3) WHO GONE BUST?
-    if (winner == null) {
-      // PLAYER GONE BUST
-      if (bj.ppoints>21) {
-        winner = 1; message = "Player has gone bust - Dealer wins!";
-      }
-      // DEALER GONE BUST
-      if (bj.dpoints>21) {
-        winner = 0; message = "Dealer has gone bust - Player wins!";
-      }
-    }
+    // // (F3) WHO GONE BUST?
+    // if (winner == null) {
+    //   // PLAYER GONE BUST
+    //   if (bj.ppoints>21) {
+    //     winner = 1; message = "Player has gone bust - Dealer wins!";
+    //   }
+    //   // DEALER GONE BUST
+    //   if (bj.dpoints>21) {
+    //     winner = 0; message = "Dealer has gone bust - Player wins!";
+    //   }
+    // }
 
-    // (F4) POINTS CHECK - WHEN BOTH PLAYERS STAND
-    if (winner == null && bj.dstand && bj.pstand) {
-      // DEALER HAS MORE POINTS
-      if (bj.dpoints > bj.ppoints) {
-        winner = 1; message = "Dealer wins with " + bj.dpoints + " points!";
-      }
-      // PLAYER HAS MORE POINTS
-      else if (bj.dpoints < bj.ppoints) {
-        winner = 0; message = "Player wins with " + bj.ppoints + " points!";
-      }
-      // TIE
-      else {
-        winner = 2; message = "It's a tie.";
-      }
-    }
+    // // (F4) POINTS CHECK - WHEN BOTH PLAYERS STAND
+    // if (winner == null && bj.dstand && bj.pstand) {
+    //   // DEALER HAS MORE POINTS
+    //   if (bj.dpoints > bj.ppoints) {
+    //     winner = 1; message = "Dealer wins with " + bj.dpoints + " points!";
+    //   }
+    //   // PLAYER HAS MORE POINTS
+    //   else if (bj.dpoints < bj.ppoints) {
+    //     winner = 0; message = "Player wins with " + bj.ppoints + " points!";
+    //   }
+    //   // TIE
+    //   else {
+    //     winner = 2; message = "It's a tie.";
+    //   }
+    // }
 
-    // (F5) DO WE HAVE A WINNER?
-    if (winner != null) {
-      // SHOW DEALER HAND AND SCORE
-      bj.hdpoints.innerHTML = bj.dpoints;
-      document.getElementById("deal-first").classList.add("show");
+    // // (F5) DO WE HAVE A WINNER?
+    // if (winner != null) {
+    //   // SHOW DEALER HAND AND SCORE
+    //   bj.hdpoints.innerHTML = bj.dpoints;
+    //   document.getElementById("deal-first").classList.add("show");
 
-      // RESET INTERFACE
-      bj.hpcon.classList.remove("started");
+    //   // RESET INTERFACE
+    //   bj.hpcon.classList.remove("started");
 
-      // WINNER IS...
-      // this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
-      // this.finalScore.gamesId = 2;
-      // this.finalScore.score = 1;
-      bj.winner.innerHTML = message;
-    }
+    //   // WINNER IS...
+    //   // this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
+    //   // this.finalScore.gamesId = 2;
+    //   // this.finalScore.score = 1;
+    //   bj.winner.innerHTML = message;
+    // }
     return winner;
-  },
+  }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+//let bj = {
+  
+  // hdstand : null, // dealer stand
+  // hdpoints : null, // dealer points
+  // hdhand : null, // dealer hand
+  // hpstand : null, // player stand
+  // hppoints : null, // player points
+  // hphand : null, // player hand
+  // hpcon : null, // player controls
+
+  // deck : [], // The current deck of cards
+  // dealer : [], // The dealer's current hand
+  // player : [], // The player's current hand
+  // dpoints : 0, // The dealer's current points
+  // ppoints : 0, // The player's current points
+  // safety : 17, // Computer will stand on or past this point
+  // dstand : false, // Dealer has stood
+  // pstand : false, // Player has stood
+  // turn : 0, // Who's turn now? 0 for player, 1 for dealer (computer)
+  // winner: null,
+
+
+  // new game
+  //start : function () {
+    // refresh the page
+    //this.Blackjack.ngOnInit();
+    // (C1) RESET POINTS, HANDS, DECK, TURN, AND HTML
+    // bj.deck = [];  bj.dealer = [];  bj.player = [];
+    // bj.dpoints = 0;  bj.ppoints = 0;
+    // bj.dstand = false;  bj.pstand = false;
+    // bj.hdpoints.value = 0; 
+    // console.log(`Dealer points is ${bj.hdpoints.value}`);
+    // bj.hppoints.value = 0;
+    // console.log(`Player points is ${bj.hppoints.value}`);
+    // bj.hdhand.value = ""; bj.hphand.value = "";
+    // bj.hdstand.classList.remove("stood");
+    // bj.hpstand.classList.remove("stood");
+    // bj.hpcon.classList.add("started");
+    // bj.winner.innerHTML=null;
+
+
+    // (C2) RESHUFFLE DECK
+    // S: SHAPE (0 = HEART, 1 = DIAMOND, 2 = CLUB, 3 = SPADE)
+    // N: NUMBER (1 = ACE, 2 TO 10 = AS-IT-IS, 11 = JACK, 12 = QUEEN, 13 = KING)
+    // for (let i=0; i<4; i++) { for (let j=1; j<14; j++) {
+    //   bj.deck.push({s : i, n : j});
+    // }}
+    // for (let i=bj.deck.length - 1; i>0; i--) {
+    //   let j = Math.floor(Math.random() * i);
+    //   let temp = bj.deck[i];
+    //   bj.deck[i] = bj.deck[j];
+    //   bj.deck[j] = temp;
+    // }
+
+    // (C3) DRAW FIRST 4 CARDS
+    // bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw();
+    // bj.turn = 0; bj.draw(); bj.turn = 1; bj.draw();
+
+    // // (C4) LUCKY 21 ON FIRST DRAW?
+    // bj.turn = 0; bj.points();
+    // bj.turn = 1; bj.points();
+    // var winner = bj.check();
+    // if (winner==null) { bj.turn = 0; }
+
+    // call sending data to blackjack service
+    //this.blackjack.sendBlackJackData(bj);
+  //},
+
+  // (D) DRAW A CARD FROM THE DECK
+  // dsymbols : ["&hearts;", "&diams;", "&clubs;", "&spades;"], // HTML symbols for cards
+  // dnum : { 1 : "A", 11 : "J", 12 : "Q", 13 : "K" }, // Card numbers
+  // draw : function () {
+  //   // (D1) TAKE LAST CARD FROM DECK + CREATE HTML
+  //   var card = bj.deck.pop(),
+  //       cardh = document.createElement("div"),
+  //       cardv = (bj.dnum[card.n] ? bj.dnum[card.n] : card.n) + bj.dsymbols[card.s];
+  //   cardh.className = "bj-card";
+  //   cardh.innerHTML = cardv ;
+
+  //   // (D2) DEALER'S CARD
+  //   // NOTE : HIDE FIRST DEALER CARD
+  //   if (bj.turn) {
+  //     if (bj.dealer.length==0) {
+  //       cardh.id = "deal-first";
+  //       cardh.innerHTML = `<div class="back">?</div><div class="front">${cardv}</div>`;
+  //     }
+  //     bj.dealer.push(card);
+  //     bj.hdhand.appendChild(cardh);
+  //   }
+
+  //   // (D3) PLAYER'S CARD
+  //   else {
+  //     bj.player.push(card);
+  //     bj.hphand.appendChild(cardh);
+  //   }
+  // },
+
+  // (E) CALCULATE AND UPDATE POINTS
+  // points : function () {
+  //   // (E1) RUN THROUGH CARDS
+  //   // TAKE CARDS 1-10 AT FACE VALUE + J, Q, K AT 10 POINTS.
+  //   // DON'T CALCULATE ACES YET, THEY CAN EITHER BE 1 OR 11.
+  //   var aces = 0, points = 0;
+  //   for (let i of (bj.turn ? bj.dealer : bj.player)) {
+  //     if (i.n == 1) { aces++; }
+  //     else if (i.n>=11 && i.n<=13) { points += 10; }
+  //     else { points += i.n; }
+  //   }
+
+  //   // (E2) CALCULATIONS FOR ACES
+  //   // NOTE: FOR MULTIPLE ACES, WE CALCULATE ALL POSSIBLE POINTS AND TAKE HIGHEST.
+  //   if (aces!=0) {
+  //     var minmax = [];
+  //     for (let elevens=0; elevens<=aces; elevens++) {
+  //       let calc = points + (elevens * 11) + (aces-elevens * 1);
+  //       minmax.push(calc);
+  //     }
+  //     points = minmax[0];
+  //     for (let i of minmax) {
+  //       if (i > points && i <= 21) { points = i; }
+  //     }
+  //   }
+
+  //   // (E3) UPDATE POINTS
+  //   if (bj.turn) { bj.dpoints = points; }
+  //   else {
+  //     bj.ppoints = points;
+  //     bj.hppoints.innerHTML = points;
+  //   }
+  // },
+
+  // (F) CHECK FOR WINNERS (AND LOSERS)
+  // check : function () {
+  //   // (F1) FLAGS
+  //   // WINNER - 0 FOR PLAYER, 1 FOR DEALER, 2 FOR A TIE
+  //   var winner = null, message = "";
+
+  //   // (F2) BLACKJACK - WIN ON FIRST ROUND
+  //   if (bj.player.length==2 && bj.dealer.length==2) {
+  //     // TIE
+  //     if (bj.ppoints==21 && bj.dpoints==21) {
+  //       winner = 2; message = "It's a tie with Blackjacks";
+  //     }
+  //     // PLAYER WINS
+  //     if (winner==null && bj.ppoints==21) {
+  //       winner = 0; message = "Player wins with a Blackjack!";
+  //     }
+  //     // DEALER WINS
+  //     if (winner==null && bj.dpoints==21) {
+  //       winner = 1; message = "Dealer wins with a Blackjack!";
+  //     }
+  //   }
+
+  //   // (F3) WHO GONE BUST?
+  //   if (winner == null) {
+  //     // PLAYER GONE BUST
+  //     if (bj.ppoints>21) {
+  //       winner = 1; message = "Player has gone bust - Dealer wins!";
+  //     }
+  //     // DEALER GONE BUST
+  //     if (bj.dpoints>21) {
+  //       winner = 0; message = "Dealer has gone bust - Player wins!";
+  //     }
+  //   }
+
+  //   // (F4) POINTS CHECK - WHEN BOTH PLAYERS STAND
+  //   if (winner == null && bj.dstand && bj.pstand) {
+  //     // DEALER HAS MORE POINTS
+  //     if (bj.dpoints > bj.ppoints) {
+  //       winner = 1; message = "Dealer wins with " + bj.dpoints + " points!";
+  //     }
+  //     // PLAYER HAS MORE POINTS
+  //     else if (bj.dpoints < bj.ppoints) {
+  //       winner = 0; message = "Player wins with " + bj.ppoints + " points!";
+  //     }
+  //     // TIE
+  //     else {
+  //       winner = 2; message = "It's a tie.";
+  //     }
+  //   }
+
+  //   // (F5) DO WE HAVE A WINNER?
+  //   if (winner != null) {
+  //     // SHOW DEALER HAND AND SCORE
+  //     bj.hdpoints.innerHTML = bj.dpoints;
+  //     document.getElementById("deal-first").classList.add("show");
+
+  //     // RESET INTERFACE
+  //     bj.hpcon.classList.remove("started");
+
+  //     // WINNER IS...
+  //     // this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
+  //     // this.finalScore.gamesId = 2;
+  //     // this.finalScore.score = 1;
+  //     bj.winner.innerHTML = message;
+  //   }
+  //   return winner;
+  // },
 
   // (G) HIT A NEW CARD
-  hit : function () {
-    // (G1) DRAW A NEW CARD
-    bj.draw(); bj.points();
+//   hit : function () {
+//     // (G1) DRAW A NEW CARD
+//     bj.draw(); bj.points();
 
-     // (G2) AUTO-STAND ON 21 POINTS
-    if (bj.turn==0 && bj.ppoints==21 && !bj.pstand) {
-      bj.pstand = true; bj.hpstand.classList.add("stood");
-    }
-    if (bj.turn==1 && bj.dpoints==21 && !bj.dstand) {
-      bj.dstand = true; bj.hdstand.classList.add("stood");
-    }
+//      // (G2) AUTO-STAND ON 21 POINTS
+//     if (bj.turn==0 && bj.ppoints==21 && !bj.pstand) {
+//       bj.pstand = true; bj.hpstand.classList.add("stood");
+//     }
+//     if (bj.turn==1 && bj.dpoints==21 && !bj.dstand) {
+//       bj.dstand = true; bj.hdstand.classList.add("stood");
+//     }
 
-    // (G3) CONTINUE GAME IF NO WINNER
-    var winner = bj.check();
-    if (winner==null) { bj.next(); }
-  },
+//     // (G3) CONTINUE GAME IF NO WINNER
+//     var winner = bj.check();
+//     if (winner==null) { bj.next(); }
+//   },
 
-  // (H) STAND
-  stand : function () {
-    // (H1) SET STAND STATUS
-    if (bj.turn) {
-      bj.dstand = true; bj.hdstand.classList.add("stood");
-    } else {
-      bj.pstand = true; bj.hpstand.classList.add("stood");
-    }
+//   // (H) STAND
+//   stand : function () {
+//     // (H1) SET STAND STATUS
+//     if (bj.turn) {
+//       bj.dstand = true; bj.hdstand.classList.add("stood");
+//     } else {
+//       bj.pstand = true; bj.hpstand.classList.add("stood");
+//     }
 
-    // (H2) END GAME OR KEEP GOING?
-    var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
-    if (winner==null) { bj.next(); }
-  },
+//     // (H2) END GAME OR KEEP GOING?
+//     var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
+//     if (winner==null) { bj.next(); }
+//   },
 
-  // (I) WHO'S NEXT?
-  next : function () {
+//   // (I) WHO'S NEXT?
+//   next : function () {
 
 
 
-    // (I1) UP NEXT...
-    bj.turn = bj.turn==0 ? 1 : 0 ;
+//     // (I1) UP NEXT...
+//     bj.turn = bj.turn==0 ? 1 : 0 ;
 
-    // (I2) DEALER IS NEXT
-    if (bj.turn==1) {
-      if (bj.dstand) { bj.turn = 0; } // SKIP DEALER TURN IF STOOD
-      else { bj.ai(); }
-    }
+//     // (I2) DEALER IS NEXT
+//     if (bj.turn==1) {
+//       if (bj.dstand) { bj.turn = 0; } // SKIP DEALER TURN IF STOOD
+//       else { bj.ai(); }
+//     }
 
-    // (I2) PLAYER IS NEXT
-    else {
-      if (bj.pstand) { bj.turn = 1; bj.ai(); } // SKIP PLAYER TURN IF STOOD
-    }
-  },
+//     // (I2) PLAYER IS NEXT
+//     else {
+//       if (bj.pstand) { bj.turn = 1; bj.ai(); } // SKIP PLAYER TURN IF STOOD
+//     }
+//   },
 
-  // (J) "SMART" COMPUTER MOVE
-  ai : function () { if (bj.turn) {
-    // (J1) STAND ON SAFETY LIMIT
-    if (bj.dpoints >= bj.safety) { bj.stand(); }
+//   // (J) "SMART" COMPUTER MOVE
+//   ai : function () { if (bj.turn) {
+//     // (J1) STAND ON SAFETY LIMIT
+//     if (bj.dpoints >= bj.safety) { bj.stand(); }
 
-    // (J2) ELSE DRAW ANOTHER CARD
-    else { bj.hit(); }
-  }}
-};
+//     // (J2) ELSE DRAW ANOTHER CARD
+//     else { bj.hit(); }
+//   }}
+// };
