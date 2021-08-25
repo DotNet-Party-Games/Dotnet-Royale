@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ReservedOrUserEventNames } from 'socket.io-client/build/typed-events';
 import { BlackjackService } from '../services/blackjack/blackjack.service';
 import { IScore } from 'src/app/services/score';
@@ -34,7 +34,7 @@ export interface Blackjack {
   templateUrl: './blackjack.component.html',
   styleUrls: ['./blackjack.component.css']
 })
-export class BlackjackComponent implements OnInit {
+export class BlackjackComponent implements OnInit, AfterViewInit {
 
   players: string[] = ["Suraj", "Satyam"];
   currentTurn: number = 0;
@@ -57,6 +57,25 @@ export class BlackjackComponent implements OnInit {
     this.currentUser.id = parseInt(sessionStorage.getItem('userId'));
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
+  }
+  ngAfterViewInit(): void {
+    bj.hdstand = document.getElementById("deal-stand");
+    bj.hdpoints = document.getElementById("deal-points");
+    bj.hdhand = document.getElementById("deal-cards");
+    bj.hpstand = document.getElementById("play-stand0");
+    bj.hppoints = document.getElementById("play-points0");
+    bj.hphand = document.getElementById("play-cards0");
+    bj.hpcon = document.getElementById("play-control");
+    bj.winner = document.getElementById("winner");
+    // onclick events
+    document.getElementById("playc-start").addEventListener("click", bj.start);
+    //this.sendBlackJackData(bj);
+    document.getElementById("playc-hit").addEventListener("click", bj.hit);
+    //this.sendBlackJackData(bj);
+    document.getElementById("playc-stand").addEventListener("click", bj.stand);
+    this.sendBlackJackData(bj);
+
+    this.selectGameRoomHandler();
   }
 
   public roomId: string;
@@ -167,14 +186,16 @@ var bj = {
     bj.deck = [];  bj.dealer = [];  bj.player = [];
     bj.dpoints = 0;  bj.ppoints = 0;
     bj.dstand = false;  bj.pstand = false;
-    bj.hdpoints.value = 0; 
-    console.log(`Dealer points is ${bj.hdpoints.value}`);
-    bj.hppoints.value = 0;
-    console.log(`Player points is ${bj.hppoints.value}`);
-    bj.hdhand.value = ""; bj.hphand.value = "";
+    bj.hdpoints.innerHTML = "?"; bj.hppoints.innerHTML = 0;
+    bj.hdhand.innerHTML = ""; bj.hphand.innerHTML = "";
+    // bj.hdpoints.value = 0; 
+    // console.log(`Dealer points is ${bj.hdpoints.value}`);
+    // bj.hppoints.value = 0;
+    // console.log(`Player points is ${bj.hppoints.value}`);
+    // bj.hdhand.value = ""; bj.hphand.value = "";
     bj.hdstand.classList.remove("stood");
-    bj.hpstand.classList.remove("stood");
-    bj.hpcon.classList.add("started");
+     bj.hpstand.classList.remove("stood");
+     bj.hpcon.classList.add("started");
     bj.winner.innerHTML=null;
 
 
@@ -215,13 +236,14 @@ var bj = {
         cardv = (bj.dnum[card.n] ? bj.dnum[card.n] : card.n) + bj.dsymbols[card.s];
     cardh.className = "bj-card";
     cardh.innerHTML = cardv ;
-
+    console.log("Player"+cardh.innerHTML);
     // (D2) DEALER'S CARD
     // NOTE : HIDE FIRST DEALER CARD
     if (bj.turn) {
       if (bj.dealer.length==0) {
         cardh.id = "deal-first";
         cardh.innerHTML = `<div class="back">?</div><div class="front">${cardv}</div>`;
+        console.log("Dealer" + cardh.innerHTML);
       }
       bj.dealer.push(card);
       bj.hdhand.appendChild(cardh);

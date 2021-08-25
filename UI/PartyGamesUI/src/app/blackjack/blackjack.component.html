@@ -18,13 +18,13 @@
     <div id="play-wrap" *ngFor="let player of players; index as i">
       <!-- (B1) PLAYERS'S POINTS + STAND -->
       <div id="play-data">
-        <span id="play-stand{{i}}">STAND </span>
-        {{player}} - <span id="play-points{{i}}">0</span>
-        <span *ngIf="i == turn">YOUR TURN</span>
+        <span id="play-stand0">STAND </span>
+        <span id="play-points0">0</span>
+        <span >YOUR TURN</span>
       </div>
 
       <!-- (B2) PLAYER'S CARDS -->
-      <div id="play-cards{{i}}"></div>
+      <div id="play-cards0"></div>
     </div>
 
 
