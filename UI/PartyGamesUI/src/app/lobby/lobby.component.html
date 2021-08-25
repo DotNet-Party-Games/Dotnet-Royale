@@ -12,7 +12,7 @@
 
     <div class="col col-3">
       <div class="p-2 text-center text-white" style="background-color: #111; height: 7vh;">
-        <h2>Live Chat</h2>
+        <h2>Live Chat in Lobby</h2>
       </div>
       <app-livechat></app-livechat>
     </div>
@@ -29,18 +29,26 @@
           <li>
             <div *ngIf = "isInputRoomId" class="input-group">
               <input type="text" [(ngModel)] = "roomIdInput" class="form-control" placeholder="Enter a room name">
-              <button class="btn btn-primary" type="button" (click)="hideInputRoomId(); joinRoom(username, roomIdInput)">Add</button>
+              <button class="btn btn-primary" type="button" (click)="hideInputRoomId(); joinRoom(username, roomIdInput); goToRoom(roomIdInput)">Add and Join</button>
             </div>
           </li>
           <li *ngFor = "let room of rooms" class="list-group-item bg-dark">
+            <div *ngIf = "room.id == 'lobby'">
+              <h4>
+                <div *ngIf = "room.id == roomId" class="mr-2 badge badge-danger"><i class="fas fa-star"></i></div>
+                Lobby<span class="ml-3 badge badge-info">{{room.users.length}}</span>
+              </h4>
+            </div>
             <div *ngIf = "room.id != 'lobby'">
               <h4>
               <div *ngIf = "room.id == roomId" class="mr-2 badge badge-danger"><i class="fas fa-star"></i></div>
               <div *ngIf = "room.id != roomId" class="mr-2 badge badge-dark text-dark"><i class="fas fa-square-full"></i></div>
               {{room.id}}<span class="ml-3 badge badge-info">{{room.users.length}}</span>
-                <button class="btn btn-warning" style="float: right" (click) = "goToRoom(room.id)">
+                <button *ngIf = "room.users.length < roomSize" class="btn btn-warning" style="float: right" (click) = "goToRoom(room.id)">
                 <i class="fas fa-sign-in-alt"></i></button>
-              </h4>
+                <button *ngIf = "room.users.length >= roomSize" class="btn btn-danger" style="float: right">
+                  Full</button>
+                </h4>
             </div>
           </li>
         </ul>
@@ -57,7 +65,9 @@
         <div class="p-2 text-center text-white" style="background-color: #111; height: 7vh;">
           <h2></h2>
         </div>
-
+        <div>
+          <app-vertical-carousel></app-vertical-carousel>
+        </div>
       </div>
     </div>
   </div>
