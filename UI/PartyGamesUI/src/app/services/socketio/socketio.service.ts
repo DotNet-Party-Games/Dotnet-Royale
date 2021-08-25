@@ -97,11 +97,13 @@ export class SocketioService {
   sendSnakeGameState(data): void {
     this.socket.emit('gamestate', data);
   }
-  getSnakeGameState(): void {
-    this.socket.on('new gamestate', (data) => {
-      this.newGameState.next(data.b);
+  getSnakeGameState():Observable<any> {
+    return new Observable<any>(observer=>{
+      this.socket.on('new gamestate',(data)=>
+      observer.next(data));
     });
-  }
+    //keep getsnakegamestate as a method observable, subscribe to it in layout and loop through doing .next for the amount of players in the lobby and concat it with the display snake 
+    }
 
   //==================== Black Jack Stuff ==========================
   sendBlackJackData(data): void {
