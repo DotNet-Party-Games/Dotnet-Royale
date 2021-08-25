@@ -59,8 +59,8 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('gameboard', (data) => {
-        console.log(data.room);
-        console.log("gameboard data:" + JSON.stringify(data.gameboard));
+        // console.log(data.room);
+        // console.log("gameboard data:" + JSON.stringify(data.gameboard));
         io.to(data.room).emit('new gameboard', data.gameboard);
     });
     
@@ -103,4 +103,8 @@ io.on('connection',(socket)=>{
         console.log(room.users);
         io.in(data.room).emit('foundPlayers', room.users)
     });
+
+    socket.on('play audio', (data) => {
+        socket.to(data.room).emit('receive audio', data.audioFile);
+      });
 });

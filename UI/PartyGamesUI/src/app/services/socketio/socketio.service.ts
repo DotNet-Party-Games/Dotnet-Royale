@@ -68,11 +68,9 @@ export class SocketioService {
     this.socket.emit('play audio', data)
   }
   getAudioTrigger(): Observable<any> {
-    return new Observable<any>(observer => {
+    return new Observable<string>(observer => {
       this.socket.on('receive audio', (data) => {
         observer.next(data);
-        console.log("got audio from server");
-        console.log(data);
       });
       return () => {
         this.socket.disconnect();
