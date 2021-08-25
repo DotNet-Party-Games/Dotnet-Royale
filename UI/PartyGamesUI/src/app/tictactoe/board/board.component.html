@@ -1,7 +1,7 @@
 <div style="height: 100vh;" *ngIf="gameState.gameStarted">
 <audio id="audio"></audio>
   <div style="height: 88vh;">
-    <h1>Current Player: {{ gameState.playerPieces[gameState.currentPlayer] }} </h1>
+    <h1 *ngIf="!gameState.winner" >Current Player: {{ gameState.playerList[gameState.currentPlayer] }} : {{gameState.playerPieces[gameState.currentPlayer]}} </h1>
     <div>
       <button class="mt-3 mb-3 btn btn-primary" nbButton outline status="danger" (click)="newGame()">Start new Game</button>
     </div>
@@ -26,7 +26,6 @@
         </app-square>
       </main>
     </div>
-    <h2>It's {{gameState.playerList[gameState.currentPlayer]}} Turn</h2>
     <h2 *ngIf="gameState.winner">
         {{ gameState.winner }} won!
     </h2>
