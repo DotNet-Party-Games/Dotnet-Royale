@@ -54,7 +54,7 @@ io.on('connection',(socket)=>{
 
     socket.on('gamestate', (data) =>{
         console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
-        socket.broadcast.to(data.room).emit('new gamestate',{b:data.GameState.snakePos, User: data.User});
+        socket.broadcast.to(data.room).emit('new gamestate',{b:data.GameState.snakePos, User: data.User, Score: data.Score, GameOver:data.GameState.lost});
         
     });
 

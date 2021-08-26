@@ -28,7 +28,7 @@ export class SnakeService {
   getSnakeGameState():Observable<any> {
     return new Observable<any>(observer=>{
       this.socket.on('new gamestate',(data)=>
-      observer.next(data.b));
+      observer.next(data));
     });
     //keep getsnakegamestate as a method observable, subscribe to it in layout and loop through doing .next for the amount of players in the lobby and concat it with the display snake 
     }

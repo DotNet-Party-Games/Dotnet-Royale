@@ -72,6 +72,12 @@ export class LayoutComponent implements OnInit {
   keypress: boolean;
   count12: number;
   snakeMap = new Map();
+  lives: number;
+  score: number;
+  currentHighScore: number;
+  lastAlive: boolean;
+  GameOver:number;
+  GameEnd: boolean;
 
   constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private socketService: SocketioService) {
     this.currentUser =
@@ -87,8 +93,8 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.getGameList();
+    this.lives = 3;
     this.data.currentGameId.subscribe(p_gameId => {
       this.currentGameId = p_gameId;
       if (p_gameId == -1) this.resetScreen();
@@ -103,8 +109,21 @@ export class LayoutComponent implements OnInit {
       console.log(data);
       this.snakeMap.set(data.User, data.b.map(a => a));
       this.snakePositionDisplay = [];
+      if (data.GameOver == true)
+      {
+        console.log("TRUE");
+        this.GameOver++;
+      }
       for (let val of this.snakeMap.values()) {
         this.snakePositionDisplay = [].concat(this.snakePositionDisplay, val);
+      }
+      if (this.currentHighScore < data.Score && data.Score > this.score)
+      {
+        this.currentHighScore = data.Score;
+      }
+      else if (this.currentHighScore < this.score)
+      {
+        this.currentHighScore = this.score;
       }
     });
     this.tick$ = interval(110);
@@ -179,7 +198,7 @@ export class LayoutComponent implements OnInit {
     this.socketService.joinRoom({ user: username, room: roomId });
   }
   sendSnakeGameState(): void {
-    this.socketService.sendSnakeGameState({ GameState: this.game$.value, room: this.roomId, User: this.currentUser.userName });
+    this.socketService.sendSnakeGameState({ GameState: this.game$.value, room: this.roomId, User: this.currentUser.userName, Score: this.score});
   }
   getNextField(
     game: GameState,
@@ -257,6 +276,11 @@ export class LayoutComponent implements OnInit {
   }
   currentfood: { x: number; y: number };
   newGame(): void {
+    this.GameEnd = false;
+    this.GameOver = 0;
+    this.score = 1;
+    this.currentHighScore = this.score;
+    this.lives = 3;
     const width = 40;
     const height = 33;
     const food = this.getRandomField(width, height);
@@ -276,15 +300,28 @@ export class LayoutComponent implements OnInit {
     this.tick$
       .pipe(
         map(tick => {
+          console.log(this.GameOver);
           let game = this.game$.value;
+          this.count12 = 0;
           this.snakeMap.set(this.currentUser.userName, game.snakePos);
           console.log("sending gamestate to socket");
           this.sendSnakeGameState();
           this.snakePositionDisplay = [];
           for (let val of this.snakeMap.values()) {
+
             this.snakePositionDisplay = [].concat(this.snakePositionDisplay, val);
           }
-
+          game.snakePos2 = this.snakePositionDisplay;
+          if (this.currentHighScore < this.score)
+          {
+            this.currentHighScore = this.score;
+          }
+          console.log(this.GameOver);
+          if (game.lost == true && this.GameOver == this.userList.length-1)
+          {
+            this.GameEnd = true;
+          }
+      
           // this.snakePositionDisplay = [].concat(this.snakePositionDisplay, this.SnakeGameState);
           // this.snakePositionDisplay = [].concat(this.snakePositionDisplay, this.SnakeGameState);
 
@@ -363,6 +400,7 @@ export class LayoutComponent implements OnInit {
               game.snakePos = [...game.snakePos.slice(1), nextField];
               break;
             case FieldType.FOOD:
+              this.score++;
               game.snakePos = [...game.snakePos, nextField];
               game.food = this.getRandomField(game.width, game.height);
               let loop = true;
@@ -379,7 +417,26 @@ export class LayoutComponent implements OnInit {
               }
               break;
             case FieldType.SNAKE:
-              game.lost = true;
+              this.lives--;
+              if (this.lives < 1)
+              {
+                this.GameOver++;
+                if (this.GameOver >= this.userList.length)
+                {
+                  console.log("game over paps");
+                  this.GameEnd = true;
+                }
+                //game.snakePos = [];
+                //this.sendSnakeGameState();
+                game.lost = true;
+                this.GameEnd = true;
+                this.sendSnakeGameState();
+                this.lives = 0;
+              }
+              else
+              {
+                game.snakePos = [this.getRandomField(game.width,game.height)];
+              }
               break;
           }
           return game;
@@ -390,7 +447,7 @@ export class LayoutComponent implements OnInit {
         this.game$.next(game);
         if (game.lost) {
           this.finalScore.gamesId = 1;
-          this.finalScore.score = (game.snakePos.length * 100) - 100;
+          this.finalScore.score = (this.score * 100) - 100;
           this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
           this.partyGameApi.addscore(this.finalScore).subscribe();
           this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
