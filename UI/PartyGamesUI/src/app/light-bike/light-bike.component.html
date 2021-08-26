@@ -1,16 +1,10 @@
-  <div style="height: 88vh;">
+<div style="height: 88vh;">
 
     <!--- This is Snake Game-->
     <ng-container *ngIf="game$ | async as game">
-      <div style = "float:left">
-      <h5>Score: {{(score * 100) - 100}}</h5>
-      </div>
       <div style = "float:right;">
       <h5>Lives: {{lives}}</h5>  
-      </div>
-      <div style = "text-align:center">
-      <h5>Current Highest Score: {{(currentHighScore * 100) - 100}}</h5>
-      </div>
+      </div> 
       <div style="text-align:center">
       <h6 *ngIf="game.lost">Game Over! Waiting for players to finish... </h6>
       <h6 *ngIf="GameEnd"><button (click) = "goToRoom()">Return to Lobby</button></h6>
@@ -28,3 +22,4 @@
     </div> -->
 
   </div>
+
