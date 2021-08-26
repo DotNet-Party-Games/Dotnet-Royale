@@ -66,7 +66,7 @@ namespace PartyGameDL
                     {
                         highScore = score.Score;
                     }
-                    totalScore = score.Score;
+                    totalScore += score.Score;
                     count++;
                 }
             }
@@ -154,7 +154,7 @@ namespace PartyGameDL
                 if (score.UserId == p_scoreHistory.UserId && score.GamesId == p_scoreHistory.GamesId)
                 {
 
-                    totalScore = score.Score;
+                    totalScore += score.Score;
                     count++;
                 }
             }
