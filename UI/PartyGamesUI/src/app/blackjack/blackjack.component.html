@@ -15,25 +15,27 @@
     </div>
 
     <!-- (B) PLAYER'S CARDS -->
-    <div id="play-wrap">
+    <div id="play-wrap" *ngFor="let player of players; index as i">
       <!-- (B1) PLAYERS'S POINTS + STAND -->
       <div id="play-data">
-        <span id="play-stand">STAND</span>
-        Your Hand - <span id="play-points">0</span>
+        <span id="play-stand{{i}}">STAND </span>
+      {{player}} - <span id="play-points{{i}}">0</span>
+        <span *ngIf="i == turn">YOUR TURN</span>
       </div>
 
       <!-- (B2) PLAYER'S CARDS -->
-      <div id="play-cards"></div>
+      <div id="play-cards{{i}}"></div>
     </div>
+
 
     <!-- (C) PLAY! -->
     <div id="play-control">
 
       <!-- (C1) START -->
-      <input type="button" id="playc-start" value="Play!"/>
+      <input type="button" id="playc-start"  value="Play!"/>
       <!-- (C2) HIT OR STAND -->
-      <input type="button" id="playc-hit" value="Hit"/>
-      <input type="button" id="playc-stand" value="Stand"/>
+      <input type="button" id="playc-hit"  value="Hit"/>
+      <input type="button" id="playc-stand"  value="Stand"/>
     </div>
   </div>
 

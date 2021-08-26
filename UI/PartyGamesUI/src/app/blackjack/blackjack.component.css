@@ -12,7 +12,7 @@
     background: #008000;
     color: #fff;
   }
-  #deal-stand, #play-stand {
+  #deal-stand, #play-stand, #play-stand0,#play-stand1,#play-stand2,#play-stand3 {
     display: none;
     padding: 5px;
     background: #ab2323;
@@ -21,7 +21,7 @@
   #deal-stand.stood, #play-stand.stood { display: inline-block; }
 
   /* (A2) CARDS */
-  #deal-cards, #play-cards {
+  #deal-cards, #play-cards, #play-cards0, #play-cards1, #play-cards2, #play-cards3 {
     color: #fff;
     font-size: 40px;
     display: grid;
@@ -74,7 +74,7 @@
     color: #fff;
     width: 100%;
   }
-  #playc-hit, #playc-stand { display: none; }
+  #playc-hit, #playc-stand { display: block; }
   #play-control.started { grid-template-columns: 50% 50%; }
   #play-control.started #playc-start { display: none; }
   #play-control.started #playc-hit, #play-control.started #playc-stand { display: block; }
