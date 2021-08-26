@@ -53,8 +53,13 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('gamestate', (data) =>{
-        console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
-        socket.broadcast.to(data.room).emit('new gamestate',{b:data.GameState.snakePos, User: data.User});
+        //console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
+        socket.broadcast.to(data.room).emit('new gamestate',{b:data.GameState.snakePos, User: data.User, Score: data.Score, GameOver:data.GameState.lost});
+        
+    });
+    socket.on('lightgamestate', (data) =>{
+        //console.log("lightgamestate data: " + JSON.stringify(data.GameState.snakePos));
+        socket.broadcast.to(data.room).emit('new lightgamestate',{b:data.GameState.snakePos, User: data.User, Score: data.Score, GameOver:data.GameState.lost});
         
     });
 
@@ -107,4 +112,9 @@ io.on('connection',(socket)=>{
     socket.on('play audio', (data) => {
         socket.to(data.room).emit('receive audio', data.audioFile);
       });
+    socket.on('play game',(data) => {
+        console.log("game id");
+        console.log(data.gameid);
+        io.in(data.room).emit('goto game', data.gameid);
+    });
 });

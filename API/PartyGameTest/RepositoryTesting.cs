@@ -179,7 +179,27 @@ namespace PartyGameTest
                 Assert.Equal(1550,newStat.AvgScore);
             }
         }
-        
+        [Fact]
+        public async void UpdateTicTacToeGameStatsByScoreHistoryShouldUpdateTicTacToe()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                ScoreHistory scoreHistoryToUpdate = new ScoreHistory
+                {
+                    GamesId = 3,
+                    UserId = 1,
+                };
+
+                await repo.UpdateTicTacToeGameStatsByScoreHistory(scoreHistoryToUpdate);
+                TicTacToe newStat = await repo.GetTicTacToeGameStatsByUserIdAsync(scoreHistoryToUpdate.UserId);
+
+
+                Assert.Equal(1, newStat.UserId);
+                Assert.Equal(3, newStat.GamesId);
+                Assert.Equal(0.5, newStat.WinLossRatio);
+            }
+        }
 
         [Fact]
         public async void GetTicTacToeGameStatsByUserIdShouldGetTicTacToeGamestats()
