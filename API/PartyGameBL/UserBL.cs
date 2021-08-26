@@ -24,9 +24,19 @@ namespace PartyGameBL
             return await _repo.GetAllUsersAsync();
         }
 
+        public async Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId)
+        {
+            return await _repo.GetSnakeGameStatsByUserIdAsync(UserId);
+        }
+
         public async Task<Blackjack>GetBlackJackGameStatsByUserIdAsync(int UserId)
         {
             return await _repo.GetBlackJackGameStatsByUserIdAsync(UserId);
+        }
+
+        public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
+        {
+            return await _repo.GetTicTacToeGameStatsByUserIdAsync(UserId);
         }
 
         public async Task<List<ScoreHistory>> GetScoreHistoryByUserIdAsync(int UserId)
@@ -34,21 +44,22 @@ namespace PartyGameBL
             return await _repo.GetScoreHistoryByUserIdAsync(UserId);
         }
 
-        public async Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId)
-        {
-            return await _repo.GetSnakeGameStatsByUserIdAsync(UserId);
-        }
-
         public async Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName, string Password)
         {
             return await _repo.GetUserIdFromUserNameAndPasswordAsync(UserName, Password);
         }
 
+        public async Task<int> GetUserIdFromUserNameAsync(string UserName)
+        {
+            return await _repo.GetUserIdFromUserNameAsync(UserName);
+        }
+
+
         public async Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password)
         {
             return await _repo.GetUserFromUserNameAndPasswordAsync(UserName, Password);
         }
-
+        
         public async Task<User> GetUserFromUserIdAsync(int UserId)
         {
             return await _repo.GetUserFromUserIdAsync(UserId);
@@ -61,11 +72,6 @@ namespace PartyGameBL
         public async Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score)
         {
             return await _repo.AddScoreHistory(UserId, gameId, score);
-        }
-
-        public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
-        {
-            return await _repo.GetTicTacToeGameStatsByUserIdAsync(UserId);
         }
 
         public async Task<Snake> UpdateSnakeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)

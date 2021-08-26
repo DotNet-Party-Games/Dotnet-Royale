@@ -100,15 +100,17 @@ namespace PartyGameDL
 
             return snakeData;
         }
-        public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
-        {
-            return await _context.TicTacToes.FirstOrDefaultAsync(User=>User.Id == UserId);
-        }
 
         public async Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName,string Password)
         {
             User userInput =  await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName && 
                                                                         user.Password == Password);
+            return userInput.Id;
+        }
+
+        public async Task<int> GetUserIdFromUserNameAsync(string UserName)
+        {
+            User userInput = await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName);
             return userInput.Id;
         }
 
@@ -141,6 +143,11 @@ namespace PartyGameDL
             await _context.ScoreHistories.AddAsync(scoreHistory);
             await _context.SaveChangesAsync();
             return scoreHistory;
+        }
+
+        public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
+        {
+            return await _context.TicTacToes.FirstOrDefaultAsync(t => t.UserId == UserId);
         }
 
         public async Task<TicTacToe> UpdateTicTacToeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)

@@ -43,10 +43,23 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _userBL.GetBlackJackGameStatsByUserIdAsync(p_userId));
         }
 
+        [HttpGet("getTicTacToeGameStatsByUserId/{p_userId}")]
+        public async Task<IActionResult> GetTicTacToeGameStatsByUserId(int p_userId)
+        {
+            return Ok(await _userBL.GetTicTacToeGameStatsByUserIdAsync(p_userId));
+        }
+
+
         [HttpGet("getUserIdFromUserNameAndPassword/{p_userName}/{p_password}")]
         public async Task<IActionResult> GetUserIdFromUserNameAndPassword(string p_userName, string p_password)
         {
             return Ok(await _userBL.GetUserIdFromUserNameAndPasswordAsync(p_userName, p_password));
+        }
+
+        [HttpGet("getUserIdFromUserName/{p_userName}")]
+        public async Task<IActionResult> GetUserIdFromUserName(string p_userName)
+        {
+            return Ok(await _userBL.GetUserIdFromUserNameAsync(p_userName));
         }
 
         [HttpGet("getUserFromUserId/{p_userId}")]
