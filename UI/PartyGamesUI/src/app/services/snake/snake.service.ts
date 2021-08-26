@@ -12,8 +12,8 @@ export class SnakeService {
   private url='http://localhost:3000';
   //private url = 'http://20.81.113.152/dotnetroyalesocket/';
   //private url = 'https://pgsocketserver.herokuapp.com/';
-  private newGameState = new BehaviorSubject<any>({x:1,y:1});
-  currentGameState = this.newGameState.asObservable();
+  
+  
   
   constructor() 
   {
@@ -25,10 +25,12 @@ export class SnakeService {
   sendSnakeGameState(data): void {
     this.socket.emit('gamestate', data);
   }
-  getSnakeGameState():void {
-      this.socket.on('new gamestate', (data) => {
-        this.newGameState.next(data.b);
-      });
+  getSnakeGameState():Observable<any> {
+    return new Observable<any>(observer=>{
+      this.socket.on('new gamestate',(data)=>
+      observer.next(data.b));
+    });
+    //keep getsnakegamestate as a method observable, subscribe to it in layout and loop through doing .next for the amount of players in the lobby and concat it with the display snake 
     }
   
 }

@@ -35,7 +35,7 @@ io.on('connection',(socket)=>{
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(room.users && !room.users.find((user) => user == data.user) && data.user)
+        if(room && room.users && !room.users.find((user) => user == data.user) && data.user)
         {
             room.users.push(data.user);
         }
@@ -53,14 +53,15 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('gamestate', (data) =>{
-        //console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
-        socket.broadcast.to(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
+        console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
+        socket.broadcast.to(data.room).emit('new gamestate',{b:data.GameState.snakePos, User: data.User});
         
     });
 
     socket.on('gameboard', (data) => {
-        console.log("gameboard data:" + JSON.stringify(data.gameboard));
-        io.to(data.room).emit('new gameboard', {gameboard: data.gameboard});
+        // console.log(data.room);
+        // console.log("gameboard data:" + JSON.stringify(data.gameboard));
+        io.to(data.room).emit('new gameboard', data.gameboard);
     });
     
     socket.on('blackjack', (data)=> {
@@ -102,4 +103,8 @@ io.on('connection',(socket)=>{
         console.log(room.users);
         io.in(data.room).emit('foundPlayers', room.users)
     });
+
+    socket.on('play audio', (data) => {
+        socket.to(data.room).emit('receive audio', data.audioFile);
+      });
 });

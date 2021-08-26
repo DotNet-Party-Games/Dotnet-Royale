@@ -14,17 +14,17 @@ export interface GameState {
   snakePos: { x: number; y: number }[];
   food: { x: number; y: number };
   lost: boolean;
-  snakePos2: {x: number; y: number}[];
+  snakePos2: { x: number; y: number }[];
 }
 import { PartygameService } from '../services/partygame.service';
 import { DataService } from '../services/data.service';
 import { IScore } from '../services/score';
 import { SnakeService } from '../services/snake/snake.service';
 import { ILoggedUser } from '../services/user';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-import { io } from 'socket.io-client';
-import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { Router } from '@angular/router';
+import { LivechatService } from '../services/livechat/livechat.service';
+import { SocketioService } from '../services/socketio/socketio.service';
+
 enum Direction {
   UP,
   DOWN,
@@ -44,14 +44,14 @@ enum FieldType {
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-  public roomId : string;
+  public roomId: string;
   finalScore: IScore = {
-    gamesId:null,
-    userId:null,
-    score:null
+    gamesId: null,
+    userId: null,
+    score: null
   }
-  obj : GameState;
-  public currentUser:ILoggedUser;
+  obj: GameState;
+  public currentUser: ILoggedUser;
   games: IGame[];
   currentGameId: number;
   mainScreen: string;
@@ -63,14 +63,17 @@ export class LayoutComponent implements OnInit {
   tick$: Observable<number>;
   direction$ = new BehaviorSubject<Direction>(Direction.RIGHT);
   lost$ = new Subject<void>();
-  snakePositionDisplay: {x: number; y: number}[];
-  SnakeGameStateAtX: {x: number; y: number}[];
-  SnakeGameStateAtY: {x: number; y: number}[];
-  SnakeGameState: {x: number; y: number}[];
-  SnakeGameState2: {x: number; y: number}[];
+  snakePositionDisplay: { x: number; y: number }[];
+  SnakeGameStateAtX: { x: number; y: number }[];
+  tempSnake: { x: number; y: number }[];
+  SnakeGameState: { x: number; y: number }[];
+  SnakeGameState2: { x: number; y: number }[];
+  userList: string[];
+  keypress: boolean;
+  count12: number;
+  snakeMap = new Map();
 
-  constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private snakeService : SnakeService)
-  {
+  constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private socketService: SocketioService) {
     this.currentUser =
     {
       id: 0,
@@ -84,56 +87,76 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.getGameList();
     this.data.currentGameId.subscribe(p_gameId => {
       this.currentGameId = p_gameId;
-      if(p_gameId == -1) this.resetScreen();
+      if (p_gameId == -1) this.resetScreen();
     });
     this.keyDown$ = fromEvent<KeyboardEvent>(document, "keydown").pipe(
       tap(event => event.stopPropagation()),
       map(event => event.key),
       distinctUntilChanged()
     );
+    this.socketService.getSnakeGameState().subscribe(data => {
+      console.log("data from socket");
+      console.log(data);
+      this.snakeMap.set(data.User, data.b.map(a => a));
+      this.snakePositionDisplay = [];
+      for (let val of this.snakeMap.values()) {
+        this.snakePositionDisplay = [].concat(this.snakePositionDisplay, val);
+      }
+    });
     this.tick$ = interval(110);
     this.direction$.subscribe((currentDirection) =>
-    this.snakeDirection = currentDirection);
+      this.snakeDirection = currentDirection);
     const direction = this.keyDown$.pipe(
       map(key => {
+        //print statements to determine what is allowing the double input !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         switch (key) {
           case "ArrowUp":
           case "w":
             //if the snake is already going down
             if (this.snakeDirection == 1) {
               //go down
+              this.keypress = true;
               return Direction.DOWN;
-             }
-             //if the snake isnt going down, it is allowed to go directly up
+            }
+            //if the snake isnt going down, it is allowed to go directly up
             else {
-            return Direction.UP;
+              this.keypress = true;
+              return Direction.UP;
+
             }
           case "ArrowDown":
           case "s":
             if (this.snakeDirection == 0) {
+              this.keypress = true;
               return Direction.UP;
             }
             else {
-            return Direction.DOWN;
+              this.keypress = true;
+              return Direction.DOWN;
             }
           case "ArrowLeft":
           case "a":
             if (this.snakeDirection == 3) {
+              this.keypress = true;
               return Direction.RIGHT;
             }
-            else{
-            return Direction.LEFT;
+            else {
+              this.keypress = true;
+              return Direction.LEFT;
             }
           case "ArrowRight":
           case "d":
             if (this.snakeDirection == 2) {
+              this.keypress = true;
               return Direction.LEFT;
             }
-            else{
-            return Direction.RIGHT;
+            else {
+              this.keypress = true;
+              return Direction.RIGHT;
             }
           default:
             return this.direction$.value;
@@ -147,25 +170,23 @@ export class LayoutComponent implements OnInit {
     this.selectGameRoomHandler();
   }
   // handles the next game instance given the direction, does not seem to handle control of the snake
-  selectGameRoomHandler():void
-  {
-    this.roomId = '1';
-    this.currentUser.userName = "steven";
+  selectGameRoomHandler(): void {
+    this.roomId = sessionStorage.roomId;
+    this.currentUser.userName = sessionStorage.userName;
     this.join(this.currentUser.userName, this.roomId);
   }
-  join (username:string, roomId:string):void{
-    this.snakeService.joinRoom({user:username, room:roomId});
+  join(username: string, roomId: string): void {
+    this.socketService.joinRoom({ user: username, room: roomId });
   }
-  sendSnakeGameState() : void
-  {
-    this.snakeService.sendSnakeGameState({GameState: this.game$.value, room: this.roomId});
+  sendSnakeGameState(): void {
+    this.socketService.sendSnakeGameState({ GameState: this.game$.value, room: this.roomId, User: this.currentUser.userName });
   }
   getNextField(
     game: GameState,
     direction: Direction
   ): { x: number; y: number } {
 
-    const currentField = game.snakePos[game.snakePos.length-1];
+    const currentField = game.snakePos[game.snakePos.length - 1];
     const nextField = { x: currentField.x, y: currentField.y };
     switch (direction) {
       case Direction.UP:
@@ -211,12 +232,11 @@ export class LayoutComponent implements OnInit {
     if (game.snakePos.some(pos => pos.x === field.x && pos.y === field.y)) {
       return FieldType.SNAKE;
     }
-    if (game.snakePos2 != undefined)
-      {
-        if (game.snakePos2.some(pos => pos.x === field.x && pos.y === field.y)) {
-          return FieldType.SNAKE;
-        }
+    if (game.snakePos2 != undefined) {
+      if (game.snakePos2.some(pos => pos.x === field.x && pos.y === field.y)) {
+        return FieldType.SNAKE;
       }
+    }
     return FieldType.EMPTY;
   }
 
@@ -226,12 +246,24 @@ export class LayoutComponent implements OnInit {
       y: Math.floor(height * Math.random())
     };
   }
+  getRoomUserList() {
+    this.socketService.getRoomList().subscribe(roomList => {
+      let room = roomList.find(({ id }) => id == this.roomId);
+      this.userList = room.users;
+      this.userList.forEach(element => {
+        this.snakeMap.set(element, []);
+      });
+    });
+  }
+  currentfood: { x: number; y: number };
   newGame(): void {
     const width = 40;
     const height = 33;
     const food = this.getRandomField(width, height);
     const snakePos = [this.getRandomField(width, height)];
     let snakePos2;
+    this.getRoomUserList();
+
     this.game$ = new BehaviorSubject<GameState>({
       food,
       snakePos,
@@ -240,33 +272,93 @@ export class LayoutComponent implements OnInit {
       lost: false,
       snakePos2
     });
-    
+    //Maybe transition to an observable and the subscriber is set on the latest value since it subscribed until next(), then do next() for n number of players
     this.tick$
       .pipe(
         map(tick => {
-          //this.snakeService.currentGameState.subscribe(data => ((this.SnakeGameStateAtX = data.map(a=> a.x)), (this.SnakeGameStateAtY = data.map(b=>b.y))));
-          const subscription = this.snakeService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
-
-          //console.log(this.SnakeGameState.length);
-          //console.log(this.SnakeGameStateAtX);
-          //console.log(this.SnakeGameStateAtY);
-          
-
-          //console.log(this.game$.value.snakePos);
-           //IT WORKS!!! THIS WILL GET SNAKEPOS OUTSIDE OF SUBSCRIBE SCOPE
           let game = this.game$.value;
-          if (this.SnakeGameState != undefined)
-          {
-            //console.log(game.snakePos2.length);
-            game.snakePos2 = this.SnakeGameState;
-            this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
-            //console.log(game.snakePos2.length);
+          this.snakeMap.set(this.currentUser.userName, game.snakePos);
+          console.log("sending gamestate to socket");
+          this.sendSnakeGameState();
+          this.snakePositionDisplay = [];
+          for (let val of this.snakeMap.values()) {
+            this.snakePositionDisplay = [].concat(this.snakePositionDisplay, val);
           }
-          subscription.unsubscribe();
+
+          // this.snakePositionDisplay = [].concat(this.snakePositionDisplay, this.SnakeGameState);
+          // this.snakePositionDisplay = [].concat(this.snakePositionDisplay, this.SnakeGameState);
+
+
+          //const subscription = this.socketService.currentGameState.subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+          //for (let n = 0; n < this.userList.length-1; n++)
+          //{
+          // this.sendSnakeGameState();
+          // //loop through for n number of players with an observable that is already subscribed and do .next for the amount of players there are... boom multiplayer
+          // const subscription = this.socketService.getSnakeGameState().subscribe(data => (this.SnakeGameState = data.map(a=>a)));
+          // this.sendSnakeGameState();
+
+          // this.SnakeGameState2 = [].concat(this.SnakeGameState2, this.SnakeGameState);
+
+          // this.socketService.getSnakeGameState().subscribe(data=>
+          //   (this.SnakeGameState = data.map(a=>a)));
+          // this.SnakeGameState2 = [].concat(this.SnakeGameState2, this.SnakeGameState);
+
+
+
+          // console.log(JSON.stringify(this.SnakeGameState2));
+
+
+
+          //subscription2.unsubscribe();
+          //maybe flip
+
+          //if (this.SnakeGameState != undefined)
+          //{
+          //  if (n>0)
+          //   {
+          //     let count = 0;
+          //     while (JSON.stringify(this.SnakeGameState) === JSON.stringify(this.tempSnake))
+          //      {
+          //        count++;
+          //        console.log("true");
+          //        this.tempSnake = this.socketService.newGameState.getValue();
+          //        if (count > 10)
+          //        {
+          //          break;
+          //        }
+          //      }
+          //     this.SnakeGameState2.push(...this.SnakeGameState);
+          //   }
+          //   else
+          //   {
+          //     this.tempSnake = this.SnakeGameState;
+          //     this.SnakeGameState2 = this.SnakeGameState; 
+          //   }
+          // }
+          //subscription.unsubscribe();
+          //}
+
+          //this.snakePositionDisplay = [].concat(this.snakePositionDisplay, game.snakePos);
+          //console.log(JSON.stringify(this.snakePositionDisplay));
+          //game.snakePos2 = this.snakePositionDisplay;
+          //this.snakePositionDisplay = [].concat(game.snakePos, this.snakePositionDisplay);
+
+
+          // if (this.SnakeGameState != undefined)
+          // {
+          //   game.snakePos2 = this.SnakeGameState;
+          //   this.snakePositionDisplay = [].concat(game.snakePos, this.SnakeGameState);
+          // }
+          // else
+          // {
+          //   this.snakePositionDisplay = game.snakePos;
+          // }
+          //subscription.unsubscribe();
+
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
-         switch (nextFieldType) {
+          switch (nextFieldType) {
             case FieldType.EMPTY:
               game.snakePos = [...game.snakePos.slice(1), nextField];
               break;
@@ -274,32 +366,22 @@ export class LayoutComponent implements OnInit {
               game.snakePos = [...game.snakePos, nextField];
               game.food = this.getRandomField(game.width, game.height);
               let loop = true;
-              while (loop){
-                for (let x = 0; x < game.snakePos.length; x++)
-                {
-                  if (game.snakePos[x].x === game.food.x && game.snakePos[x].y === game.food.y)
-                  {
+              while (loop) {
+                for (let x = 0; x < game.snakePos.length; x++) {
+                  if (game.snakePos[x].x === game.food.x && game.snakePos[x].y === game.food.y) {
                     game.food = this.getRandomField(game.width, game.height);
                   }
 
-                  // else if (game.snakePos2[x].x === game.food.x && game.snakePos2[x].y ===game.food.y)
-                  // {
-                  //     game.food = this.getRandomField(game.width,game.height);
-                  // }
-
-                  else
-                  {
+                  else {
                     loop = false;
                   }
+                }
               }
-            }
               break;
             case FieldType.SNAKE:
               game.lost = true;
               break;
           }
-          this.sendSnakeGameState();
-          this.snakeService.getSnakeGameState();
           return game;
         }),
         takeUntil(this.lost$)
@@ -308,7 +390,7 @@ export class LayoutComponent implements OnInit {
         this.game$.next(game);
         if (game.lost) {
           this.finalScore.gamesId = 1;
-          this.finalScore.score = (game.snakePos.length * 100) -100;
+          this.finalScore.score = (game.snakePos.length * 100) - 100;
           this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
           this.partyGameApi.addscore(this.finalScore).subscribe();
           this.partyGameApi.updateSnakeStats(this.finalScore).subscribe();
@@ -316,9 +398,7 @@ export class LayoutComponent implements OnInit {
         }
       });
   }
-
-  getGameList()
-  {
+  getGameList() {
     this.partyGameApi.getGames().subscribe((response: IGame[]) => { this.games = response });
   }
 
@@ -332,7 +412,7 @@ export class LayoutComponent implements OnInit {
     location.reload();
   }
 
-  goToRoom(){
+  goToRoom() {
     this.router.navigate(['/room']);
   }
 
