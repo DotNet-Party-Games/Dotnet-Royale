@@ -26,6 +26,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FakeLoginComponent } from './fake-login/fake-login.component';
 import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component';
 import { VerticalCarouselComponent } from './vertical-carousel/vertical-carousel.component';
+import { lightbikeComponent } from './light-bike/light-bike.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { VerticalCarouselComponent } from './vertical-carousel/vertical-carousel
     UserProfileComponent,
     FakeLoginComponent,
     TrueblackjackComponent,
-    VerticalCarouselComponent
+    VerticalCarouselComponent,
+    lightbikeComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import { VerticalCarouselComponent } from './vertical-carousel/vertical-carousel
       {path: 'user-profile', component: UserProfileComponent},
       {path: 'snake', component: LayoutComponent},
       {path: 'blackjack', component: BlackjackComponent},
-      {path: 'tictactoe', component: BoardComponent}
+      {path: 'tictactoe', component: BoardComponent},
+      {path: 'lightbike', component: lightbikeComponent}
     ]),
     NgbModule
   ],

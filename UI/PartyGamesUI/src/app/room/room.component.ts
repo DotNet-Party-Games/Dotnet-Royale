@@ -64,11 +64,15 @@ export class RoomComponent implements OnInit {
         break;
       }
       case 2: {
-        this.router.navigate(['/blackjack'])
+        this.router.navigate(['/blackjack']);
         break;
       }
       case 3: {
-        this.router.navigate(['/tictactoe'])
+        this.router.navigate(['/tictactoe']);
+        break;
+      }
+      case 4: {
+        this.router.navigate(['/lightbike']);
         break;
       }
       default: {
