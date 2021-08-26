@@ -15,7 +15,7 @@ namespace PartyGameBL
         Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId);
         Task<User> AddUserAsync(User p_user);
         Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName, string Password);
-        Task<int> GetUserIdFromUserNameAsync(string p_userName);
+        Task<User> GetUserFromUserNameAsync(string p_userName);
         Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password);
         Task<User> GetUserFromUserIdAsync(int UserId);
         Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory);

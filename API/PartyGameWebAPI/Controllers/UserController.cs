@@ -56,10 +56,10 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _userBL.GetUserIdFromUserNameAndPasswordAsync(p_userName, p_password));
         }
 
-        [HttpGet("getUserIdFromUserName/{p_userName}")]
-        public async Task<IActionResult> GetUserIdFromUserName(string p_userName)
+        [HttpGet("getUserFromUserName/{p_userName}")]
+        public async Task<IActionResult> GetUserFromUserName(string p_userName)
         {
-            return Ok(await _userBL.GetUserIdFromUserNameAsync(p_userName));
+            return Ok(await _userBL.GetUserFromUserNameAsync(p_userName));
         }
 
         [HttpGet("getUserFromUserId/{p_userId}")]

@@ -108,10 +108,9 @@ namespace PartyGameDL
             return userInput.Id;
         }
 
-        public async Task<int> GetUserIdFromUserNameAsync(string UserName)
+        public async Task<User> GetUserFromUserNameAsync(string UserName)
         {
-            User userInput = await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName);
-            return userInput.Id;
+            return await _context.Users.FirstOrDefaultAsync(user => user.UserName == UserName);
         }
 
         public async Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password)
