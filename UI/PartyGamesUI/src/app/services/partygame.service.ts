@@ -16,7 +16,7 @@ export class PartygameService {
   // url referencing the WebAPI
   //private url = "http://20.81.113.152/dotnetroyaleapi/";
   private url = "https://revabox.eastus.cloudapp.azure.com/dotnetroyaleAPI/";
-  
+
  isLoggedIn:boolean;
   currentScore: IScore = {
     gamesId:null,
@@ -74,6 +74,11 @@ export class PartygameService {
     return this.http.get<IUser>(this.url + "User/getUserFromUserId/" + userId);
   }
 
+  getUserFromUserName(userName: string) : Observable<IUser>
+  {
+    return this.http.get<IUser>(this.url + "User/getUserFromUserName/" + userName);
+  }
+
   getScoreHistoryByUserId(userId: number) :Observable<IUserScore[]>
   {
     return this.http.get<IUserScore[]>(this.url + "User/getScoreHistoryByUserId/" + userId);
@@ -89,5 +94,8 @@ export class PartygameService {
     return this.http.get<IGameStats>(this.url + "User/getBlackJackGameStatsByUserId/" + userId);
   }
 
-
+  getTicTacToeGameStatsByUserId(userId: number) : Observable<IGameStats>
+  {
+    return this.http.get<IGameStats>(this.url + "User/getTicTacToeGameStatsByUserId/" + userId);
+  }
 }

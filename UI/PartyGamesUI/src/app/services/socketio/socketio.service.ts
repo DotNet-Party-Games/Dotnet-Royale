@@ -49,6 +49,17 @@ export class SocketioService {
       }
     });
   }
+  goToGame(): Observable<any> {
+    return new Observable<any>(obs => {
+      this.socket.on('goto game', (data) => {
+        obs.next(data);
+      });
+    });
+  }
+
+  sendGameId(data): void {
+    this.socket.emit('play game', data);
+  }
   //========================= General Player Stuff ========================
   getPlayers(data): void {
     this.socket.emit('getPlayers', data);
