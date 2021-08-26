@@ -107,4 +107,9 @@ io.on('connection',(socket)=>{
     socket.on('play audio', (data) => {
         socket.to(data.room).emit('receive audio', data.audioFile);
       });
+    socket.on('play game',(data) => {
+        console.log("game id");
+        console.log(data.gameid);
+        io.in(data.room).emit('goto game', data.gameid);
+    });
 });

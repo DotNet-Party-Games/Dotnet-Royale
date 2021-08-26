@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { SocketioService } from '../services/socketio/socketio.service';
 
 @Component({
@@ -7,14 +8,17 @@ import { SocketioService } from '../services/socketio/socketio.service';
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
 
   username: string;
   gameId: number;
   roomId: string;
   userList: string[];
-
+  goToGameSub: Subscription;
   constructor(private router: Router, private socketService: SocketioService) { }
+  ngOnDestroy(): void {
+    this.goToGameSub.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.username = sessionStorage.getItem('userName');
@@ -22,6 +26,10 @@ export class RoomComponent implements OnInit {
     this.reloadRoomList();
     this.getRoomUserList();
     this.randomGameId();
+    this.goToGameSub = this.socketService.goToGame().subscribe(data => {
+      console.log("received game id");
+      this.goToGame(data);
+    })
   }
 
   reloadRoomList(){
@@ -55,10 +63,20 @@ export class RoomComponent implements OnInit {
   {
     this.gameId = Math.floor(Math.random() * 3) + 1;
   }
-
-  goToGame()
+  sendGameId()
   {
-    switch(this.gameId) {
+    console.log("sendgameid triggered");
+    console.log(this.userList.indexOf(this.username));
+    if(this.userList.indexOf(this.username)==0)
+    {
+      console.log("sending gameid");
+      this.socketService.sendGameId({room: this.roomId, gameid: this.gameId});
+    }
+    
+  }
+  goToGame(p_gameid: number)
+  {
+    switch(p_gameid) {
       case 1: {
         this.router.navigate(['/snake']);
         break;
