@@ -443,15 +443,90 @@ var bj = {
 
     // (F3) WHO GONE BUST?
     if (winner == null) {
-      // PLAYER GONE BUST
-      if (bj.ppoints>21) {
-         message = "Player has gone bust - Dealer wins!";
+          if(bj.players.length==1)
+          {     //Player GONE BUST
+                if (bj.ppoints>21) {
+                  message = "Player has gone bust";
+              }
+
+              // DEALER GONE BUST
+              if (bj.dpoints>21) {
+                winner = 0; message = "Dealer has gone bust - Players wins!";
+              }
+           }
+
+           if(bj.players.length==2)
+          {     //Player GONE BUST
+                if (bj.ppoints>21) {
+                  message = "Player has gone bust";
+                }
+
+              if (bj.ppoints2>21) {
+                message = "Player2 has gone bust";
+              }
+              if(bj.ppoints>21 && bj.ppoints2>21)
+              {
+                winner= 0; message = "All Players have gone bust. Dealer wins."
+              }
+              // DEALER GONE BUST
+              if (bj.dpoints>21) {
+                winner = 0; message = "Dealer has gone bust - Players wins!";
+              }
+           }
+
+           if(bj.players.length==3)
+          {     //Player GONE BUST
+                if (bj.ppoints>21) {
+                  message = "Player has gone bust";
+                }
+
+              if (bj.ppoints2>21) {
+                message += "Player2 has gone bust";
+              }
+
+              if (bj.ppoints3>21) {
+                message += "Player3 has gone bust";
+              }
+              if(bj.ppoints>21 && bj.ppoints2>21 && bj.ppoints3>21)
+              {
+                winner= 0; message = "All Players have gone bust. Dealer wins."
+              }
+              // DEALER GONE BUST
+              if (bj.dpoints>21) {
+                winner = 0; message = "Dealer has gone bust - Players wins!";
+              }
+           }
+
+           if(bj.players.length==4)
+          {     //Player GONE BUST
+                if (bj.ppoints>21) {
+                  message = "Player has gone bust";
+                }
+
+              if (bj.ppoints2>21) {
+                message += "Player2 has gone bust";
+              }
+
+              if (bj.ppoints3>21) {
+                message += "Player3 has gone bust";
+              }
+              if (bj.ppoints4>21) {
+                message += "Player4 has gone bust";
+              }
+
+              if(bj.ppoints>21 && bj.ppoints2>21 && bj.ppoints3>21 && bj.ppoints4>21)
+              {
+                winner= 0; message = "All Players have gone bust. Dealer wins."
+              }
+              // DEALER GONE BUST
+              if (bj.dpoints>21) {
+                winner = 0; message = "Dealer has gone bust - Players wins!";
+              }
+           }
+
       }
-      // DEALER GONE BUST
-      if (bj.dpoints>21) {
-        winner = 0; message = "Dealer has gone bust - Players wins!";
-      }
-    }
+
+    
 
     // (F4) POINTS CHECK - WHEN BOTH PLAYERS STAND
     if (winner == null && bj.dstand && bj.pstand) {
@@ -493,11 +568,20 @@ var bj = {
     bj.draw(); bj.points();
 
      // (G2) AUTO-STAND ON 21 POINTS
-    if (bj.turn==0 && bj.ppoints==21 && !bj.pstand) {
+    if (bj.turn==0 && bj.dpoints==21 && !bj.dstand) {
+      bj.dstand = true; bj.hdstand.classList.add("stood");
+    }
+    if (bj.turn==1 && bj.ppoints==21 && !bj.pstand) {
       bj.pstand = true; bj.hpstand.classList.add("stood");
     }
-    if (bj.turn==1 && bj.dpoints==21 && !bj.dstand) {
-      bj.dstand = true; bj.hdstand.classList.add("stood");
+    if (bj.turn==2 && bj.ppoints2==21 && !bj.pstand2) {
+      bj.pstand2 = true; bj.hpstand2.classList.add("stood");
+    }
+    if (bj.turn==3 && bj.ppoints3==21 && !bj.pstand3) {
+      bj.pstand3 = true; bj.hpstand3.classList.add("stood");
+    }
+    if (bj.turn==3 && bj.ppoints4==21 && !bj.pstand4) {
+      bj.pstand4 = true; bj.hpstand4.classList.add("stood");
     }
 
     // (G3) CONTINUE GAME IF NO WINNER
@@ -525,17 +609,39 @@ var bj = {
 
 
     // (I1) UP NEXT...
-    bj.turn = bj.turn==0 ? 1 : 0 ;
+
+
+    let lastTurn = bj.players.length;
+    if(bj.turn == lastTurn)
+    {
+      bj.turn = 0;
+    }
+    else{
+      bj.turn++;
+    }
 
     // (I2) DEALER IS NEXT
-    if (bj.turn==1) {
-      if (bj.dstand) { bj.turn = 0; } // SKIP DEALER TURN IF STOOD
+    if (bj.turn==0) {
+      if (bj.dstand) { bj.turn = 1; } // SKIP DEALER TURN IF STOOD
       else { bj.ai(); }
     }
 
     // (I2) PLAYER IS NEXT
-    else {
-      if (bj.pstand) { bj.turn = 1; bj.ai(); } // SKIP PLAYER TURN IF STOOD
+    else 
+    {
+      if(bj.turn == lastTurn)
+      {
+        if(bj.turn == 1)
+        {
+          bj.turn = 0; bj.ai();
+        }
+       
+      }
+        else{
+        if (bj.pstand) { 
+          bj.turn = 0; bj.ai();
+        } // SKIP PLAYER TURN IF STOOD
+      }
     }
   },
 
