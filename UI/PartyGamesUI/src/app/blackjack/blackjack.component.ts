@@ -223,6 +223,9 @@ var bj = {
   pstand4 : false,
   turn : 0, // Who's turn now? 0 for dealer(computer), 1 for player , 2 for player2, 3 for player3, 4 for player4
   winner: null,
+  winner2: null,
+  winner3: null,
+  winner4: null,
 
 
   // new game
@@ -279,9 +282,19 @@ var bj = {
       bj.turn = i; bj.points();
     }
 
-    var winner = bj.check();
-    if (winner==null) { bj.turn = 0; }
-
+    bj.winner = bj.check();
+    if (bj.winner == null && bj.winner2 == null && bj.winner3 == null && bj.winner4 == null) { 
+      bj.turn = 0; 
+    }
+    console.log('BJ turn in start function before is ' + bj.turn);
+    if(bj.turn == bj.players.length) {
+      // bj.turn = 0;
+      // if(bj.ppoints == 21) {
+      //   bj.turn++;
+      // }
+      bj.next();
+    }
+    console.log('BJ turn in start function after is ' + bj.turn);
     // call sending data to blackjack service
     //this.blackjack.sendBlackJackData(bj);
   },
@@ -299,7 +312,7 @@ var bj = {
     console.log("Player"+cardh.innerHTML);
     // (D2) DEALER'S CARD
     // NOTE : HIDE FIRST DEALER CARD
-    if (bj.turn==0) {
+    if (bj.turn== bj.players.length) {
       if (bj.dealer.length==0) {
         cardh.id = "deal-first";
         cardh.innerHTML = `<div class="back">?</div><div class="front">${cardv}</div>`;
@@ -310,19 +323,23 @@ var bj = {
     }
 
     // (D3) PLAYER'S CARD
-    else if(bj.turn==1){
+    else if(bj.turn==0){
       bj.player.push(card);
+      console.log("Player 1 hand: " + bj.player);
+      console.log("Current turn is " + bj.turn);
       bj.hphand.appendChild(cardh);
     }
-    else if(bj.turn==2){
+    else if(bj.turn==1 && bj.turn != bj.players.length){
       bj.player2.push(card);
+      console.log("Player 2 hand: " + bj.player2);
+      console.log("Current turn is " + bj.turn);
       bj.hphand2.appendChild(cardh);
     }
-    else if(bj.turn==3){
+    else if(bj.turn==2 && bj.turn != bj.players.length){
       bj.player3.push(card);
       bj.hphand3.appendChild(cardh);
     }
-    else if(bj.turn==4){
+    else if(bj.turn==3 && bj.turn != bj.players.length){
       bj.player4.push(card);
       bj.hphand4.appendChild(cardh);
     }
@@ -339,7 +356,7 @@ var bj = {
     //   else if (i.n>=11 && i.n<=13) { points += 10; }
     //   else { points += i.n; }
     // }
-    if(bj.turn == 0)
+    if(bj.turn == bj.players.length)
     {
        for(let i of bj.dealer)
        {
@@ -347,8 +364,8 @@ var bj = {
          else if (i.n>=11 && i.n<=13) { points += 10; }
          else { points += i.n; }
        }
-  }
-    else if(bj.turn == 1)
+    }
+    else if(bj.turn == 0)
     {
       for(let i of bj.player)
       {
@@ -357,16 +374,33 @@ var bj = {
         else { points += i.n; }
       }
     }
-      else if(bj.turn == 2)
-        {
-            for(let i of bj.player2)
-            {
-              if (i.n == 1) { aces++; }
-              else if (i.n>=11 && i.n<=13) { points += 10; }
-              else { points += i.n; }
-            }
-      
-        }
+    else if(bj.turn == 1 && bj.turn != bj.players.length)
+    {
+      for(let i of bj.player2)
+      {
+        if (i.n == 1) { aces++; }
+        else if (i.n>=11 && i.n<=13) { points += 10; }
+        else { points += i.n; }
+      }
+    }
+    else if(bj.turn == 2 && bj.turn != bj.players.length)
+    {
+      for(let i of bj.player3)
+      {
+        if (i.n == 1) { aces++; }
+        else if (i.n>=11 && i.n<=13) { points += 10; }
+        else { points += i.n; }
+      }
+    }
+    else if(bj.turn == 3 && bj.turn != bj.players.length)
+    {
+      for(let i of bj.player4)
+      {
+        if (i.n == 1) { aces++; }
+        else if (i.n>=11 && i.n<=13) { points += 10; }
+        else { points += i.n; }
+      }
+    }
     // (E2) CALCULATIONS FOR ACES
     // NOTE: FOR MULTIPLE ACES, WE CALCULATE ALL POSSIBLE POINTS AND TAKE HIGHEST.
     if (aces!=0) {
@@ -382,20 +416,20 @@ var bj = {
     }
 
     // (E3) UPDATE POINTS
-    if (bj.turn==0) { bj.dpoints = points; }
-    else if(bj.turn==1){
+    if (bj.turn==bj.players.length) { bj.dpoints = points; }
+    else if(bj.turn==0){
       bj.ppoints = points;
       bj.hppoints.innerHTML = points;
     }
-    else if(bj.turn==2){
+    else if(bj.turn==1 && bj.turn != bj.players.length){
       bj.ppoints2 = points;
       bj.hppoints2.innerHTML = points;
     }
-    else if(bj.turn==3){
+    else if(bj.turn==2 && bj.turn != bj.players.length){
       bj.ppoints3 = points;
       bj.hppoints3.innerHTML = points;
     }
-    else if(bj.turn==4){
+    else if(bj.turn==3 && bj.turn != bj.players.length){
       bj.ppoints4 = points;
       bj.hppoints4.innerHTML = points;
     }
@@ -405,147 +439,351 @@ var bj = {
   check : function () {
     // (F1) FLAGS
     // WINNER - 0 FOR PLAYER, 1 FOR DEALER, 2 FOR A TIE
-    var winner = null, message = "";
+    var message = "";
 
     // (F2) BLACKJACK - WIN ON FIRST ROUND
-    if (bj.player.length==2 && bj.dealer.length==2) {
-      // TIE
+    if (bj.player.length==2 && bj.dealer.length==2 && bj.player2.length == 2 && bj.player3.length == 2 && bj.player4.length == 2) {
+
+        // TIE
         if (bj.ppoints==21 && bj.dpoints==21) {
-          winner = 2; message = "Player ties with Blackjacks";
+          bj.winner = 2; message = "Player ties with Blackjacks";
+          if(bj.turn == 0) {
+            bj.next();
+          }
         }
         if (bj.ppoints2==21 && bj.dpoints==21) {
-          winner = 2; message += "Player2 ties with Blackjacks";
+          bj.winner2 = 2; message += "Player2 ties with Blackjacks";
+          if(bj.turn == 1) {
+            bj.next();
+          }
         }
         if (bj.ppoints3==21 && bj.dpoints==21) {
-          winner = 2; message += "Player3 ties with Blackjacks";
+          bj.winner3 = 2; message += "Player3 ties with Blackjacks";
         }
         if (bj.ppoints4==21 && bj.dpoints==21) {
-          winner = 2; message += "Player4 ties with Blackjacks";
+          bj.winner4 = 2; message += "Player4 ties with Blackjacks";
         }
+
+
         // PLAYER WINS
-        if (winner==null && bj.ppoints==21) {
-          winner = 0; message = "Player wins with a Blackjack!";
+        if (bj.winner==null && bj.ppoints==21) {
+          bj.winner = 0; message = "Player wins with a Blackjack!";
         }
-        if ((winner==null || winner==0) && bj.ppoints2==21) {
-          winner = 0; message += "Player2 wins with a Blackjack!";
+        if ((bj.winner==null || bj.winner==0) && bj.ppoints2==21) {
+          bj.winner2 = 0; message += "Player2 wins with a Blackjack!";
         }
-        if ((winner==null || winner==0) && bj.ppoints3==21) {
-          winner = 0; message += "Player3 wins with a Blackjack!";
+        if ((bj.winner==null || bj.winner==0) && bj.ppoints3==21) {
+          bj.winner3 = 0; message += "Player3 wins with a Blackjack!";
         }
-        if ((winner==null || winner==0) && bj.ppoints4==21) {
-          winner = 0; message += "Player4 wins with a Blackjack!";
+        if ((bj.winner==null || bj.winner==0) && bj.ppoints4==21) {
+          bj.winner4 = 0; message += "Player4 wins with a Blackjack!";
         }
+        
+
         // DEALER WINS
-        if (winner==null && bj.dpoints==21) {
-          winner = 1; message = "Dealer wins with a Blackjack!";
+        if (bj.winner==null && bj.winner2== null  && bj.dpoints==21) {
+          bj.winner = 1; message = "Dealer wins with a Blackjack!";
+        }
+        if(bj.players.length == 1) {
+          if (bj.winner == null && bj.dpoints==21) {
+            bj.winner = 1; 
+            message = "Dealer wins with a Blackjack!";
+          }
+        }
+        if(bj.players.length == 2) {
+          if (bj.winner==null && bj.winner2== null  && bj.dpoints==21) {
+            bj.winner = 1; bj.winner2 = 1;
+            message = "Dealer wins with a Blackjack!";
+          }
+        }
+        if(bj.players.length == 3) {
+          if (bj.winner==null && bj.winner2== null  && bj.winner3== null && bj.dpoints==21) {
+            bj.winner = 1; bj.winner2 = 1; bj.winner3 = 1;
+            message = "Dealer wins with a Blackjack!";
+          }
+        }
+        if(bj.players.length == 4) {
+          if (bj.winner==null && bj.winner2== null  && bj.winner3== null && bj.winner4== null && bj.dpoints==21) {
+            bj.winner = 1; bj.winner2 = 1; bj.winner3 = 1; bj.winner4 = 1;
+            message = "Dealer wins with a Blackjack!";
+          }
         }
     }
 
     // (F3) WHO GONE BUST?
-    if (winner == null) {
-          if(bj.players.length==1)
-          {     //Player GONE BUST
-                if (bj.ppoints>21) {
-                  message = "Player has gone bust";
-              }
+    if (bj.winner == null) {
+      if(bj.players.length==1)
+      {     
+        //Player GONE BUST
+        if (bj.ppoints>21) {
+          bj.winner = 1;
+          message = "Player has gone bust. Dealer wins.";
+        }
 
-              // DEALER GONE BUST
-              if (bj.dpoints>21) {
-                winner = 0; message = "Dealer has gone bust - Players wins!";
-              }
-           }
-
-           if(bj.players.length==2)
-          {     //Player GONE BUST
-                if (bj.ppoints>21) {
-                  message = "Player has gone bust";
-                }
-
-              if (bj.ppoints2>21) {
-                message = "Player2 has gone bust";
-              }
-              if(bj.ppoints>21 && bj.ppoints2>21)
-              {
-                winner= 0; message = "All Players have gone bust. Dealer wins."
-              }
-              // DEALER GONE BUST
-              if (bj.dpoints>21) {
-                winner = 0; message = "Dealer has gone bust - Players wins!";
-              }
-           }
-
-           if(bj.players.length==3)
-          {     //Player GONE BUST
-                if (bj.ppoints>21) {
-                  message = "Player has gone bust";
-                }
-
-              if (bj.ppoints2>21) {
-                message += "Player2 has gone bust";
-              }
-
-              if (bj.ppoints3>21) {
-                message += "Player3 has gone bust";
-              }
-              if(bj.ppoints>21 && bj.ppoints2>21 && bj.ppoints3>21)
-              {
-                winner= 0; message = "All Players have gone bust. Dealer wins."
-              }
-              // DEALER GONE BUST
-              if (bj.dpoints>21) {
-                winner = 0; message = "Dealer has gone bust - Players wins!";
-              }
-           }
-
-           if(bj.players.length==4)
-          {     //Player GONE BUST
-                if (bj.ppoints>21) {
-                  message = "Player has gone bust";
-                }
-
-              if (bj.ppoints2>21) {
-                message += "Player2 has gone bust";
-              }
-
-              if (bj.ppoints3>21) {
-                message += "Player3 has gone bust";
-              }
-              if (bj.ppoints4>21) {
-                message += "Player4 has gone bust";
-              }
-
-              if(bj.ppoints>21 && bj.ppoints2>21 && bj.ppoints3>21 && bj.ppoints4>21)
-              {
-                winner= 0; message = "All Players have gone bust. Dealer wins."
-              }
-              // DEALER GONE BUST
-              if (bj.dpoints>21) {
-                winner = 0; message = "Dealer has gone bust - Players wins!";
-              }
-           }
-
+        // DEALER GONE BUST
+        if (bj.dpoints>21) {
+          bj.winner = 0; 
+          message = "Dealer has gone bust - Players wins!";
+        }
       }
 
-    
+      if(bj.players.length==2)
+      {     
+        //Player GONE BUST
+        if (bj.ppoints>21) {
+          bj.winner = 1;
+          message = "Player has gone bust";
+          bj.turn++;
+        }
+
+        if (bj.ppoints2>21) {
+          bj.winner2 = 1;
+          message = "Player2 has gone bust";
+          bj.turn++;
+        }
+        if(bj.ppoints>21 && bj.ppoints2>21)
+        {
+          bj.winner = 1; 
+          bj.winner2 = 1;
+          message = "All Players have gone bust. Dealer wins."
+        }
+        // DEALER GONE BUST
+        if (bj.dpoints>21) {
+          bj.winner = 0; 
+          bj.winner2 = 0;
+          message = "Dealer has gone bust - Players wins!";
+        }
+      }
+
+      if(bj.players.length==3)
+      {     
+        //Player GONE BUST
+        if (bj.ppoints>21) {
+          bj.winner = 1;
+          message = "Player has gone bust";
+          bj.turn++;
+        }
+
+        if (bj.ppoints2>21) {
+          bj.winner2 = 1;
+          message += "Player2 has gone bust";
+          bj.turn++;
+        }
+
+        if (bj.ppoints3>21) {
+          bj.winner3 = 1;
+          message += "Player3 has gone bust";
+          bj.turn++;
+        }
+        if(bj.ppoints>21 && bj.ppoints2>21 && bj.ppoints3>21)
+        {
+          bj.winner= 1; 
+          bj.winner2 = 1;
+          bj.winner3 = 1;
+          message = "All Players have gone bust. Dealer wins."
+        }
+        // DEALER GONE BUST
+        if (bj.dpoints>21) {
+          bj.winner= 0; 
+          bj.winner2 = 0;
+          bj.winner3 = 0;
+          message = "Dealer has gone bust - Players wins!";
+        }
+      }
+
+      if(bj.players.length==4)
+      {     
+        //Player GONE BUST
+        if (bj.ppoints>21) {
+          bj.winner = 1;
+          message = "Player has gone bust";
+          bj.turn++;
+        }
+
+        if (bj.ppoints2>21) {
+          bj.winner2 = 1;
+          message += "Player2 has gone bust";
+          bj.turn++;
+        }
+
+        if (bj.ppoints3>21) {
+          bj.winner3 = 1;
+          message += "Player3 has gone bust";
+          bj.turn++;
+        }
+
+        if (bj.ppoints4>21) {
+          bj.winner4 = 1;
+          message += "Player4 has gone bust";
+          bj.turn++;
+        }
+
+        if(bj.ppoints>21 && bj.ppoints2>21 && bj.ppoints3>21 && bj.ppoints4>21)
+        {
+          bj.winner= 1;
+          bj.winner2 = 1;
+          bj.winner3 = 1;
+          bj.winner4 = 1; 
+          message = "All Players have gone bust. Dealer wins."
+        }
+        // DEALER GONE BUST
+        if (bj.dpoints>21) {
+          bj.winner = 0; 
+          bj.winner2 = 0;
+          bj.winner3 = 0;
+          bj.winner4 = 0; 
+          message = "Dealer has gone bust - Players wins!";
+        }
+      }
+    }
 
     // (F4) POINTS CHECK - WHEN BOTH PLAYERS STAND
-    if (winner == null && bj.dstand && bj.pstand) {
+    if (bj.winner == null && bj.dstand && bj.pstand && bj.players.length == 1) {
       // DEALER HAS MORE POINTS
       if (bj.dpoints > bj.ppoints) {
-        winner = 1; message = "Dealer wins with " + bj.dpoints + " points!";
+        bj.winner = 1; message = "Dealer wins with " + bj.dpoints + " points!";
       }
       // PLAYER HAS MORE POINTS
       else if (bj.dpoints < bj.ppoints) {
-        winner = 0; message = "Player wins with " + bj.ppoints + " points!";
+        bj.winner = 0; message = "Player wins with " + bj.ppoints + " points!";
       }
       // TIE
       else {
-        winner = 2; message = "It's a tie.";
+        bj.winner = 2; message = "It's a tie.";
+      }
+    }
+
+    if (bj.winner == null && bj.dstand && bj.pstand && bj.pstand2 && bj.players.length == 2) {
+      // DEALER HAS MORE POINTS
+      if (bj.dpoints > bj.ppoints) {
+        bj.winner = 1; 
+        message = "Dealer beats Player with " + bj.dpoints + " points!";
+      }
+      if(bj.dpoints > bj.ppoints2) {
+        bj.winner2 = 1;
+        message += "Dealer beats Player 2 with " + bj.dpoints + " points!";
+      }
+      if (bj.dpoints > bj.ppoints && bj.dpoints > bj.ppoints2) {
+        bj.winner = 1; bj.winner2 = 1;
+        message = "Dealer beats everyone with " + bj.dpoints + " points!";
+      }
+      // PLAYER HAS MORE POINTS
+      if (bj.dpoints < bj.ppoints) {
+        bj.winner = 0; 
+        message += "Player wins with " + bj.ppoints + " points!";
+      }
+      if(bj.dpoints < bj.ppoints2) {
+        bj.winner2 = 0;
+        message += "Player2 wins with " + bj.ppoints2 + " points!";
+      }
+      // TIE
+      if(bj.dpoints == bj.ppoints) {
+        bj.winner = 2; message += "Player ties.";
+      }
+      if(bj.dpoints == bj.ppoints2) {
+        bj.winner2 = 2; message += "Player2 ties.";
+      }
+    }
+
+    if (bj.winner == null && bj.dstand && bj.pstand && bj.pstand2 && bj.pstand3 && bj.players.length == 3) {
+      // DEALER HAS MORE POINTS
+      if (bj.dpoints > bj.ppoints) {
+        bj.winner = 1; 
+        message = "Dealer beats Player with " + bj.dpoints + " points!";
+      }
+      if(bj.dpoints > bj.ppoints2) {
+        bj.winner2 = 1;
+        message += "Dealer beats Player 2 with " + bj.dpoints + " points!";
+      }
+      if(bj.dpoints > bj.ppoints3) {
+        bj.winner3 = 1;
+        message += "Dealer beats Player 3 with " + bj.dpoints + " points!";
+      }
+      if (bj.dpoints > bj.ppoints && bj.dpoints > bj.ppoints2 && bj.dpoints > bj.ppoints3) {
+        bj.winner = 1; bj.winner2 = 1; bj.winner3 = 1;
+        message = "Dealer beats everyone with " + bj.dpoints + " points!";
+      }
+      // PLAYER HAS MORE POINTS
+      if (bj.dpoints < bj.ppoints) {
+        bj.winner = 0; 
+        message += "Player wins with " + bj.ppoints + " points!";
+      }
+      if(bj.dpoints < bj.ppoints2) {
+        bj.winner2 = 0;
+        message += "Player2 wins with " + bj.ppoints2 + " points!";
+      }
+      if(bj.dpoints < bj.ppoints3) {
+        bj.winner3 = 0;
+        message += "Player3 wins with " + bj.ppoints3 + " points!";
+      }
+      // TIE
+      if(bj.dpoints == bj.ppoints) {
+        bj.winner = 2; message += "Player ties.";
+      }
+      if(bj.dpoints == bj.ppoints2) {
+        bj.winner2 = 2; message += "Player2 ties.";
+      }
+      if(bj.dpoints == bj.ppoints3) {
+        bj.winner3 = 2; message += "Player3 ties.";
+      }
+    }
+
+    if (bj.winner == null && bj.dstand && bj.pstand && bj.pstand2 && bj.pstand3 && bj.pstand4 && bj.players.length == 4) {
+      // DEALER HAS MORE POINTS
+      if (bj.dpoints > bj.ppoints) {
+        bj.winner = 1; 
+        message = "Dealer beats Player with " + bj.dpoints + " points!";
+      }
+      if(bj.dpoints > bj.ppoints2) {
+        bj.winner2 = 1;
+        message += "Dealer beats Player 2 with " + bj.dpoints + " points!";
+      }
+      if(bj.dpoints > bj.ppoints3) {
+        bj.winner3 = 1;
+        message += "Dealer beats Player 3 with " + bj.dpoints + " points!";
+      }
+      if(bj.dpoints > bj.ppoints4) {
+        bj.winner4 = 1;
+        message += "Dealer beats Player 4 with " + bj.dpoints + " points!";
+      }
+      if (bj.dpoints > bj.ppoints && bj.dpoints > bj.ppoints2 && bj.dpoints > bj.ppoints3 && bj.dpoints > bj.ppoints4) {
+        bj.winner = 1; bj.winner2 = 1; bj.winner3 = 1; bj.winner4 = 1;
+        message = "Dealer beats everyone with " + bj.dpoints + " points!";
+      }
+      // PLAYER HAS MORE POINTS
+      if (bj.dpoints < bj.ppoints) {
+        bj.winner = 0; 
+        message += "Player wins with " + bj.ppoints + " points!";
+      }
+      if(bj.dpoints < bj.ppoints2) {
+        bj.winner2 = 0;
+        message += "Player2 wins with " + bj.ppoints2 + " points!";
+      }
+      if(bj.dpoints < bj.ppoints3) {
+        bj.winner3 = 0;
+        message += "Player3 wins with " + bj.ppoints3 + " points!";
+      }
+      if(bj.dpoints < bj.ppoints4) {
+        bj.winner4 = 0;
+        message += "Player3 wins with " + bj.ppoints4 + " points!";
+      }
+      // TIE
+      if(bj.dpoints == bj.ppoints) {
+        bj.winner = 2; message += "Player ties.";
+      }
+      if(bj.dpoints == bj.ppoints2) {
+        bj.winner2 = 2; message += "Player2 ties.";
+      }
+      if(bj.dpoints == bj.ppoints3) {
+        bj.winner3 = 2; message += "Player3 ties.";
+      }
+      if(bj.dpoints == bj.ppoints4) {
+        bj.winner4 = 2; message += "Player3 ties.";
       }
     }
 
     // (F5) DO WE HAVE A WINNER?
-    if (winner != null) {
+    if (bj.winner != null) {
       // SHOW DEALER HAND AND SCORE
       bj.hdpoints.innerHTML = bj.dpoints;
       document.getElementById("deal-first").classList.add("show");
@@ -559,7 +797,7 @@ var bj = {
       // this.finalScore.score = 1;
       bj.winner.innerHTML = message;
     }
-    return winner;
+    return bj.winner;
   },
 
   // (G) HIT A NEW CARD
@@ -586,21 +824,63 @@ var bj = {
 
     // (G3) CONTINUE GAME IF NO WINNER
     var winner = bj.check();
-    if (winner==null) { bj.next(); }
+    if (bj.winner==null && bj.winner2==null && bj.winner3==null && bj.winner4==null) { 
+      bj.next(); 
+    }
   },
 
   // (H) STAND
   stand : function () {
     // (H1) SET STAND STATUS
-    if (bj.turn) {
+    if (bj.turn == bj.players.length) {
       bj.dstand = true; bj.hdstand.classList.add("stood");
-    } else {
-      bj.pstand = true; bj.hpstand.classList.add("stood");
+    } 
+    else if (bj.turn == 0) {
+      bj.pstand = true; 
+      bj.hpstand.classList.add("stood");
+    }
+    else if (bj.turn == 1) {
+      bj.pstand2 = true; 
+      bj.hpstand2.classList.add("stood");
+    }
+    else if (bj.turn == 2) {
+      bj.pstand3 = true; 
+      bj.hpstand3.classList.add("stood");
+    }
+    else if (bj.turn == 3) {
+      bj.pstand4 = true; 
+      bj.hpstand4.classList.add("stood");
     }
 
     // (H2) END GAME OR KEEP GOING?
     var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
-    if (winner==null) { bj.next(); }
+    if (winner==null) { 
+      bj.next(); 
+    }
+    if(bj.players.length == 1) {
+      var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
+      if (winner==null) { 
+        bj.next(); 
+      }
+    }
+    if(bj.players.length == 2) {
+      var winner = (bj.pstand && bj.dstand && bj.pstand2) ? bj.check() : null ;
+      if (winner==null) { 
+        bj.next(); 
+      }
+    }
+    if(bj.players.length == 3) {
+      var winner = (bj.pstand && bj.dstand && bj.pstand2 && bj.pstand3) ? bj.check() : null ;
+      if (winner==null) { 
+        bj.next(); 
+      }
+    }
+    if(bj.players.length == 4) {
+      var winner = (bj.pstand && bj.dstand && bj.pstand2 && bj.pstand3 && bj.pstand4) ? bj.check() : null ;
+      if (winner==null) { 
+        bj.next(); 
+      }
+    }
   },
 
   // (I) WHO'S NEXT?
@@ -618,31 +898,39 @@ var bj = {
     }
     else{
       bj.turn++;
-    }
-
-    // (I2) DEALER IS NEXT
-    if (bj.turn==0) {
-      if (bj.dstand) { bj.turn = 1; } // SKIP DEALER TURN IF STOOD
-      else { bj.ai(); }
-    }
-
-    // (I2) PLAYER IS NEXT
-    else 
-    {
-      if(bj.turn == lastTurn)
-      {
-        if(bj.turn == 1)
-        {
-          bj.turn = 0; bj.ai();
+      if(bj.turn == lastTurn) {
+        if(bj.dstand) {
+          bj.turn = 0;
         }
-       
-      }
-        else{
-        if (bj.pstand) { 
-          bj.turn = 0; bj.ai();
-        } // SKIP PLAYER TURN IF STOOD
+        else {
+          bj.ai();
+        }
       }
     }
+
+    // // (I2) DEALER IS NEXT
+    // if (bj.turn==0) {
+    //   if (bj.dstand) { bj.turn = 1; } // SKIP DEALER TURN IF STOOD
+    //   else { bj.ai(); }
+    // }
+
+    // // (I2) PLAYER IS NEXT
+    // else 
+    // {
+    //   if(bj.turn == lastTurn)
+    //   {
+    //     if(bj.turn == 1)
+    //     {
+    //       bj.turn = 0; bj.ai();
+    //     }
+       
+    //   }
+    //     else{
+    //     if (bj.pstand) { 
+    //       bj.turn = 0; bj.ai();
+    //     } // SKIP PLAYER TURN IF STOOD
+    //   }
+    // }
   },
 
   // (J) "SMART" COMPUTER MOVE
