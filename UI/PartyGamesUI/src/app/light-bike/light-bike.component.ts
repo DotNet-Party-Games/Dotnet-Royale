@@ -218,7 +218,7 @@ export class LightBikeComponent implements OnInit {
     this.socketService.joinRoom({ user: username, room: roomId });
   }
   sendLightSnakeGameState(): void {
-    this.socketService.sendLightSnakeGameState({ SnakePos: this.game$.value.snakePos, Lost: this.game$.value.snakePos, room: this.roomId, User: this.currentUser.userName, Score: this.score});
+    this.socketService.sendLightSnakeGameState({ SnakePos: this.game$.value.snakePos, Lost: this.game$.value.lost, room: this.roomId, User: this.currentUser.userName, Score: this.score});
   }
   getNextField(
     game: GameState,
@@ -310,8 +310,8 @@ export class LightBikeComponent implements OnInit {
     this.score = 1;
     this.currentHighScore = this.score;
     this.lives = 3;
-    const width = 40;
-    const height = 33;
+    const width = 60;
+    const height = 45;
     const food = {x:null, y:null};
     const snakePos = [this.getRandomField(width, height)];
     this.tempDisplay = snakePos;
