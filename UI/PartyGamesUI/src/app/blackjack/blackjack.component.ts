@@ -40,7 +40,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
   players: any = ["Suraj", "Satyam"];
 
   currentTurn: number = 0;
-  turn: number = 0;
+  turn: number = bj.turn;
 
   finalScore : IScore = {
     gamesId: null,
@@ -89,7 +89,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     document.getElementById("playc-hit").addEventListener("click", bj.hit);
     //this.sendBlackJackData(bj);
     document.getElementById("playc-stand").addEventListener("click", bj.stand);
-    this.sendBlackJackData(bj);
+    //this.sendBlackJackData(bj);
 
     this.selectGameRoomHandler();
   }
@@ -123,17 +123,17 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     document.getElementById("playc-hit").addEventListener("click", bj.hit);
     //this.sendBlackJackData(bj);
     document.getElementById("playc-stand").addEventListener("click", bj.stand);
-    this.sendBlackJackData(bj);
+    //this.sendBlackJackData(bj);
 
     this.selectGameRoomHandler();
   }
 
   start() {
-    this.sendBlackJackData(bj);
+    //this.sendBlackJackData(bj);
   }
 
   hit() {
-    this.sendBlackJackData(bj);
+    //this.sendBlackJackData(bj);
     this.currentTurn++;
     this.turn = this.currentTurn % this.players.length;
     // if(this.currentPlayer == 1 && 1 < this.playerLength) {
@@ -149,7 +149,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
   }
 
   stand() {
-    this.sendBlackJackData(bj);
+    //this.sendBlackJackData(bj);
     this.currentTurn++;
     this.turn = this.currentTurn % this.players.length;
   }
@@ -251,6 +251,9 @@ var bj = {
      bj.hpcon.classList.add("started");
     bj.winner.innerHTML=null;
 
+    var hello = "Hello";
+    var world = "World";
+    console.log("if concat actually works, you should see Hello World right here =>  " + hello.concat(world));
 
     // (C2) RESHUFFLE DECK
     // S: SHAPE (0 = HEART, 1 = DIAMOND, 2 = CLUB, 3 = SPADE)
@@ -270,6 +273,7 @@ var bj = {
 
     for(let i=0; i<=bj.players.length; i++)
     {
+      console.log("Initial turn for Player " + i);
       bj.turn = i; bj.draw(); bj.draw();
     }
 
@@ -282,7 +286,8 @@ var bj = {
       bj.turn = i; bj.points();
     }
 
-    bj.winner = bj.check();
+    bj.winner.innerHTML = bj.check();
+    console.log(bj.winner);
     if (bj.winner == null && bj.winner2 == null && bj.winner3 == null && bj.winner4 == null) { 
       bj.turn = 0; 
     }
@@ -316,7 +321,7 @@ var bj = {
       if (bj.dealer.length==0) {
         cardh.id = "deal-first";
         cardh.innerHTML = `<div class="back">?</div><div class="front">${cardv}</div>`;
-        console.log("Dealer" + cardh.innerHTML);
+        //console.log("Dealer" + cardh.innerHTML);
       }
       bj.dealer.push(card);
       bj.hdhand.appendChild(cardh);
@@ -416,7 +421,9 @@ var bj = {
     }
 
     // (E3) UPDATE POINTS
-    if (bj.turn==bj.players.length) { bj.dpoints = points; }
+    if (bj.turn==bj.players.length) { 
+      bj.dpoints = points; 
+    }
     else if(bj.turn==0){
       bj.ppoints = points;
       bj.hppoints.innerHTML = points;
@@ -439,73 +446,74 @@ var bj = {
   check : function () {
     // (F1) FLAGS
     // WINNER - 0 FOR PLAYER, 1 FOR DEALER, 2 FOR A TIE
-    var message = "";
+    var message = "Return winner";
 
     // (F2) BLACKJACK - WIN ON FIRST ROUND
-    if (bj.player.length==2 && bj.dealer.length==2 && bj.player2.length == 2 && bj.player3.length == 2 && bj.player4.length == 2) {
+    message.concat(" Im not sure a condition is working");
+    if (bj.player.length==2 && bj.dealer.length==2 && bj.player2.length == 2 /*&& bj.player3.length == 2 && bj.player4.length == 2*/) {
 
         // TIE
         if (bj.ppoints==21 && bj.dpoints==21) {
-          bj.winner = 2; message = "Player ties with Blackjacks";
+          bj.winner = 2; message.replace(message, "Player ties with Blackjacks");
           if(bj.turn == 0) {
             bj.next();
           }
         }
         if (bj.ppoints2==21 && bj.dpoints==21) {
-          bj.winner2 = 2; message += "Player2 ties with Blackjacks";
+          bj.winner2 = 2; message.concat("Player2 ties with Blackjacks");
           if(bj.turn == 1) {
             bj.next();
           }
         }
         if (bj.ppoints3==21 && bj.dpoints==21) {
-          bj.winner3 = 2; message += "Player3 ties with Blackjacks";
+          bj.winner3 = 2; message.concat("Player3 ties with Blackjacks");
         }
         if (bj.ppoints4==21 && bj.dpoints==21) {
-          bj.winner4 = 2; message += "Player4 ties with Blackjacks";
+          bj.winner4 = 2; message.concat("Player4 ties with Blackjacks");
         }
 
 
         // PLAYER WINS
         if (bj.winner==null && bj.ppoints==21) {
-          bj.winner = 0; message = "Player wins with a Blackjack!";
+          bj.winner = 0; message.concat("Player wins with a Blackjack!");
         }
         if ((bj.winner==null || bj.winner==0) && bj.ppoints2==21) {
-          bj.winner2 = 0; message += "Player2 wins with a Blackjack!";
+          bj.winner2 = 0; message.concat("Player2 wins with a Blackjack!");
         }
         if ((bj.winner==null || bj.winner==0) && bj.ppoints3==21) {
-          bj.winner3 = 0; message += "Player3 wins with a Blackjack!";
+          bj.winner3 = 0; message.concat("Player3 wins with a Blackjack!");
         }
         if ((bj.winner==null || bj.winner==0) && bj.ppoints4==21) {
-          bj.winner4 = 0; message += "Player4 wins with a Blackjack!";
+          bj.winner4 = 0; message.concat("Player4 wins with a Blackjack!");
         }
         
 
         // DEALER WINS
         if (bj.winner==null && bj.winner2== null  && bj.dpoints==21) {
-          bj.winner = 1; message = "Dealer wins with a Blackjack!";
+          bj.winner = 1; message.replace(message, "Dealer wins with a Blackjack!");
         }
         if(bj.players.length == 1) {
           if (bj.winner == null && bj.dpoints==21) {
             bj.winner = 1; 
-            message = "Dealer wins with a Blackjack!";
+            message.replace(message, "Dealer wins with a Blackjack!");
           }
         }
         if(bj.players.length == 2) {
           if (bj.winner==null && bj.winner2== null  && bj.dpoints==21) {
             bj.winner = 1; bj.winner2 = 1;
-            message = "Dealer wins with a Blackjack!";
+            message.replace(message, "Dealer wins with a Blackjack!");
           }
         }
         if(bj.players.length == 3) {
           if (bj.winner==null && bj.winner2== null  && bj.winner3== null && bj.dpoints==21) {
             bj.winner = 1; bj.winner2 = 1; bj.winner3 = 1;
-            message = "Dealer wins with a Blackjack!";
+            message.replace(message, "Dealer wins with a Blackjack!");
           }
         }
         if(bj.players.length == 4) {
           if (bj.winner==null && bj.winner2== null  && bj.winner3== null && bj.winner4== null && bj.dpoints==21) {
             bj.winner = 1; bj.winner2 = 1; bj.winner3 = 1; bj.winner4 = 1;
-            message = "Dealer wins with a Blackjack!";
+            message.replace(message, "Dealer wins with a Blackjack!");
           }
         }
     }
@@ -545,8 +553,9 @@ var bj = {
         {
           bj.winner = 1; 
           bj.winner2 = 1;
-          message = "All Players have gone bust. Dealer wins."
+          message.replace(message, "All Players have gone bust. Dealer wins.");
         }
+
         // DEALER GONE BUST
         if (bj.dpoints>21) {
           bj.winner = 0; 
@@ -795,9 +804,13 @@ var bj = {
       // this.finalScore.userId = parseInt(sessionStorage.getItem('userId'));
       // this.finalScore.gamesId = 2;
       // this.finalScore.score = 1;
+      //console.log("Final outcome of game: " + message);
       bj.winner.innerHTML = message;
     }
-    return bj.winner;
+    bj.winner.innerHTML = message;
+    console.log("Winner message says " + bj.winner.innerHTML);
+    return bj.winner.innerHTML;
+    //return message;
   },
 
   // (G) HIT A NEW CARD
@@ -823,64 +836,73 @@ var bj = {
     }
 
     // (G3) CONTINUE GAME IF NO WINNER
-    var winner = bj.check();
+    /*var winner = bj.check();
+    console.log("Game check is " + winner);
     if (bj.winner==null && bj.winner2==null && bj.winner3==null && bj.winner4==null) { 
+      
       bj.next(); 
-    }
+    }*/
   },
 
   // (H) STAND
   stand : function () {
     // (H1) SET STAND STATUS
     if (bj.turn == bj.players.length) {
-      bj.dstand = true; bj.hdstand.classList.add("stood");
+      bj.dstand = true; 
+      bj.hdstand.classList.add("stood");
     } 
     else if (bj.turn == 0) {
       bj.pstand = true; 
+      bj.next();
+      console.log("Turn after player 1 stands is " + bj.turn);
       bj.hpstand.classList.add("stood");
     }
     else if (bj.turn == 1) {
       bj.pstand2 = true; 
+      bj.next();
+      console.log("Turn after player 2 stands is " + bj.turn);
       bj.hpstand2.classList.add("stood");
     }
     else if (bj.turn == 2) {
       bj.pstand3 = true; 
+      bj.next();
       bj.hpstand3.classList.add("stood");
     }
     else if (bj.turn == 3) {
       bj.pstand4 = true; 
+      bj.next();
       bj.hpstand4.classList.add("stood");
     }
 
     // (H2) END GAME OR KEEP GOING?
-    var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
+    /*var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
     if (winner==null) { 
       bj.next(); 
-    }
-    if(bj.players.length == 1) {
-      var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
-      if (winner==null) { 
-        bj.next(); 
-      }
-    }
-    if(bj.players.length == 2) {
-      var winner = (bj.pstand && bj.dstand && bj.pstand2) ? bj.check() : null ;
-      if (winner==null) { 
-        bj.next(); 
-      }
-    }
-    if(bj.players.length == 3) {
-      var winner = (bj.pstand && bj.dstand && bj.pstand2 && bj.pstand3) ? bj.check() : null ;
-      if (winner==null) { 
-        bj.next(); 
-      }
-    }
-    if(bj.players.length == 4) {
-      var winner = (bj.pstand && bj.dstand && bj.pstand2 && bj.pstand3 && bj.pstand4) ? bj.check() : null ;
-      if (winner==null) { 
-        bj.next(); 
-      }
-    }
+    }*/
+    // if(bj.players.length == 1) {
+    //   var winner = (bj.pstand && bj.dstand) ? bj.check() : null ;
+    //   if (winner==null) { 
+    //     bj.next(); 
+    //   }
+    // }
+    // if(bj.players.length == 2) {
+    //   var winner = (bj.pstand && bj.dstand && bj.pstand2) ? bj.check() : null ;
+    //   if (winner==null) { 
+    //     bj.next(); 
+    //   }
+    // }
+    // if(bj.players.length == 3) {
+    //   var winner = (bj.pstand && bj.dstand && bj.pstand2 && bj.pstand3) ? bj.check() : null ;
+    //   if (winner==null) { 
+    //     bj.next(); 
+    //   }
+    // }
+    // if(bj.players.length == 4) {
+    //   var winner = (bj.pstand && bj.dstand && bj.pstand2 && bj.pstand3 && bj.pstand4) ? bj.check() : null ;
+    //   if (winner==null) { 
+    //     bj.next(); 
+    //   }
+    // }
   },
 
   // (I) WHO'S NEXT?
@@ -894,6 +916,7 @@ var bj = {
     let lastTurn = bj.players.length;
     if(bj.turn == lastTurn)
     {
+      //bj.ai();
       bj.turn = 0;
     }
     else{
@@ -934,11 +957,22 @@ var bj = {
   },
 
   // (J) "SMART" COMPUTER MOVE
-  ai : function () { if (bj.turn) {
-    // (J1) STAND ON SAFETY LIMIT
-    if (bj.dpoints >= bj.safety) { bj.stand(); }
+  ai : function () { 
+    if (bj.turn) {
+      // (J1) STAND ON SAFETY LIMIT
+      if (bj.dpoints >= bj.safety) { 
+        bj.stand(); 
+        //bj.next(); 
+        bj.check();
+      }
 
-    // (J2) ELSE DRAW ANOTHER CARD
-    else { bj.hit(); }
-  }}
+      // (J2) ELSE DRAW ANOTHER CARD
+      else { 
+        while(bj.dpoints < bj.safety) {
+          bj.hit(); 
+          bj.check();
+        }
+      }
+    }
+  }
 };
