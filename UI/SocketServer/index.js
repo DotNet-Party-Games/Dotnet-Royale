@@ -4,8 +4,13 @@ let  app =express();
 let http = require('http');
 let server = http.createServer(app);
 
-let socketIO = require('socket.io');
-let io = socketIO(server);
+const io = require("socket.io")(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      transports: ['websocket', 'polling', 'flashsocket']
+    }
+  });
 
 // to store user list in live chat
 // var userlist = [];
