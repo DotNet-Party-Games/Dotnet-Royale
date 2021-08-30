@@ -26,8 +26,8 @@
     <div id="play-wrap" *ngFor="let players of bjplayers; index as i">
       <!-- (B1) PLAYERS'S POINTS + STAND -->
       <div id="play-data">
-        <span id="play-stand{{i}}" *ngIf="bjplayers[i].pstand">STAND </span>
-        {{players.name}} - <span id="play-points{{i}}">{{players.ppoints}}</span>
+        <span *ngIf="bjplayers[i].pstand">STAND - </span>
+        {{players.name}} - <span id="play-points">{{players.ppoints}} points</span>
         <span *ngIf="i == turn && gameStarted">    YOUR TURN</span>
         <span *ngIf="bjplayers[i].winner">  WINNER</span>
       </div>

@@ -20,7 +20,7 @@ export interface Blackjack {
   templateUrl: './blackjack.component.html',
   styleUrls: ['./blackjack.component.css']
 })
-export class BlackjackComponent implements OnInit {
+export class BlackjackComponent implements OnInit, AfterViewInit {
   // dealer variables moved here
   deck: any[]; // overall deck for everyone
   dealer : any[]; // The dealer's current hand
@@ -132,6 +132,8 @@ export class BlackjackComponent implements OnInit {
     this.dpoints = 0;  
     // hasnt gone, so dealer hasnt stood yet
     this.dstand = false;  
+    // hasnt won 
+    this.dwinner = false;
 
     // (C2) RESHUFFLE DECK
     // S: SHAPE (0 = HEART, 1 = DIAMOND, 2 = CLUB, 3 = SPADE)
@@ -309,6 +311,8 @@ export class BlackjackComponent implements OnInit {
     }
     // if dealer gets 21
     else if (this.dpoints == 21) {
+      // make dealer winning true
+      this.dwinner = true;
       for(let i = 0; i < this.bjplayers.length; i++) {
         // players who get 21 still win
         if(this.bjplayers[i].ppoints == 21) {
@@ -318,11 +322,19 @@ export class BlackjackComponent implements OnInit {
     }
     // if dealer has less than 21
     else {
+      // create variable to count how many players have higher points than dealer
+      let betterThanDealer: number = 0;
       for(let i = 0; i < this.bjplayers.length; i++) {
         // if player has more than dealer and less than or equal to 21, they win
         if(this.bjplayers[i].ppoints > this.dpoints && this.bjplayers[i].ppoints <= 21) {
           this.bjplayers[i].winner = true;
+          // increment great than dealer variable
+          betterThanDealer++;
         }
+      }
+      // if no player has higher points, or busts, dealer wins
+      if(betterThanDealer == 0) {
+        this.dwinner = true;
       }
     }
   }
