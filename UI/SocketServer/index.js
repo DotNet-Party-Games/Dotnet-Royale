@@ -4,8 +4,13 @@ let  app =express();
 let http = require('http');
 let server = http.createServer(app);
 
-let socketIO = require('socket.io');
-let io = socketIO(server);
+const io = require("socket.io")(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      transports: ['websocket', 'polling', 'flashsocket']
+    }
+  });
 
 // to store user list in live chat
 // var userlist = [];
@@ -54,12 +59,12 @@ io.on('connection',(socket)=>{
 
     socket.on('gamestate', (data) =>{
         //console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
-        socket.broadcast.to(data.room).emit('new gamestate',{b:data.GameState.snakePos, User: data.User, Score: data.Score, GameOver:data.GameState.lost});
+        socket.broadcast.to(data.room).emit('new gamestate',{b:data.SnakePos, User: data.User, Score: data.Score, GameOver:data.Lost});
         
     });
     socket.on('lightgamestate', (data) =>{
         //console.log("lightgamestate data: " + JSON.stringify(data.GameState.snakePos));
-        socket.broadcast.to(data.room).emit('new lightgamestate',{b:data.GameState.snakePos, User: data.User, Score: data.Score, GameOver:data.GameState.lost});
+        socket.broadcast.to(data.room).emit('new lightgamestate',{b:data.SnakePos, User: data.User, Score: data.Score, GameOver:data.Lost});
         
     });
 
@@ -71,7 +76,8 @@ io.on('connection',(socket)=>{
     
     socket.on('blackjack', (data)=> {
         console.log("blackjack data: " + JSON.stringify(data));
-        io.in(data.room).emit('new blackjack',{data})
+        // dont need {} when now passing data.game?
+        io.in(data.room).emit('new blackjack', data.game)
     });
 
     socket.on('leave', (data) => {

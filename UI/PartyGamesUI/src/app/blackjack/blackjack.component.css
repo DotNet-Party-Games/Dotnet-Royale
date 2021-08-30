@@ -39,22 +39,22 @@
     border: 1px solid #eaeaea;
   }
 
-  /* (B) DEALER'S CARDS */
-  #deal-wrap { background: #343a40; }
-  #deal-data { background: #0275d8;}
-  #deal-data { font-size: 20px;
-              font-weight: bold;
-              color: #fff; }
-  #deal-first .front { display: none; }
-  #deal-first.show .back { display: none; }
-  #deal-first.show .front { display: block; }
+#winner{
+  overflow: hidden;
+  background: #008000;
+  color: #fff;
+}
 
-  /* (C) PLAYER'S CARDS */
-  #play-wrap { background: #343a40;}
-  #play-data { background: #d9534f;}
-  #play-data { font-size: 20px;
-    font-weight: bold;
-    color: #fff; }
+#deal-stand, #play-stand {
+  display: none;
+  padding: 5px;
+  background: #ab2323;
+  color: #fff;
+}
+  
+#deal-stand.stood, #play-stand.stood { 
+  display: inline-block; 
+}
 
   /* (D) PLAY CONTROLS */
   #play-control {

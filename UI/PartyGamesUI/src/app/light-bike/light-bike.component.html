@@ -7,12 +7,13 @@
       </div> 
       <div style="text-align:center">
       <h6 *ngIf="game.lost">Game Over! Waiting for players to finish... </h6>
+      <h6 *ngIf="Win">YOU WIN!</h6>
       <h6 *ngIf="GameEnd"><button (click) = "goToRoom()">Return to Lobby</button></h6>
       </div>
-      <app-game-field [width]="game.width" [height]="game.height" [food]="game.food">
-        <app-snake [pos]="snakePositionDisplay"></app-snake>
+      <app-bike-game-field [width]="game.width" [height]="game.height" [food]="game.food">
+        <app-bike [pos2]="snakePositionDisplay" [pos]="game.snakePos"></app-bike>
 
-      </app-game-field>
+      </app-bike-game-field>
     </ng-container>
     <!-- End of Snake Game-->
     <!-- <div class="card text-center bg-dark" style="height: 50px">
