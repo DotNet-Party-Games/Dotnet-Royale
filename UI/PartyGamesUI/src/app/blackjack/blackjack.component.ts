@@ -469,6 +469,23 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     // send final game data after game ends
     this.sendBlackJackData(this.gameState);
   }
+  playMusic()
+  {
+    let audio = <HTMLAudioElement>document.getElementById('bgmusic');
+    audio.volume= 0.1;
+    audio.src = "";
+    audio.load();
+    audio.play();
+  }
+  playSFX(audioCue: string)
+  {
+    let audio = <HTMLAudioElement>document.getElementById('sfx');
+    audio.volume= 0.1;
+    audio.src = "location of audio" + audioCue + ".mp3";
+    audio.load();
+    audio.play();
+  }
+
 
 
 }
