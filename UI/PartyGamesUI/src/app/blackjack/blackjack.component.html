@@ -49,8 +49,11 @@
       <!-- (C1) START -->
       <input type="button" id="playc-start" *ngIf="gameStarted == false" (click)="start()" value="Play!"/>
       <!-- (C2) HIT OR STAND -->
-      <input type="button" id="playc-hit" *ngIf="gameStarted == true" (click)="hit(turn)" value="Hit"/>
-      <input type="button" id="playc-stand" *ngIf="gameStarted == true" (click)="stand(turn)" value="Stand"/>
+      <div *ngIf="this.turn == this.thisPlayer">
+        <input type="button" id="playc-hit" *ngIf="gameStarted == true" (click)="hit(turn)" value="Hit"/>
+        <input type="button" id="playc-stand" *ngIf="gameStarted == true" (click)="stand(turn)" value="Stand"/>
+      </div>
+      
     </div>
   </div>
 

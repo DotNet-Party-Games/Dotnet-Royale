@@ -100,40 +100,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     this.currentUser.userName = sessionStorage.getItem('userName');
     this.currentUser.password = sessionStorage.getItem('userPassword');
   }
-  ngAfterViewInit(): void {
-    bj.hdstand = document.getElementById("deal-stand");
-    bj.hdpoints = document.getElementById("deal-points");
-    bj.hdhand = document.getElementById("deal-cards");
-    bj.hpstand = document.getElementById("play-stand0");
-    bj.hppoints = document.getElementById("play-points0");
-    bj.hphand = document.getElementById("play-cards0");
-
-    bj.hpstand2 = document.getElementById("play-stand1");
-    bj.hppoints2 = document.getElementById("play-points1");
-    bj.hphand2 = document.getElementById("play-cards1");
-
-    bj.hpstand3 = document.getElementById("play-stand2");
-    bj.hppoints3 = document.getElementById("play-points2");
-    bj.hphand3 = document.getElementById("play-cards2");
-
-    bj.hpstand4 = document.getElementById("play-stand3");
-    bj.hppoints4 = document.getElementById("play-points3");
-    bj.hphand4 = document.getElementById("play-cards3");
-
-    bj.players = this.players;
-    bj.hpcon = document.getElementById("play-control");
-    bj.winner = document.getElementById("winner");
-    // onclick events
-    document.getElementById("playc-start").addEventListener("click", bj.start);
-    //this.sendBlackJackData(bj);
-    document.getElementById("playc-hit").addEventListener("click", bj.hit);
-    //this.sendBlackJackData(bj);
-    document.getElementById("playc-stand").addEventListener("click", bj.stand);
-    this.sendBlackJackData(bj);
-
-    this.selectGameRoomHandler();
-  }
-
+  
   ngAfterViewInit() {
     //this.sendBlackJackData(bj);
     // will handle room stuff
@@ -155,6 +122,9 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
         this.readyPlayers();
         // makes sure only first player commences game
         this.thisPlayer = this.players.indexOf(this.currentUser.userName);
+        console.log("This player number: ");
+        console.log(this.thisPlayer);
+        
         if(this.thisPlayer == 0) {
           // start game
           this.start();
@@ -167,10 +137,20 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     this.socketService.getPlayers({ room: this.roomId });
     // subscribe to socketservice function
     this.socketService.getBlackJackData().subscribe(data => {
+      console.log("received data");
       console.log(data);
       // set local object array to gamestate array
-      this.bjplayers = this.gameState.players;
       this.gameState = data;
+      this.bjplayers = this.gameState.players;
+      this.dealer = this.gameState.dealer;
+      this.dpoints= this.gameState.dpoints;
+      this.safety = this.gameState.safety;
+      this.dstand = this.gameState.dstand;
+      this.dwinner = this.gameState.dwinner;
+      this.turn = this.gameState.turn;
+      this.gameStarted=this.gameState.gameStarted;
+      this.deck = this.gameState.deck;
+      
     });
   }
 
@@ -214,9 +194,10 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
       }
       // push player object to bjplayers array
       this.bjplayers.push(bj);
-      // player object goes to gamestate
-      this.gameState.players.push(bj);
+      
     }
+    // player object goes to gamestate
+    this.gameState.players=this.bjplayers;
   }
 
   // will be called when player presses start button
@@ -292,26 +273,32 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     this.draw(42);
     // calculate dealer points
     this.points(42);
+
+    this.sendBlackJackData(this.gameState);
   }
 
   // (D) DRAW A CARD FROM THE DECK
   draw(i : number) {
     // pop card from deck
     let card = this.deck.pop();
-
+    this.gameState.deck=this.deck;
     // set dealer index to arbitrary 42 number
     // dealer gets card pushed to hand array
     if(i == 42) {
       this.dealer.push(card);
       // add card to dealer gamestate
-      this.gameState.dealer.push(card);
+
+      this.gameState.dealer = this.dealer;
     }
 
     // (D3) PLAYER'S CARD
     else {
       this.bjplayers[i].player.push(card);
       // add card to player gamestate
-      this.gameState.players[i].player.push(card);
+      this.gameState.players[i].player=this.bjplayers[i].player;
+      console.log("Deal player card");
+      console.log(this.gameState.players[i].player);
+      console.log(this.bjplayers[i].player);
     }
   }
 
@@ -326,7 +313,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
       //(G1) DRAW A NEW CARD
       this.draw(i); 
       this.points(i);
-      this.socketService.sendBlackJackData(this.gameState);
+      
 
       // if player points go over 21, auto stand
       if(this.bjplayers[i].ppoints > 21) {
@@ -338,6 +325,9 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
       }
       // no else after previous two blocks, give stand option for user with button
     }
+    console.log("Sending gamestate in draw");
+    console.log(this.gameState);
+    this.sendBlackJackData(this.gameState);
   }
 
   // when player or dealer stands
@@ -349,6 +339,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     // if last player goes and game is still going, call dealer ai to finish game
     if(this.turn == this.bjplayers.length - 1) {
       while(this.gameStarted) {
+        console.log("in while loop");
         this.ai();
       }
     }
@@ -358,6 +349,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
       // update turn in the gamestate
       this.gameState.turn += 1;
     }
+    this.sendBlackJackData(this.gameState);
   }
 
   // calculate dealer or player points
@@ -392,13 +384,13 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     if (j == 42) { 
       this.dpoints = points; 
       // add points to dealer gamestate
-      this.gameState.dpoints = points;
+      this.gameState.dpoints = this.dpoints;
     }
     // add points to player points
     else {
       this.bjplayers[j].ppoints = points;
       // add points to player gamestate
-      this.gameState.players[j].ppoints = points;
+      this.gameState.players[j].ppoints = this.bjplayers[j].ppoints;
     }
   }
 
@@ -467,7 +459,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     }
 
     // send final game data after game ends
-    this.socketService.sendBlackJackData(this.gameState);
+    this.sendBlackJackData(this.gameState);
   }
 
 

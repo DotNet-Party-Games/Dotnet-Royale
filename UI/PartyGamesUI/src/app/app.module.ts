@@ -69,7 +69,7 @@ import { BikeComponent } from './lightbikemodel/snake.component';
       {path: 'snake', component: LayoutComponent},
       {path: 'blackjack', component: BlackjackComponent},
       {path: 'tictactoe', component: BoardComponent},
-      {path: 'lightbike', component: lightbikeComponent}
+      {path: 'lightbike', component: LightBikeComponent}
     ]),
     NgbModule
   ],
