@@ -105,6 +105,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     //this.sendBlackJackData(bj);
     // will handle room stuff
     this.selectGameRoomHandler();
+    this.shouldStand(this.turn);
     // initializes game
     //this.readyPlayers();
   }
@@ -150,7 +151,12 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
       this.turn = this.gameState.turn;
       this.gameStarted=this.gameState.gameStarted;
       this.deck = this.gameState.deck;
-      
+      let currentTurn = this.turn;
+      //this.shouldStand(this.turn);
+      if(this.turn != currentTurn)
+      {
+        this.sendBlackJackData(this.gameState);
+      }
     });
   }
 
@@ -181,7 +187,14 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['blackjack']);
   }
-
+  shouldStand(pNum: number)
+  {
+    if(this.bjplayers[pNum].pstand)
+    {
+      this.turn++;
+      this.gameState.turn=this.turn;
+    }
+  }
   // array to declare objects based on users in room
   readyPlayers() {
     for(let i = 0; i < this.players.length; i++) {
@@ -249,22 +262,16 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
       this.bjplayers[i].winner = false;
       // draw first card
       this.draw(i);
-      // console.log("Player " + i + " first card is " + 
-      //               (this.dnum[this.bjplayers[i].player[0].n] ? 
-      //                 this.dnum[this.bjplayers[i].player[0].n] : 
-      //                 this.bjplayers[i].player[0].n
-      //               ) 
-      //               + this.dsymbols[this.bjplayers[i].player[0].s]
-      //            );
 
       // draw second card
       this.draw(i);
       // calculate points
       this.points(i);
-      // let winner = this.check(i);
-      // if (winner==null) { 
-      //   this.turn = 0; 
-      // }
+      if(this.bjplayers[i].ppoints == 21) {
+        this.bjplayers[i].pstand = true;
+        this.gameState.players = this.bjplayers;
+      }
+
     }
 
     // for dealer
@@ -273,7 +280,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
     this.draw(42);
     // calculate dealer points
     this.points(42);
-
+    this.shouldStand(0);
     this.sendBlackJackData(this.gameState);
   }
 
@@ -296,6 +303,7 @@ export class BlackjackComponent implements OnInit, AfterViewInit {
       this.bjplayers[i].player.push(card);
       // add card to player gamestate
       this.gameState.players[i].player=this.bjplayers[i].player;
+      
       console.log("Deal player card");
       console.log(this.gameState.players[i].player);
       console.log(this.bjplayers[i].player);
