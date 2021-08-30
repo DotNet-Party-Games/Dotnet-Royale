@@ -4,9 +4,9 @@ let  app =express();
 let http = require('http');
 let server = http.createServer(app);
 
-let io = require("socket.io")(server, {
+const io = require("socket.io")(server, {
     cors: {
-      origin: "http://127.0.0.1:4200/",
+      origin: "*",
       methods: ["GET", "POST"]
     }
   });
