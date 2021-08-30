@@ -4,13 +4,12 @@ let  app =express();
 let http = require('http');
 let server = http.createServer(app);
 
-let socketIO = require('socket.io')(httpServer, {
+let io = require("socket.io")(server, {
     cors: {
-      origin: "http://127.0.0.1:4200",
+      origin: "http://127.0.0.1:4200/",
       methods: ["GET", "POST"]
     }
   });
-let io = socketIO(server);
 
 // to store user list in live chat
 // var userlist = [];
