@@ -54,13 +54,18 @@ io.on('connection',(socket)=>{
 
     socket.on('gamestate', (data) =>{
         //console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
-        socket.broadcast.to(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
+        socket.broadcast.to(data.room).emit('new gamestate',{b:data.SnakePos, User: data.User, Score: data.Score, GameOver:data.Lost});
+        
+    });
+    socket.on('lightgamestate', (data) =>{
+        //console.log("lightgamestate data: " + JSON.stringify(data.GameState.snakePos));
+        socket.broadcast.to(data.room).emit('new lightgamestate',{b:data.SnakePos, User: data.User, Score: data.Score, GameOver:data.Lost});
         
     });
 
     socket.on('gameboard', (data) => {
-        console.log(data.room);
-        console.log("gameboard data:" + JSON.stringify(data.gameboard));
+        // console.log(data.room);
+        // console.log("gameboard data:" + JSON.stringify(data.gameboard));
         io.to(data.room).emit('new gameboard', data.gameboard);
     });
     
@@ -102,5 +107,14 @@ io.on('connection',(socket)=>{
         let room = roomList.find(({id}) => id == data.room)
         console.log(room.users);
         io.in(data.room).emit('foundPlayers', room.users)
+    });
+
+    socket.on('play audio', (data) => {
+        socket.to(data.room).emit('receive audio', data.audioFile);
+      });
+    socket.on('play game',(data) => {
+        console.log("game id");
+        console.log(data.gameid);
+        io.in(data.room).emit('goto game', data.gameid);
     });
 });

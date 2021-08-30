@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ReservedOrUserEventNames } from 'socket.io-client/build/typed-events';
 import { BlackjackService } from '../services/blackjack/blackjack.service';
 import { IScore } from 'src/app/services/score';
@@ -256,7 +256,6 @@ export class BlackjackComponent implements OnInit {
       else if (i.n>=11 && i.n<=13) { points += 10; }
       else { points += i.n; }
     }
-
     // (E2) CALCULATIONS FOR ACES
     // NOTE: FOR MULTIPLE ACES, WE CALCULATE ALL POSSIBLE POINTS AND TAKE HIGHEST.
     if (aces!=0) {

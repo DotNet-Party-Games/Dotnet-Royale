@@ -1,12 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
 .container-fluid{
-    /* padding: 2% 2%; */
     overflow: hidden;
 }
 .chat-container{
-    /* border-radius: 10px; */
-    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); */
     height: 75vh;
     position: relative;
     overflow: hidden;
@@ -14,33 +11,29 @@
 #chbody{
     background-image: url('/assets/images/bg1.jpg') ;
     opacity: 0.6;
-    /* background-color: dimgray; */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
     height: 66vh;
-    /* padding: 10px; */
-    /* padding-bottom: 50px; */
     overflow-y: auto;
 
 }
 .message-container{
-    background-color: rgb(224, 210, 210);
+    background-color:white;
     padding: 2px;
     border-radius:5px ;
     width: fit-content;
     max-width: 90%;
     margin: 2px;
     margin-bottom: 5px;
-    color: rgb(19, 17, 17);
+    color: #111;
     word-wrap: break-word;
 }
 .messageUsername{
-    color: rgb(33, 136, 33);
+    color:#28a745;
     float: right;
-    font-size: 12px;
+    font-size: 0.9rem;
     font-style: italic;
-    font-family: cursive;
 }
 .same-user{
     display: flex;
@@ -48,15 +41,15 @@
 }
 .chat-footer{
     height: 8vh;
-    background-color: rgb(41, 40, 40);
+    background-color: #111;
 }
 .form-control{
     background-color: white;
-    border: 1px solid rgb(20, 17, 20);
+    border: 1px solid#111;
     box-sizing: border-box;
-    /* border-radius:  0px 50px 50px 0px; */
     font-size: 1rem;
 }
+
 
 
 

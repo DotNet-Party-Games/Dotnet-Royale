@@ -10,6 +10,7 @@ import { SocketioService } from '../services/socketio/socketio.service';
 })
 export class LobbyComponent implements OnInit {
 
+  roomSize: number = 4;
   username: string;
   roomId: string;
   isInputRoomId: boolean = false;

@@ -17,6 +17,7 @@ import { SquareComponent } from './tictactoe/square/square.component';
 import { BoardComponent } from './tictactoe/board/board.component';
 import { SnakeComponent } from './snake/snake.component';
 import { GameFieldComponent } from './snake/game-field/game-field.component';
+import { BikeGameFieldComponent } from './lightbikemodel/game-field/game-field.component'
 
 import { BlackjackComponent } from './blackjack/blackjack.component';
 import { MainComponent } from './main/main.component';
@@ -25,6 +26,9 @@ import { RoomComponent } from './room/room.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FakeLoginComponent } from './fake-login/fake-login.component';
 import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component';
+import { VerticalCarouselComponent } from './vertical-carousel/vertical-carousel.component';
+import { LightBikeComponent } from './light-bike/light-bike.component';
+import { BikeComponent } from './lightbikemodel/snake.component';
 
 
 @NgModule({
@@ -44,7 +48,11 @@ import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component'
     RoomComponent,
     UserProfileComponent,
     FakeLoginComponent,
-    TrueblackjackComponent
+    TrueblackjackComponent,
+    VerticalCarouselComponent,
+    BikeComponent,
+    LightBikeComponent,
+    BikeGameFieldComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +68,8 @@ import { TrueblackjackComponent } from './trueblackjack/trueblackjack.component'
       {path: 'user-profile', component: UserProfileComponent},
       {path: 'snake', component: LayoutComponent},
       {path: 'blackjack', component: BlackjackComponent},
-      {path: 'tictactoe', component: BoardComponent}
+      {path: 'tictactoe', component: BoardComponent},
+      {path: 'lightbike', component: LightBikeComponent}
     ]),
     NgbModule
   ],

@@ -12,7 +12,7 @@
     background: #008000;
     color: #fff;
   }
-  #deal-stand, #play-stand {
+  #deal-stand, #play-stand, #play-stand0,#play-stand1,#play-stand2,#play-stand3 {
     display: none;
     padding: 5px;
     background: #ab2323;
@@ -21,7 +21,7 @@
   #deal-stand.stood, #play-stand.stood { display: inline-block; }
 
   /* (A2) CARDS */
-  #deal-cards, #play-cards {
+  #deal-cards, #play-cards, #play-cards0, #play-cards1, #play-cards2, #play-cards3 {
     color: #fff;
     font-size: 40px;
     display: grid;
