@@ -71,7 +71,8 @@ io.on('connection',(socket)=>{
     
     socket.on('blackjack', (data)=> {
         console.log("blackjack data: " + JSON.stringify(data));
-        io.in(data.room).emit('new blackjack',{data})
+        // dont need {} when now passing data.game?
+        io.in(data.room).emit('new blackjack', data.game)
     });
 
     socket.on('leave', (data) => {
