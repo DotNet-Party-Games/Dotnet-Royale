@@ -27,5 +27,19 @@ namespace PartyGameBL
         {
             return await _repo.Top10ScoresByGameIdAsync(GameId);
         }
+
+        public async Task<List<LightBike>> Top10LightBikeStats()
+        {
+            return await _repo.Top10LightBikeStats();
+        }
+        public async Task<List<TicTacToe>> Top10TicTacToeStats()
+        {
+            return await _repo.Top10TicTacToeStats();
+        }
+        public async Task<List<Blackjack>> Top10BlackJackStats()
+        {
+            return await _repo.Top10BlackJackStats();
+        }
+
     }
 }

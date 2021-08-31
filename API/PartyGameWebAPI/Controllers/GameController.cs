@@ -36,5 +36,23 @@ namespace PartyGameWebAPI.Controllers
         {
             return Ok(await _gameBL.Top10ScoresByGameIdAsync(p_gameId));
         }
+
+        [HttpGet("getTop10BlackJackStats/")]
+        public async Task<IActionResult> GetTop10BlackJackStats()
+        {
+            return Ok(await _gameBL.Top10BlackJackStats());
+        }
+
+        [HttpGet("getTop10TicTacToeStats/")]
+        public async Task<IActionResult> GetTop10TicTacToeStats()
+        {
+            return Ok(await _gameBL.Top10TicTacToeStats());
+        }
+
+        [HttpGet("getTop10LightBikeStats/")]
+        public async Task<IActionResult> GetTop10LightBikeStats()
+        {
+            return Ok(await _gameBL.Top10LightBikeStats());
+        }
     }
 }
