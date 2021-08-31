@@ -44,6 +44,12 @@ namespace PartyGameWebAPI.Controllers
             return Ok(await _userBL.GetTicTacToeGameStatsByUserNameAsync(p_userName));
         }
 
+        [HttpGet("getLightBikeGameStatsByUserName/{p_userName}")]
+        public async Task<IActionResult> GetLightBikeGameStatsByUserName(string p_userName)
+        {
+            return Ok(await _userBL.GetLightBikeGameStatsByUserNameAsync(p_userName));
+        }
+
         [HttpPost("addScore")]
         public async Task<IActionResult> AddScoreHistory([FromBody] ScoreHistory p_scoreHistory)
         {
