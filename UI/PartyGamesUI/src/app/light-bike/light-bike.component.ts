@@ -25,6 +25,13 @@ import { Router } from '@angular/router';
 import { LivechatService } from '../services/livechat/livechat.service';
 import { SocketioService } from '../services/socketio/socketio.service';
 
+
+//copy over layout into another folder called light bike
+//place light bike folder into the pathing within app.module.ts
+//room.html needs to have the routing information to display the game
+//should have a 2 versions of snake game if done properly, then you can change one to fit what we want for light bike
+
+
 enum Direction {
   UP,
   DOWN,
@@ -40,10 +47,10 @@ enum FieldType {
 
 @Component({
   selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  templateUrl: './light-bike.component.html',
+  styleUrls: ['./light-bike.component.css']
 })
-export class LayoutComponent implements OnInit {
+export class LightBikeComponent implements OnInit {
   public roomId: string;
   finalScore: IScore = {
     gamesId: null,
@@ -78,6 +85,8 @@ export class LayoutComponent implements OnInit {
   lastAlive: boolean;
   GameOver:number;
   GameEnd: boolean;
+  Win: boolean;
+  Boost: boolean;
 
   constructor(private router: Router, private partyGameApi: PartygameService, private data: DataService, private socketService: SocketioService) {
     this.currentUser =
@@ -104,7 +113,7 @@ export class LayoutComponent implements OnInit {
       map(event => event.key),
       distinctUntilChanged()
     );
-    this.socketService.getSnakeGameState().subscribe(data => {
+    this.socketService.getLightSnakeGameState().subscribe(data => {
       console.log("data from socket");
       console.log(data);
       this.snakeMap.set(data.User, data.b.map(a => a));
@@ -126,12 +135,17 @@ export class LayoutComponent implements OnInit {
         this.currentHighScore = this.score;
       }
     });
-    this.tick$ = interval(110);
+    this.tick$ = interval(80);
     this.direction$.subscribe((currentDirection) =>
       this.snakeDirection = currentDirection);
     const direction = this.keyDown$.pipe(
       map(key => {
         //print statements to determine what is allowing the double input !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        console.log(key);
+        if (key == " ")
+        {
+          console.log("success");
+        }
         switch (key) {
           case "ArrowUp":
           case "w":
@@ -177,6 +191,12 @@ export class LayoutComponent implements OnInit {
               this.keypress = true;
               return Direction.RIGHT;
             }
+        case " ":
+          {
+            this.Boost = true;
+            return this.direction$.value;
+          }
+            
           default:
             return this.direction$.value;
         }
@@ -197,8 +217,8 @@ export class LayoutComponent implements OnInit {
   join(username: string, roomId: string): void {
     this.socketService.joinRoom({ user: username, room: roomId });
   }
-  sendSnakeGameState(): void {
-    this.socketService.sendSnakeGameState({ SnakePos: this.game$.value.snakePos, Lost: this.game$.value.lost, room: this.roomId, User: this.currentUser.userName, Score: this.score});
+  sendLightSnakeGameState(): void {
+    this.socketService.sendLightSnakeGameState({ SnakePos: this.game$.value.snakePos, Lost: this.game$.value.snakePos, room: this.roomId, User: this.currentUser.userName, Score: this.score});
   }
   getNextField(
     game: GameState,
@@ -207,6 +227,12 @@ export class LayoutComponent implements OnInit {
 
     const currentField = game.snakePos[game.snakePos.length - 1];
     const nextField = { x: currentField.x, y: currentField.y };
+    // let count = 1;
+    // if (this.Boost == true)
+    // {
+    //   count = 2;
+
+    // }
     switch (direction) {
       case Direction.UP:
         //makes it so you can loop to the other side of the map
@@ -227,14 +253,14 @@ export class LayoutComponent implements OnInit {
         break;
       case Direction.LEFT:
         if (nextField.x !== 0) {
-          nextField.x--;
+          nextField.x --;
         } else {
           nextField.x = game.width - 1;
         }
         break;
       case Direction.RIGHT:
         if (nextField.x !== game.width - 1) {
-          nextField.x++;
+          nextField.x ++;
         } else {
           nextField.x = 0;
         }
@@ -274,9 +300,11 @@ export class LayoutComponent implements OnInit {
       });
     });
   }
-  // this handles game ticks
   currentfood: { x: number; y: number };
+  tempDisplay: { x: number; y: number }[];
   newGame(): void {
+    this.Boost = false;
+    this.Win = false;
     this.GameEnd = false;
     this.GameOver = 0;
     this.score = 1;
@@ -284,9 +312,11 @@ export class LayoutComponent implements OnInit {
     this.lives = 3;
     const width = 40;
     const height = 33;
-    const food = this.getRandomField(width, height);
+    const food = {x:null, y:null};
     const snakePos = [this.getRandomField(width, height)];
+    this.tempDisplay = snakePos;
     let snakePos2;
+    this.count12 = 0;
     this.getRoomUserList();
 
     this.game$ = new BehaviorSubject<GameState>({
@@ -297,19 +327,22 @@ export class LayoutComponent implements OnInit {
       lost: false,
       snakePos2
     });
-    //Maybe transition to an observable and the subscriber is set on the latest value since it subscribed until next(), then do next() for n number of players
+
     this.tick$
       .pipe(
         map(tick => {
-          console.log(this.GameOver);
-          let game = this.game$.value;
           this.count12 = 0;
+          let game = this.game$.value;
+          if (game.snakePos.length <= 10)
+          {
+            this.tempDisplay.push(game.snakePos[0]);
+            this.count12++;
+            game.snakePos = this.tempDisplay;
+          }
           //this.snakeMap.set(this.currentUser.userName, game.snakePos);
-          console.log("sending gamestate to socket");
-          this.sendSnakeGameState();
+          this.sendLightSnakeGameState();
           this.snakePositionDisplay = [];
           for (let val of this.snakeMap.values()) {
-
             this.snakePositionDisplay = [].concat(this.snakePositionDisplay, val);
           }
           game.snakePos2 = this.snakePositionDisplay;
@@ -317,34 +350,23 @@ export class LayoutComponent implements OnInit {
           {
             this.currentHighScore = this.score;
           }
-          console.log(this.GameOver);
-          if (game.lost == true && this.GameOver == this.userList.length-1)
+          if (this.GameOver == this.userList.length-1)
           {
             this.GameEnd = true;
+            this.Win = true;
           }
-
+      
           const direction = this.direction$.value;
           const nextField = this.getNextField(game, direction);
           const nextFieldType = this.getFieldType(nextField, game);
           switch (nextFieldType) {
             case FieldType.EMPTY:
-              game.snakePos = [...game.snakePos.slice(1), nextField];
-              break;
-            case FieldType.FOOD:
-              this.score++;
-              game.snakePos = [...game.snakePos, nextField];
-              game.food = this.getRandomField(game.width, game.height);
-              let loop = true;
-              while (loop) {
-                for (let x = 0; x < game.snakePos.length; x++) {
-                  if (game.snakePos[x].x === game.food.x && game.snakePos[x].y === game.food.y) {
-                    game.food = this.getRandomField(game.width, game.height);
-                  }
-
-                  else {
-                    loop = false;
-                  }
-                }
+              if (this.Win == true)
+              {
+                game.snakePos = [...game.snakePos.slice(), nextField];
+              }
+              else{
+                game.snakePos = [...game.snakePos.slice(1), nextField];
               }
               break;
             case FieldType.SNAKE:
@@ -352,21 +374,19 @@ export class LayoutComponent implements OnInit {
               if (this.lives < 1)
               {
                 this.GameOver++;
-                if (this.GameOver >= this.userList.length)
+                if (this.GameOver == this.userList.length-1)
                 {
-                  console.log("game over paps");
                   this.GameEnd = true;
                 }
-                //game.snakePos = [];
-                //this.sendSnakeGameState();
                 game.lost = true;
                 this.GameEnd = true;
-                this.sendSnakeGameState();
+                this.sendLightSnakeGameState();
                 this.lives = 0;
               }
               else
               {
-                game.snakePos = [this.getRandomField(game.width,game.height)];
+               game.snakePos = [this.getRandomField(game.width,game.height)];
+               this.tempDisplay = game.snakePos;
               }
               break;
           }
@@ -401,7 +421,10 @@ export class LayoutComponent implements OnInit {
   }
 
   goToRoom() {
+    this.game$.value.lost = true;
+    this.GameEnd = true;
     this.router.navigate(['/room']);
   }
 
 }
+

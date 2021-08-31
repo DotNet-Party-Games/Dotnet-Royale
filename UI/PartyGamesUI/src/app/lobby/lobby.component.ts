@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LivechatService } from '../services/livechat/livechat.service';
 import { IRoom } from '../services/room';
 import { SocketioService } from '../services/socketio/socketio.service';
 
@@ -11,6 +10,7 @@ import { SocketioService } from '../services/socketio/socketio.service';
 })
 export class LobbyComponent implements OnInit {
 
+  roomSize: number = 4;
   username: string;
   roomId: string;
   isInputRoomId: boolean = false;
@@ -22,6 +22,11 @@ export class LobbyComponent implements OnInit {
 
     this.username = sessionStorage.getItem('userName');
     this.roomId = sessionStorage.getItem('roomId');
+    if(!this.roomId)
+    {
+      sessionStorage.setItem("roomId", 'lobby');
+      this.joinRoom(this.username, sessionStorage.getItem('roomId'));
+    }
     this.reloadRoomList()
     this.getRoomList();
 
@@ -35,7 +40,7 @@ export class LobbyComponent implements OnInit {
   goToMain(){
     this.username = sessionStorage.getItem("userName");
     this.roomId = sessionStorage.getItem("roomId");
-    this.socketService.leaveRoom({room: this.roomId, user: this.username});
+    this.leaveRoom(this.username, this.roomId);
     this.router.navigate(['/main']);
   }
 
@@ -57,6 +62,13 @@ export class LobbyComponent implements OnInit {
     }
     this.socketService.joinRoom({user:username, room:roomId});
     this.roomId = roomId;
+    sessionStorage.setItem("roomId", this.roomId);
+  }
+
+  leaveRoom(username:string, roomId:string):void
+  {
+    this.socketService.leaveRoom({user:username, room:roomId});
+    sessionStorage.removeItem("roomId");
   }
 
   showInputRoomId(){

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { BehaviorSubject } from 'rxjs';
 import { BoardComponent } from 'src/app/tictactoe/board/board.component';
-
+import { GameState}  from 'src/app/services/TTTTGameState';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +15,8 @@ export class SocketioService {
   currentGameState = this.newGameState.asObservable();
   private newBlackjack = new BehaviorSubject<any>({});
   currentBlackjack = this.newBlackjack.asObservable();
-  private newTTTTGameState = new BehaviorSubject<any>({});
-  currentTTTTGameState = this.newTTTTGameState.asObservable();
+  // private newTTTTGameState = new BehaviorSubject<any>({});
+  // currentTTTTGameState = this.newTTTTGameState.asObservable();
   private playerList = new BehaviorSubject<any>({});
   currentPlayerList = this.playerList.asObservable();
 
@@ -49,6 +49,17 @@ export class SocketioService {
       }
     });
   }
+  goToGame(): Observable<any> {
+    return new Observable<any>(obs => {
+      this.socket.on('goto game', (data) => {
+        obs.next(data);
+      });
+    });
+  }
+
+  sendGameId(data): void {
+    this.socket.emit('play game', data);
+  }
   //========================= General Player Stuff ========================
   getPlayers(data): void {
     this.socket.emit('getPlayers', data);
@@ -68,11 +79,9 @@ export class SocketioService {
     this.socket.emit('play audio', data)
   }
   getAudioTrigger(): Observable<any> {
-    return new Observable<{ gameboard: BoardComponent }>(observer => {
+    return new Observable<string>(observer => {
       this.socket.on('receive audio', (data) => {
         observer.next(data);
-        console.log("got audio from server");
-        console.log(data);
       });
       return () => {
         this.socket.disconnect();
@@ -99,11 +108,22 @@ export class SocketioService {
   sendSnakeGameState(data): void {
     this.socket.emit('gamestate', data);
   }
-  getSnakeGameState(): void {
-    this.socket.on('new gamestate', (data) => {
-      this.newGameState.next(data.b);
+  getSnakeGameState():Observable<any> {
+    return new Observable<any>(observer=>{
+      this.socket.on('new gamestate',(data)=>
+      observer.next(data));
     });
-  }
+    }
+    sendLightSnakeGameState(data): void {
+      this.socket.emit('lightgamestate', data);
+    }
+    getLightSnakeGameState():Observable<any> {
+      return new Observable<any>(observer=>{
+        this.socket.on('new lightgamestate',(data)=>
+        observer.next(data));
+      });
+    }
+    
 
   //==================== Black Jack Stuff ==========================
   sendBlackJackData(data): void {
@@ -122,11 +142,11 @@ export class SocketioService {
     this.socket.emit('gameboard', data);
   }
 
-  getTicTacToeData(): void {
-    this.socket.on('new gameboard', (data) => {
-      this.newTTTTGameState.next(data);
-      console.log("got data from server");
-      console.log(data);
+  getTicTacToeData(): Observable<GameState> {
+    return new Observable(obs => {
+      this.socket.on('new gameboard', (data) =>{
+        obs.next(data);
+      });
     });
   }
 }

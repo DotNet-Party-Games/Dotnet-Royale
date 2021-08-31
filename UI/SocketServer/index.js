@@ -4,8 +4,13 @@ let  app =express();
 let http = require('http');
 let server = http.createServer(app);
 
-let socketIO = require('socket.io');
-let io = socketIO(server);
+const io = require("socket.io")(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      transports: ['websocket', 'polling', 'flashsocket']
+    }
+  });
 
 // to store user list in live chat
 // var userlist = [];
@@ -35,7 +40,7 @@ io.on('connection',(socket)=>{
             roomList.push({id: data.room, users: []});
         }
         room = roomList.find(({id}) => id == data.room);
-        if(room.users && !room.users.find((user) => user == data.user) && data.user)
+        if(room && room.users && !room.users.find((user) => user == data.user) && data.user)
         {
             room.users.push(data.user);
         }
@@ -54,13 +59,19 @@ io.on('connection',(socket)=>{
 
     socket.on('gamestate', (data) =>{
         //console.log("gamestate data: " + JSON.stringify(data.GameState.snakePos));
-        socket.broadcast.to(data.room).emit('new gamestate',{a:data.GameState.food, b:data.GameState.snakePos, c:data.GameState.height, d:data.GameState.width, e:data.GameState.lost});
+        socket.broadcast.to(data.room).emit('new gamestate',{b:data.SnakePos, User: data.User, Score: data.Score, GameOver:data.Lost});
+        
+    });
+    socket.on('lightgamestate', (data) =>{
+        //console.log("lightgamestate data: " + JSON.stringify(data.GameState.snakePos));
+        socket.broadcast.to(data.room).emit('new lightgamestate',{b:data.SnakePos, User: data.User, Score: data.Score, GameOver:data.Lost});
         
     });
 
     socket.on('gameboard', (data) => {
-        console.log("gameboard data:" + JSON.stringify(data.gameboard));
-        io.to(data.room).emit('new gameboard', {gameboard: data.gameboard});
+        // console.log(data.room);
+        // console.log("gameboard data:" + JSON.stringify(data.gameboard));
+        io.to(data.room).emit('new gameboard', data.gameboard);
     });
     
     socket.on('blackjack', (data)=> {
@@ -101,5 +112,14 @@ io.on('connection',(socket)=>{
         let room = roomList.find(({id}) => id == data.room)
         console.log(room.users);
         io.in(data.room).emit('foundPlayers', room.users)
+    });
+
+    socket.on('play audio', (data) => {
+        socket.to(data.room).emit('receive audio', data.audioFile);
+      });
+    socket.on('play game',(data) => {
+        console.log("game id");
+        console.log(data.gameid);
+        io.in(data.room).emit('goto game', data.gameid);
     });
 });

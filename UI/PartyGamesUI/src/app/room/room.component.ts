@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Live } from '@ng-bootstrap/ng-bootstrap/util/accessibility/live';
-import { LivechatService } from '../services/livechat/livechat.service';
-import { IRoom } from '../services/room';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { SocketioService } from '../services/socketio/socketio.service';
 
 @Component({
@@ -10,14 +8,17 @@ import { SocketioService } from '../services/socketio/socketio.service';
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
 
   username: string;
   gameId: number;
   roomId: string;
   userList: string[];
-
+  goToGameSub: Subscription;
   constructor(private router: Router, private socketService: SocketioService) { }
+  ngOnDestroy(): void {
+    this.goToGameSub.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.username = sessionStorage.getItem('userName');
@@ -25,6 +26,10 @@ export class RoomComponent implements OnInit {
     this.reloadRoomList();
     this.getRoomUserList();
     this.randomGameId();
+    this.goToGameSub = this.socketService.goToGame().subscribe(data => {
+      console.log("received game id");
+      this.goToGame(data);
+    })
   }
 
   reloadRoomList(){
@@ -34,13 +39,19 @@ export class RoomComponent implements OnInit {
   getRoomUserList(){
     this.socketService.getRoomList().subscribe(roomList => {
       let room = roomList.find(({id}) => id == this.roomId);
-      this.userList = room.users;
+      if(room) this.userList = room.users;
     });
   }
 
   goToLobby(){
-    this.socketService.leaveRoom({user:this.username, room:this.roomId})
+    this.leaveRoom(this.username, this.roomId);
     this.router.navigate(['/lobby']);
+  }
+
+  leaveRoom(username:string, roomId:string):void
+  {
+    this.socketService.leaveRoom({user:username, room:roomId});
+    sessionStorage.removeItem("roomId");
   }
 
   setGameId(p_gameId: number)
@@ -52,20 +63,34 @@ export class RoomComponent implements OnInit {
   {
     this.gameId = Math.floor(Math.random() * 3) + 1;
   }
-
-  goToGame()
+  sendGameId()
   {
-    switch(this.gameId) {
+    console.log("sendgameid triggered");
+    console.log(this.userList.indexOf(this.username));
+    if(this.userList.indexOf(this.username)==0)
+    {
+      console.log("sending gameid");
+      this.socketService.sendGameId({room: this.roomId, gameid: this.gameId});
+    }
+    
+  }
+  goToGame(p_gameid: number)
+  {
+    switch(p_gameid) {
       case 1: {
         this.router.navigate(['/snake']);
         break;
       }
       case 2: {
-        this.router.navigate(['/blackjack'])
+        this.router.navigate(['/blackjack']);
         break;
       }
       case 3: {
-        this.router.navigate(['/tictactoe'])
+        this.router.navigate(['/tictactoe']);
+        break;
+      }
+      case 4: {
+        this.router.navigate(['/lightbike']);
         break;
       }
       default: {
