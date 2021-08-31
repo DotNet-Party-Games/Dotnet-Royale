@@ -158,5 +158,54 @@ namespace PartyGameDL
             return ticTacToeData;
         }
 
+
+        public async Task<LightBike> GetLightBikeGameStatsByUserNameAsync(string UserName)
+        {
+            return await _context.LightBikes.FirstOrDefaultAsync(t => t.UserName == UserName);
+        }
+        public async Task<LightBike> UpdateLightBikeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            var lightBikeData = await GetLightBikeGameStatsByUserNameAsync(p_scoreHistory.UserName);
+            var scoreHistories = _context.ScoreHistories.Select(scores => scores).ToList();
+            int count = 0;
+            double totalScore = 0;
+            foreach (ScoreHistory score in scoreHistories)
+            {
+                if (score.UserName == p_scoreHistory.UserName && score.GamesId == p_scoreHistory.GamesId)
+                {
+
+                    totalScore += score.Score;
+                    count++;
+                }
+            }
+            double avgScore = totalScore / count;
+            if (lightBikeData != null)
+            {
+                Console.WriteLine(lightBikeData);
+                _context.LightBikes.Remove(lightBikeData);
+                _context.SaveChanges();
+                LightBike newLightBikeData = new LightBike()
+                {
+                    UserName = p_scoreHistory.UserName,
+                    GamesId = p_scoreHistory.GamesId,
+                    WinLossRatio = Math.Round(avgScore, 2)
+                };
+                _context.LightBikes.Add(newLightBikeData);
+                _context.SaveChanges();
+            }
+            else
+            {
+                await _context.LightBikes.AddAsync(new LightBike()
+                {
+                    UserName = p_scoreHistory.UserName,
+                    GamesId = p_scoreHistory.GamesId,
+                    WinLossRatio = Math.Round(avgScore, 2)
+                });
+                _context.SaveChanges();
+            }
+
+            return lightBikeData;
+        }
+
     }
 }

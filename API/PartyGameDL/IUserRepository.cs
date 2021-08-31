@@ -14,5 +14,8 @@ namespace PartyGameDL
         Task<ScoreHistory> AddScoreHistory(string UserName, int gameId, float score);
         Task<Snake> UpdateSnakeGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
         Task<TicTacToe> UpdateTicTacToeGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
+
+        Task<LightBike> GetLightBikeGameStatsByUserNameAsync(string UserName);
+        Task<LightBike> UpdateLightBikeGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
     }
 }

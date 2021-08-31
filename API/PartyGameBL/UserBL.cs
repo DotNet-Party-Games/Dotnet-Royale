@@ -38,9 +38,9 @@ namespace PartyGameBL
         {
             return await _repo.AddScoreHistory(p_ScoreHistory);
         }
-        public async Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score)
+        public async Task<ScoreHistory> AddScoreHistory(string UserName, int gameId, float score)
         {
-            return await _repo.AddScoreHistory(UserId, gameId, score);
+            return await _repo.AddScoreHistory(UserName, gameId, score);
         }
 
         public async Task<Snake> UpdateSnakeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
@@ -51,6 +51,16 @@ namespace PartyGameBL
         public async Task<TicTacToe> UpdateTicTacToeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
         {
             return await _repo.UpdateTicTacToeGameStatsByScoreHistory(p_scoreHistory);
+        }
+
+
+        public async Task<LightBike> GetLightBikeGameStatsByUserNameAsync(string UserName)
+        {
+            return await _repo.GetLightBikeGameStatsByUserNameAsync(UserName);
+        }
+        public async Task<LightBike> UpdateLightBikeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            return await _repo.UpdateLightBikeGameStatsByScoreHistory(p_scoreHistory);
         }
     }
 }
