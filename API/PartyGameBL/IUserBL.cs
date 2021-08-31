@@ -20,5 +20,8 @@ namespace PartyGameBL
         Task<LightBike> GetLightBikeGameStatsByUserNameAsync(string UserName);
         Task<LightBike> UpdateLightBikeGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
 
+        Task<Blackjack> UpdateBlackJackGameStatsByScoreHistory(ScoreHistory p_scoreHistory);
+
+
     }
 }

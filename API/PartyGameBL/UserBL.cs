@@ -53,7 +53,10 @@ namespace PartyGameBL
             return await _repo.UpdateTicTacToeGameStatsByScoreHistory(p_scoreHistory);
         }
 
-
+        public async Task<Blackjack> UpdateBlackJackGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            return await _repo.UpdateBlackJackGameStatsByScoreHistory(p_scoreHistory);
+        }
         public async Task<LightBike> GetLightBikeGameStatsByUserNameAsync(string UserName)
         {
             return await _repo.GetLightBikeGameStatsByUserNameAsync(UserName);

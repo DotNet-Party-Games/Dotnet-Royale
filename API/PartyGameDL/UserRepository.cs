@@ -159,6 +159,52 @@ namespace PartyGameDL
         }
 
 
+
+        public async Task<Blackjack> UpdateBlackJackGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            var BlackJackData = await GetBlackJackGameStatsByUserNameAsync(p_scoreHistory.UserName);
+            var scoreHistories = _context.ScoreHistories.Select(scores => scores).ToList();
+            int count = 0;
+            double totalScore = 0;
+            foreach (ScoreHistory score in scoreHistories)
+            {
+                if (score.UserName == p_scoreHistory.UserName && score.GamesId == p_scoreHistory.GamesId)
+                {
+
+                    totalScore += score.Score;
+                    count++;
+                }
+            }
+            double avgScore = totalScore / count;
+            if (BlackJackData != null)
+            {
+                Console.WriteLine(BlackJackData);
+                _context.Blackjacks.Remove(BlackJackData);
+                _context.SaveChanges();
+                Blackjack newBlackJackData = new Blackjack()
+                {
+                    UserName = p_scoreHistory.UserName,
+                    GamesId = p_scoreHistory.GamesId,
+                    WinLossRatio = Math.Round(avgScore, 2)
+                };
+                _context.Blackjacks.Add(newBlackJackData);
+                _context.SaveChanges();
+            }
+            else
+            {
+                await _context.Blackjacks.AddAsync(new Blackjack()
+                {
+                    UserName = p_scoreHistory.UserName,
+                    GamesId = p_scoreHistory.GamesId,
+                    WinLossRatio = Math.Round(avgScore, 2)
+                });
+                _context.SaveChanges();
+            }
+
+            return BlackJackData;
+        }
+
+
         public async Task<LightBike> GetLightBikeGameStatsByUserNameAsync(string UserName)
         {
             return await _context.LightBikes.FirstOrDefaultAsync(t => t.UserName == UserName);

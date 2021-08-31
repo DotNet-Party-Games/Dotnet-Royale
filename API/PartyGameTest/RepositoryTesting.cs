@@ -66,7 +66,7 @@ namespace PartyGameTest
             {
                 IUserRepository repo = new UserRepository(context);
                 var UserScoreHistory = await repo.GetBlackJackGameStatsByUserNameAsync("user1");
-                float UserWinLoss = UserScoreHistory.WinLossRatio;
+                double UserWinLoss = UserScoreHistory.WinLossRatio;
                 Assert.Equal(0.80f, UserWinLoss);
             }
         }

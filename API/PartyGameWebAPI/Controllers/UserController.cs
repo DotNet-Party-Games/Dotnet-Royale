@@ -63,5 +63,17 @@ namespace PartyGameWebAPI.Controllers
             return Created("api/User/updateTicTacToeStats", await _userBL.UpdateTicTacToeGameStatsByScoreHistory(p_scoreHistory));
         }
 
+        [HttpPost("updateLightBikeStats")]
+        public async Task<IActionResult> UpdateLightBikeStats([FromBody] ScoreHistory p_scoreHistory)
+        {
+            return Created("api/User/updateLightBikeStats", await _userBL.UpdateLightBikeGameStatsByScoreHistory(p_scoreHistory));
+        }
+
+        [HttpPost("updateBlackJackStats")]
+        public async Task<IActionResult> UpdateBlackJackStats([FromBody] ScoreHistory p_scoreHistory)
+        {
+            return Created("api/User/updateBlackJackStats", await _userBL.UpdateBlackJackGameStatsByScoreHistory(p_scoreHistory));
+        }
+
     }
 }
