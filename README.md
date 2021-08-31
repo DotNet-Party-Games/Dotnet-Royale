@@ -67,3 +67,16 @@ https://p2partygames.azurewebsites.net/
   - Azure App Service
   - Heroku
 
+
+  ## **Getting Started:**
+    1. Clone the repo. From your repo directory, either use your editor's Git functionality, or run the following command from your command line:\
+`git clone https://github.com/DotNet-Party-Games/Dotnet-Royale`
+    1. Open the API/dotnetPartyGames.sln solution file in your coding environment of choice (Visual Studio or Visual Studio Code recommended).
+    1. Build the solution through your editor's tools, or through the command line:\
+`dotnet build`
+    1. Edit the API\PartyGameWebAPI\appsettings.json file to reflect your database's connection string.
+    1. From the command line, cd to the PartyGameDL directory. Migrate the database with the following commands:\
+`dotnet ef --startup-project ../PartyGameWebAPI migrations add {Your description here}`\
+`dotnet ef --startup-project ../PartyGameWebAPI database update`
+    1. To run the API, either use your editor's run function, or from the command line:\
+`dotnet run`
