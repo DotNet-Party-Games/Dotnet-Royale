@@ -10,7 +10,7 @@ namespace PartyGameModels
 
         public int Id { get; set; }
         public int GamesId { get; set; }
-        public int UserId { get; set; }
+        public string UserName { get; set; }
         public double Score { get; set; }
         public DateTime Time { get; set; }
         

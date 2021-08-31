@@ -12,7 +12,7 @@ namespace PartyGameDL
         public DbSet<Games> Games { get; set; }
         public DbSet<Blackjack> Blackjacks { get; set; }
         public DbSet<Snake> Snakes { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<LightBike> LightBikes { get; set; }
         public DbSet<ScoreHistory> ScoreHistories{get;set;}
         public DbSet<TicTacToe> TicTacToes {get; set; }
 
@@ -24,19 +24,16 @@ namespace PartyGameDL
 
         // protected override void OnConfiguring(DbContextOptionsBuilder p_options)
         // {
-        //     p_options.UseSqlServer(@"Server=tcp:revature-suraj-kalika.database.windows.net,1433;Initial Catalog=partyGamesDB;Persist Security Info=False;User ID=surajkalika;Password=Dawnking12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        //     p_options.UseSqlServer(@"Server=tcp:revbox.database.windows.net,1433;Initial Catalog=PartyGamesDB;Persist Security Info=False;User ID=revbox;Password=R3vb0xP@55;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         // }
-//         PartyGamesDB connection string:
-// Server=tcp:revbox.database.windows.net,1433;Initial Catalog=PartyGamesDB;Persist Security Info=False;User ID=revbox;Password=R3vb0xP@55;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
-
         protected override void OnModelCreating(ModelBuilder p_modelBuilder)
         {
             p_modelBuilder.Entity<Games>()
                 .Property(Games => Games.Id)
                 .ValueGeneratedOnAdd();
 
-            p_modelBuilder.Entity<User>()
-                .Property(User => User.Id)
+            p_modelBuilder.Entity<LightBike>()
+                .Property(LightBike => LightBike.Id)
                 .ValueGeneratedOnAdd();
 
             p_modelBuilder.Entity<Snake>()
