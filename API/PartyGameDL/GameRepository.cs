@@ -37,5 +37,41 @@ namespace PartyGameDL
                      orderby q.Score descending
                      select q).Take(10);*/
         }
+
+        public async Task<List<Blackjack>> Top10BlackJackStats()
+        {
+            return await _context.Blackjacks.Select(score => score)
+                .OrderByDescending(score => score.WinLossRatio)
+                .Take(10)
+                .ToListAsync();
+            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
+                     where (q.GameId == GameId)
+                     orderby q.Score descending
+                     select q).Take(10);*/
+        }
+
+        public async Task<List<LightBike>> Top10LightBikeStats()
+        {
+            return await _context.LightBikes.Select(score => score)
+                .OrderByDescending(score => score.WinLossRatio)
+                .Take(10)
+                .ToListAsync();
+            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
+                     where (q.GameId == GameId)
+                     orderby q.Score descending
+                     select q).Take(10);*/
+        }
+
+        public async Task<List<TicTacToe>> Top10TicTacToeStats()
+        {
+            return await _context.TicTacToes.Select(score => score)
+                .OrderByDescending(score => score.WinLossRatio)
+                .Take(10)
+                .ToListAsync();
+            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
+                     where (q.GameId == GameId)
+                     orderby q.Score descending
+                     select q).Take(10);*/
+        }
     }
 }
