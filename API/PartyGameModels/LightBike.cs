@@ -2,9 +2,9 @@ using System;
 
 namespace PartyGameModels
 {
-    public class Blackjack
+    public class LightBike
     {
-        public Blackjack()  {}
+        public LightBike(){}
 
         public int Id { get; set; }
         public string UserName { get; set; }

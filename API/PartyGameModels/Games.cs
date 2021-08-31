@@ -13,5 +13,8 @@ namespace PartyGameModels
         public ICollection<ScoreHistory> GameScoreHistories { get; set; }
         public ICollection<Blackjack> Blackjacks { get; set; }
         public ICollection<Snake> Snakes { get; set; }
+        public ICollection<TicTacToe> TicTacToes{get;set;}
+        public ICollection<LightBike> LightBikes{get;set;}
+        
     }
 }

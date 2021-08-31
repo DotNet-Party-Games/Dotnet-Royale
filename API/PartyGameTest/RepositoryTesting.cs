@@ -66,7 +66,7 @@ namespace PartyGameTest
             {
                 IUserRepository repo = new UserRepository(context);
                 var UserScoreHistory = await repo.GetBlackJackGameStatsByUserNameAsync("user1");
-                float UserWinLoss = UserScoreHistory.WinLossRatio;
+                double UserWinLoss = UserScoreHistory.WinLossRatio;
                 Assert.Equal(0.80f, UserWinLoss);
             }
         }
@@ -99,7 +99,7 @@ namespace PartyGameTest
                 Assert.Equal(10,top10.Count);
                 Assert.Equal(7, top10[0].Id);
                 Assert.Equal(1, top10[0].GamesId);
-                Assert.Equal(2, top10[0].UserName);
+                Assert.Equal("user2", top10[0].UserName);
                 Assert.Equal(16000, top10[0].Score);
             }
         }
@@ -121,7 +121,7 @@ namespace PartyGameTest
                 Snake newStat = await repo.GetSnakeGameStatsByUserNameAsync(scoreHistoryToUpdate.UserName);
 
 
-                Assert.Equal(1, newStat.UserName);
+                Assert.Equal("user1", newStat.UserName);
                 Assert.Equal(1, newStat.GamesId);
                 Assert.Equal(1600, newStat.HighScore);
                 Assert.Equal(1550,newStat.AvgScore);
@@ -143,7 +143,7 @@ namespace PartyGameTest
                 TicTacToe newStat = await repo.GetTicTacToeGameStatsByUserNameAsync(scoreHistoryToUpdate.UserName);
 
 
-                Assert.Equal(1, newStat.UserName);
+                Assert.Equal("user1", newStat.UserName);
                 Assert.Equal(3, newStat.GamesId);
                 Assert.Equal(0.5, newStat.WinLossRatio);
             }
@@ -161,7 +161,7 @@ namespace PartyGameTest
 
 
                 Assert.Equal(3, gameStats.GamesId);
-                Assert.Equal(1, gameStats.UserName);
+                Assert.Equal("user1", gameStats.UserName);
                 Assert.Equal(1.44f, gameStats.WinLossRatio);
             }
         }

@@ -10,15 +10,15 @@ using PartyGameDL;
 namespace PartyGameDL.Migrations
 {
     [DbContext(typeof(PartyGamesDBContext))]
-    [Migration("20210810210907_TicTacToe")]
-    partial class TicTacToe
+    [Migration("20210831145443_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
+                .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("PartyGameModels.Blackjack", b =>
@@ -31,8 +31,8 @@ namespace PartyGameDL.Migrations
                     b.Property<int>("GamesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("WinLossRatio")
                         .HasColumnType("real");
@@ -62,6 +62,29 @@ namespace PartyGameDL.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("PartyGameModels.LightBike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GamesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("WinLossRatio")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GamesId");
+
+                    b.ToTable("LightBikes");
+                });
+
             modelBuilder.Entity("PartyGameModels.ScoreHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -78,8 +101,8 @@ namespace PartyGameDL.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -104,8 +127,8 @@ namespace PartyGameDL.Migrations
                     b.Property<double>("HighScore")
                         .HasColumnType("float");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -124,39 +147,32 @@ namespace PartyGameDL.Migrations
                     b.Property<int>("GamesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("WinLossRatio")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GamesId");
+
                     b.ToTable("TicTacToes");
-                });
-
-            modelBuilder.Entity("PartyGameModels.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PartyGameModels.Blackjack", b =>
                 {
                     b.HasOne("PartyGameModels.Games", null)
                         .WithMany("Blackjacks")
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PartyGameModels.LightBike", b =>
+                {
+                    b.HasOne("PartyGameModels.Games", null)
+                        .WithMany("LightBikes")
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -180,13 +196,26 @@ namespace PartyGameDL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PartyGameModels.TicTacToe", b =>
+                {
+                    b.HasOne("PartyGameModels.Games", null)
+                        .WithMany("TicTacToes")
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PartyGameModels.Games", b =>
                 {
                     b.Navigation("Blackjacks");
 
                     b.Navigation("GameScoreHistories");
 
+                    b.Navigation("LightBikes");
+
                     b.Navigation("Snakes");
+
+                    b.Navigation("TicTacToes");
                 });
 #pragma warning restore 612, 618
         }

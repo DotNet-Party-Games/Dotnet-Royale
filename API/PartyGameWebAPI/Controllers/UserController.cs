@@ -19,65 +19,29 @@ namespace PartyGameWebAPI.Controllers
             _userBL = p_userBL;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        
+        [HttpGet("getScoreHistoryByUserName/{p_userName}")]
+        public async Task<IActionResult> GetScoreHistoryByUserName(string p_userName)
         {
-            return Ok(await _userBL.GetAllUsersAsync());
+            return Ok(await _userBL.GetScoreHistoryByUserNameAsync(p_userName));
+        }
+        // GET: User/GetSnakeGameStatsByUserName/{p_userName}
+        [HttpGet("getSnakeGameStatsByUserName/{p_userName}")]
+        public async Task<IActionResult> GetSnakeGameStatsByUserName(string p_userName)
+        {
+            return Ok(await _userBL.GetSnakeGameStatsByUserNameAsync(p_userName));
         }
 
-        [HttpGet("getScoreHistoryByUserId/{p_userId}")]
-        public async Task<IActionResult> GetScoreHistoryByUserId(int p_userId)
+        [HttpGet("getBlackJackGameStatsByUserName/{p_userName}")]
+        public async Task<IActionResult> GetBlackJackGameStatsByUserName(string p_userName)
         {
-            return Ok(await _userBL.GetScoreHistoryByUserIdAsync(p_userId));
-        }
-        // GET: User/GetSnakeGameStatsByUserId/{p_userId}
-        [HttpGet("getSnakeGameStatsByUserId/{p_userId}")]
-        public async Task<IActionResult> GetSnakeGameStatsByUserId(int p_userId)
-        {
-            return Ok(await _userBL.GetSnakeGameStatsByUserIdAsync(p_userId));
+            return Ok(await _userBL.GetBlackJackGameStatsByUserNameAsync(p_userName));
         }
 
-        [HttpGet("getBlackJackGameStatsByUserId/{p_userId}")]
-        public async Task<IActionResult> GetBlackJackGameStatsByUserId(int p_userId)
+        [HttpGet("getTicTacToeGameStatsByUserName/{p_userName}")]
+        public async Task<IActionResult> GetTicTacToeGameStatsByUserName(string p_userName)
         {
-            return Ok(await _userBL.GetBlackJackGameStatsByUserIdAsync(p_userId));
-        }
-
-        [HttpGet("getTicTacToeGameStatsByUserId/{p_userId}")]
-        public async Task<IActionResult> GetTicTacToeGameStatsByUserId(int p_userId)
-        {
-            return Ok(await _userBL.GetTicTacToeGameStatsByUserIdAsync(p_userId));
-        }
-
-
-        [HttpGet("getUserIdFromUserNameAndPassword/{p_userName}/{p_password}")]
-        public async Task<IActionResult> GetUserIdFromUserNameAndPassword(string p_userName, string p_password)
-        {
-            return Ok(await _userBL.GetUserIdFromUserNameAndPasswordAsync(p_userName, p_password));
-        }
-
-        [HttpGet("getUserFromUserName/{p_userName}")]
-        public async Task<IActionResult> GetUserFromUserName(string p_userName)
-        {
-            return Ok(await _userBL.GetUserFromUserNameAsync(p_userName));
-        }
-
-        [HttpGet("getUserFromUserId/{p_userId}")]
-        public async Task<IActionResult> GetUserFromUserId(int p_userId)
-        {
-            return Ok(await _userBL.GetUserFromUserIdAsync(p_userId));
-        }
-        [HttpPost("getUserFromUserNameAndPassword")]
-        public async Task<IActionResult> VerifyUserNameAndPassword([FromBody] User p_user)
-        {
-            User verifiedUser= (await _userBL.GetUserFromUserNameAndPasswordAsync(p_user.UserName, p_user.Password));
-            return Ok(verifiedUser);
-        }
-
-        [HttpGet("getUserFromUserNameAndPassword")]
-        public async Task<IActionResult> GetUserFromUserNameAndPassword([FromBody] User p_user)
-        {
-            return Ok(await _userBL.GetUserIdFromUserNameAndPasswordAsync(p_user.UserName, p_user.Password));
+            return Ok(await _userBL.GetTicTacToeGameStatsByUserNameAsync(p_userName));
         }
 
         [HttpPost("addScore")]
@@ -99,10 +63,17 @@ namespace PartyGameWebAPI.Controllers
             return Created("api/User/updateTicTacToeStats", await _userBL.UpdateTicTacToeGameStatsByScoreHistory(p_scoreHistory));
         }
 
-        [HttpPost("add")]
-        public async Task<IActionResult> AddUser([FromBody] User p_user)
+        [HttpPost("updateLightBikeStats")]
+        public async Task<IActionResult> UpdateLightBikeStats([FromBody] ScoreHistory p_scoreHistory)
         {
-            return Created("api/User/add", await _userBL.AddUserAsync(p_user));
+            return Created("api/User/updateLightBikeStats", await _userBL.UpdateLightBikeGameStatsByScoreHistory(p_scoreHistory));
         }
+
+        [HttpPost("updateBlackJackStats")]
+        public async Task<IActionResult> UpdateBlackJackStats([FromBody] ScoreHistory p_scoreHistory)
+        {
+            return Created("api/User/updateBlackJackStats", await _userBL.UpdateBlackJackGameStatsByScoreHistory(p_scoreHistory));
+        }
+
     }
 }

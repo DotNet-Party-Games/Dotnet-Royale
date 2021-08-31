@@ -14,64 +14,33 @@ namespace PartyGameBL
             _repo=p_repo;
         }
 
-        public async Task<User> AddUserAsync(User p_user)
+        public async Task<Snake> GetSnakeGameStatsByUserNameAsync(string UserName)
         {
-            return await _repo.AddUserAsync(p_user);
+            return await _repo.GetSnakeGameStatsByUserNameAsync(UserName);
         }
 
-        public async Task<List<User>>GetAllUsersAsync()
+        public async Task<Blackjack>GetBlackJackGameStatsByUserNameAsync(string UserName)
         {
-            return await _repo.GetAllUsersAsync();
+            return await _repo.GetBlackJackGameStatsByUserNameAsync(UserName);
         }
 
-        public async Task<Snake> GetSnakeGameStatsByUserIdAsync(int UserId)
+        public async Task<TicTacToe> GetTicTacToeGameStatsByUserNameAsync(string UserName)
         {
-            return await _repo.GetSnakeGameStatsByUserIdAsync(UserId);
+            return await _repo.GetTicTacToeGameStatsByUserNameAsync(UserName);
         }
 
-        public async Task<Blackjack>GetBlackJackGameStatsByUserIdAsync(int UserId)
+        public async Task<List<ScoreHistory>> GetScoreHistoryByUserNameAsync(string UserName)
         {
-            return await _repo.GetBlackJackGameStatsByUserIdAsync(UserId);
-        }
-
-        public async Task<TicTacToe> GetTicTacToeGameStatsByUserIdAsync(int UserId)
-        {
-            return await _repo.GetTicTacToeGameStatsByUserIdAsync(UserId);
-        }
-
-        public async Task<List<ScoreHistory>> GetScoreHistoryByUserIdAsync(int UserId)
-        {
-            return await _repo.GetScoreHistoryByUserIdAsync(UserId);
-        }
-
-        public async Task<int> GetUserIdFromUserNameAndPasswordAsync(string UserName, string Password)
-        {
-            return await _repo.GetUserIdFromUserNameAndPasswordAsync(UserName, Password);
-        }
-
-        public async Task<User> GetUserFromUserNameAsync(string UserName)
-        {
-            return await _repo.GetUserFromUserNameAsync(UserName);
-        }
-
-
-        public async Task<User> GetUserFromUserNameAndPasswordAsync(string UserName, string Password)
-        {
-            return await _repo.GetUserFromUserNameAndPasswordAsync(UserName, Password);
-        }
-        
-        public async Task<User> GetUserFromUserIdAsync(int UserId)
-        {
-            return await _repo.GetUserFromUserIdAsync(UserId);
+            return await _repo.GetScoreHistoryByUserNameAsync(UserName);
         }
 
         public async Task<ScoreHistory> AddScoreHistory(ScoreHistory p_ScoreHistory)
         {
             return await _repo.AddScoreHistory(p_ScoreHistory);
         }
-        public async Task<ScoreHistory> AddScoreHistory(int UserId, int gameId, float score)
+        public async Task<ScoreHistory> AddScoreHistory(string UserName, int gameId, float score)
         {
-            return await _repo.AddScoreHistory(UserId, gameId, score);
+            return await _repo.AddScoreHistory(UserName, gameId, score);
         }
 
         public async Task<Snake> UpdateSnakeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
@@ -82,6 +51,19 @@ namespace PartyGameBL
         public async Task<TicTacToe> UpdateTicTacToeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
         {
             return await _repo.UpdateTicTacToeGameStatsByScoreHistory(p_scoreHistory);
+        }
+
+        public async Task<Blackjack> UpdateBlackJackGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            return await _repo.UpdateBlackJackGameStatsByScoreHistory(p_scoreHistory);
+        }
+        public async Task<LightBike> GetLightBikeGameStatsByUserNameAsync(string UserName)
+        {
+            return await _repo.GetLightBikeGameStatsByUserNameAsync(UserName);
+        }
+        public async Task<LightBike> UpdateLightBikeGameStatsByScoreHistory(ScoreHistory p_scoreHistory)
+        {
+            return await _repo.UpdateLightBikeGameStatsByScoreHistory(p_scoreHistory);
         }
     }
 }
