@@ -27,9 +27,6 @@ namespace PartyGameDL
 
             return await _context.ScoreHistories.Where
                 (score => score.UserName == UserName).ToListAsync();
-            /*return (List<ScoreHistory>)(from q in _context.ScoreHistories
-                    where (q.UserName == UserName)
-                    select q).ToList();*/
 
         }
         
@@ -98,11 +95,11 @@ namespace PartyGameDL
         }
 
         //In case we cant pass scorehistory object can possibly do this instead.
-        public async Task<ScoreHistory> AddScoreHistory(string UserName, int GameId, float score)
+        public async Task<ScoreHistory> AddScoreHistory(string UserName, int gameId, float score)
         {
             ScoreHistory scoreHistory = new ScoreHistory();
             scoreHistory.UserName = UserName;
-            scoreHistory.GamesId = GameId;
+            scoreHistory.GamesId = gameId;
             scoreHistory.Score = score;
             await _context.ScoreHistories.AddAsync(scoreHistory);
             await _context.SaveChangesAsync();

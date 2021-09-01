@@ -34,9 +34,9 @@ namespace PartyGameBL
             return await _repo.GetScoreHistoryByUserNameAsync(UserName);
         }
 
-        public async Task<ScoreHistory> AddScoreHistory(ScoreHistory p_ScoreHistory)
+        public async Task<ScoreHistory> AddScoreHistory(ScoreHistory p_scoreHistory)
         {
-            return await _repo.AddScoreHistory(p_ScoreHistory);
+            return await _repo.AddScoreHistory(p_scoreHistory);
         }
         public async Task<ScoreHistory> AddScoreHistory(string UserName, int gameId, float score)
         {

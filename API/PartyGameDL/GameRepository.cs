@@ -32,10 +32,7 @@ namespace PartyGameDL
                 .OrderByDescending(score => score.Score )
                 .Take(10)
                 .ToListAsync();
-            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
-                     where (q.GameId == GameId)
-                     orderby q.Score descending
-                     select q).Take(10);*/
+          
         }
 
         public async Task<List<Blackjack>> Top10BlackJackStats()
@@ -44,10 +41,7 @@ namespace PartyGameDL
                 .OrderByDescending(score => score.WinLossRatio)
                 .Take(10)
                 .ToListAsync();
-            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
-                     where (q.GameId == GameId)
-                     orderby q.Score descending
-                     select q).Take(10);*/
+    
         }
 
         public async Task<List<LightBike>> Top10LightBikeStats()
@@ -56,10 +50,7 @@ namespace PartyGameDL
                 .OrderByDescending(score => score.WinLossRatio)
                 .Take(10)
                 .ToListAsync();
-            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
-                     where (q.GameId == GameId)
-                     orderby q.Score descending
-                     select q).Take(10);*/
+
         }
 
         public async Task<List<TicTacToe>> Top10TicTacToeStats()
@@ -68,10 +59,6 @@ namespace PartyGameDL
                 .OrderByDescending(score => score.WinLossRatio)
                 .Take(10)
                 .ToListAsync();
-            /* return await (List<ScoreHistory>)(from q in _context.ScoreHistories
-                     where (q.GameId == GameId)
-                     orderby q.Score descending
-                     select q).Take(10);*/
         }
     }
 }
