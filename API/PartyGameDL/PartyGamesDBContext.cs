@@ -22,28 +22,28 @@ namespace PartyGameDL
         public PartyGamesDBContext(DbContextOptions options) : base(options)
         { }
 
-        protected override void OnModelCreating(ModelBuilder p_modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            p_modelBuilder.Entity<Games>()
+            modelBuilder.Entity<Games>()
                 .Property(Games => Games.Id)
                 .ValueGeneratedOnAdd();
 
-            p_modelBuilder.Entity<LightBike>()
+            modelBuilder.Entity<LightBike>()
                 .Property(LightBike => LightBike.Id)
                 .ValueGeneratedOnAdd();
 
-            p_modelBuilder.Entity<Snake>()
+            modelBuilder.Entity<Snake>()
                 .Property(Snake => Snake.Id)
                 .ValueGeneratedOnAdd();
 
-            p_modelBuilder.Entity<ScoreHistory>()
+            modelBuilder.Entity<ScoreHistory>()
                 .Property(ScoreHistory => ScoreHistory.Id)
                 .ValueGeneratedOnAdd();
 
-            p_modelBuilder.Entity<Blackjack>()
+            modelBuilder.Entity<Blackjack>()
                 .Property(Blackjack => Blackjack.Id)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<TicTacToe>()
+            modelBuilder.Entity<TicTacToe>()
                 .Property(TicTacToe => TicTacToe.Id)
                 .ValueGeneratedOnAdd();
             //add Entity modelbuilders here.
