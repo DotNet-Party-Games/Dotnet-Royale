@@ -29,7 +29,7 @@ namespace PartyGameTest
                 IGameRepository repo = new GameRepository(context);
                 List <Games> allGames = await repo .GetAllGamesAsync();
                 int numOfGames = allGames.Count;
-                Assert.Equal(3, numOfGames);
+                Assert.Equal(4, numOfGames);
             }
         }
         [Fact]
@@ -43,7 +43,7 @@ namespace PartyGameTest
                 int numberOfBlackjackScores = blackJackScoreHistory.Count;
                 int numberOfSnakeScores = snakeScoreHistory.Count;
                 Assert.Equal(11, numberOfSnakeScores);
-                Assert.Equal(0, numberOfBlackjackScores);
+                Assert.Equal(4, numberOfBlackjackScores);
 
             }
         }
@@ -55,7 +55,7 @@ namespace PartyGameTest
                 IUserRepository repo = new UserRepository(context);
                 List <ScoreHistory> UserScoreHistory = await repo.GetScoreHistoryByUserNameAsync("user1");
                 int numberOfUserScores = UserScoreHistory.Count;
-                Assert.Equal(4, numberOfUserScores);
+                Assert.Equal(8, numberOfUserScores);
 
             }
         }
@@ -104,6 +104,52 @@ namespace PartyGameTest
             }
         }
         [Fact]
+        public async void Top10BlackJacStatsShouldGetTheTop10score()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IGameRepository repo = new GameRepository(context);
+                List<Blackjack> top10 = new List<Blackjack>();
+
+                top10 = await repo.Top10BlackJackStats();
+
+                Assert.NotNull(top10);
+                Assert.Single(top10);
+                Assert.Equal("user1", top10[0].UserName);
+            }
+        }
+        [Fact]
+        public async void Top10TicTacToeStatsShouldGetTheTop10score()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IGameRepository repo = new GameRepository(context);
+                List<TicTacToe> top10 = new List<TicTacToe>();
+
+                top10 = await repo.Top10TicTacToeStats();
+
+                Assert.NotNull(top10);
+                Assert.Equal(2, top10.Count);
+                Assert.Equal("user2", top10[0].UserName);
+            }
+        }
+        [Fact]
+        public async void Top10LightBikeStatsShouldGetTheTop10SCores()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IGameRepository repo = new GameRepository(context);
+                List<LightBike> top10 = new List<LightBike>();
+
+                top10 = await repo.Top10LightBikeStats();
+
+                Assert.NotNull(top10);
+                Assert.Equal(2, top10.Count);
+                Assert.Equal("user1", top10[0].UserName);
+            }
+        }
+
+        [Fact]
         public async void UpdateSnakeGameStatsByScoreHistoryShouldUpdateSnakeGameStats()
         {
             using (var context = new PartyGamesDBContext(_options))
@@ -150,6 +196,48 @@ namespace PartyGameTest
         }
 
         [Fact]
+        public async void UpdateBlackJackGameStatsByScoreHistoryShouldUpdateBlackJack()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                ScoreHistory scoreHistoryToUpdate = new ScoreHistory
+                {
+                    GamesId = 2,
+                    UserName = "user2",
+                };
+
+                await repo.UpdateBlackJackGameStatsByScoreHistory(scoreHistoryToUpdate);
+                Blackjack newStat = await repo.GetBlackJackGameStatsByUserNameAsync(scoreHistoryToUpdate.UserName);
+
+
+                Assert.Equal("user2", newStat.UserName);
+                Assert.Equal(2, newStat.GamesId);
+                Assert.Equal(0.5, newStat.WinLossRatio);
+            }
+        }
+        [Fact]
+        public async void UpdateLightbikeGameStatsByScoreHistoryShouldUpdateLightbike()
+        {
+            using (var context = new PartyGamesDBContext(_options))
+            {
+                IUserRepository repo = new UserRepository(context);
+                ScoreHistory scoreHistoryToUpdate = new ScoreHistory
+                {
+                    GamesId = 4,
+                    UserName = "user1",
+                };
+
+                await repo.UpdateLightBikeGameStatsByScoreHistory(scoreHistoryToUpdate);
+                LightBike newStat = await repo.GetLightBikeGameStatsByUserNameAsync(scoreHistoryToUpdate.UserName);
+
+
+                Assert.Equal("user1", newStat.UserName);
+                Assert.Equal(4, newStat.GamesId);
+                Assert.Equal(0.5, newStat.WinLossRatio);
+            }
+        }
+        [Fact]
         public async void GetTicTacToeGameStatsByUserNameShouldGetTicTacToeGamestats()
         {
             using (var context = new PartyGamesDBContext(_options))
@@ -181,7 +269,7 @@ namespace PartyGameTest
                await repo.AddScoreHistory(newScoreHistory);
                 List<ScoreHistory> totalScoreHistory = await repo.GetScoreHistoryByUserNameAsync("user1");
 
-                Assert.Equal(5, totalScoreHistory.Count);
+                Assert.Equal(9, totalScoreHistory.Count);
             }
         }
 
@@ -200,7 +288,7 @@ namespace PartyGameTest
                 await repo.AddScoreHistory(UserName,GamesId,Score);
                 List<ScoreHistory> totalScoreHistory = await repo.GetScoreHistoryByUserNameAsync("user1");
 
-                Assert.Equal(5, totalScoreHistory.Count);
+                Assert.Equal(9, totalScoreHistory.Count);
             }
         }
         private void Seed()
@@ -228,6 +316,12 @@ namespace PartyGameTest
                         Id = 3,
                         Name = "Test TicTacToeGames Name",
                         Description="Calebs Awesome TTT Game"
+                    },
+                    new Games
+                    {
+                        Id=4,
+                        Name = "Test LightBike Name",
+                        Description = "Light bike description"
                     }
                 );
                 context.Snakes.AddRange(
@@ -255,13 +349,6 @@ namespace PartyGameTest
                         UserName = "user1",
                         GamesId = 2,
                         WinLossRatio = 0.80f,
-                    },
-                    new Blackjack
-                    {
-                        Id = 2,
-                        UserName = "user2",
-                        GamesId = 2,
-                        WinLossRatio = 1.55f,
                     }
                 );
                 context.TicTacToes.AddRange(
@@ -271,8 +358,31 @@ namespace PartyGameTest
                         UserName = "user1",
                         GamesId =3,
                         WinLossRatio=1.44f
+                    },
+                    new TicTacToe
+                    {
+                        Id = 2,
+                        UserName = "user2",
+                        GamesId = 3,
+                        WinLossRatio = 1.50f
                     }
-                    );
+                );
+                context.LightBikes.AddRange(
+                    new LightBike
+                    {
+                        Id=1,
+                        UserName="user1",
+                        GamesId=4,
+                        WinLossRatio=1.33f
+                    },
+                    new LightBike
+                    {
+                        Id = 2,
+                        UserName = "user2",
+                        GamesId = 4,
+                        WinLossRatio = 0.4f
+                    }
+               );
                 context.ScoreHistories.AddRange(
                     new ScoreHistory
                     {
@@ -364,8 +474,49 @@ namespace PartyGameTest
                         GamesId = 3,
                         UserName = "user1",
                         Score = 1,
+                    },
+                    new ScoreHistory
+                    {
+                        Id=14,
+                        GamesId=4,
+                        UserName="user1",
+                        Score=0
+                    },
+                    new ScoreHistory
+                    {
+                        Id = 15,
+                        GamesId = 4,
+                        UserName = "user1",
+                        Score = 1
+                    },
+                    new ScoreHistory
+                    {
+                        Id = 16,
+                        GamesId = 2,
+                        UserName = "user1",
+                        Score = 1,
+                    },
+                    new ScoreHistory
+                    {
+                        Id = 17,
+                        GamesId = 2,
+                        UserName = "user1",
+                        Score = 0,
+                    },
+                    new ScoreHistory
+                    {
+                        Id = 18,
+                        GamesId = 2,
+                        UserName = "user2",
+                        Score = 1,
+                    },
+                    new ScoreHistory
+                    {
+                        Id = 19,
+                        GamesId = 2,
+                        UserName = "user2",
+                        Score = 0,
                     }
-
                 );
                 context.SaveChanges();
             }
